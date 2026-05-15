@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang='es'>
+<head>
+<meta charset='utf-8'>
+<meta name='viewport' content='width=device-width,initial-scale=1'>
+<title>Posts · Guerrero al Fuego</title>
+<link rel='stylesheet' href='/contabilidad/styles.css'>
+<style>
+:root{--gaf-red:#D62828;--gaf-yellow:#FEC601}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin:12px 0}
+.post-card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:14px}
+.post-card h3{margin:0 0 4px;font-size:15px;color:var(--gaf-yellow)}
+.post-card .meta{color:#94a3b8;font-size:12px;margin:2px 0}
+.badge.idea{background:#64748b;color:white}
+.badge.borrador{background:#0ea5e9;color:white}
+.badge.listo{background:#22c55e;color:white}
+.badge.programado{background:#8b5cf6;color:white}
+.badge.publicado{background:#16a34a;color:white}
+.actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.actions button{background:#334155;border:none;border-radius:6px;padding:4px 10px;color:#e2e8f0;cursor:pointer;font-size:11px}
+.actions button:hover{background:#475569}
+.filter-bar{display:flex;gap:8px;margin:8px 0;flex-wrap:wrap}
+.filter-bar select{background:#1e293b;border:1px solid #334155;border-radius:8px;padding:6px 10px;color:#e5e7eb;font-size:13px}
+#modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:100;align-items:center;justify-content:center}
+#modal .form-box{background:#111827;border:1px solid #334155;border-radius:12px;padding:20px;max-width:600px;width:90%;max-height:80vh;overflow-y:auto}
+#modal h2{color:var(--gaf-yellow);margin:0 0 12px;font-size:16px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.form-grid label{display:block;font-size:12px;color:#94a3b8;margin-bottom:2px}
+.form-grid input,.form-grid select,.form-grid textarea{width:100%;padding:6px;border-radius:6px;border:1px solid #334155;background:#1e293b;color:#e5e7eb;font-size:13px;box-sizing:border-box}
+.form-grid .full{grid-column:1/-1}
+.form-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+</style>
+</head>
+<body>
+<header>
+<h1>📤 Posts</h1>
+<div class='sub'>Guiones y gestión de contenido para redes</div>
+<nav id='nav'><a href='/guerrero-al-fuego/index.html'>Dashboard</a><a href='/guerrero-al-fuego/recetas.html'>Recetas</a><a class='active' href='/guerrero-al-fuego/posts.html'>Posts</a><a href='/guerrero-al-fuego/calendario.html'>Calendario</a></nav><div style="margin-top:6px"><a href="/hub/" style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;background:#1f2937;color:#94a3b8;border-radius:999px;font-size:11px;text-decoration:none;border:1px solid #334155">← Volver al hub</a></div>
+<button onclick='showForm()' style='margin-top:8px;background:#D62828;border:none;border-radius:8px;padding:6px 14px;color:white;cursor:pointer;font-size:13px;font-weight:700'>+ Nuevo post</button>
+<div class='filter-bar'>
+  <select id='filter-status' onchange='loadPosts()'>
+    <option value=''>Todos</option>
+    <option value='idea'>Idea</option><option value='borrador'>Borrador</option>
+    <option value='listo'>Listo</option><option value='programado'>Programado</option><option value='publicado'>Publicado</option>
+  </select>
+  <select id='filter-platform' onchange='loadPosts()'>
+    <option value=''>Todas las plataformas</option>
+    <option value='youtube'>YouTube</option><option value='tiktok'>TikTok</option><option value='instagram'>Instagram</option>
+  </select>
+</div>
+</header>
+<main><div id='posts'><p class='muted'>Cargando posts...</p></div></main>
+
+<div id='modal'>
+<div class='form-box'>
+<h2 id='formTitle'>Nuevo post</h2>
+<form id='postForm' onsubmit='return savePost(event)'>
+<input type='hidden' id='f_id' name='id'>
+<div class='form-grid'>
+  <div class='full'><label>Título</label><input id='f_title' required placeholder='Ej: Tortilla perfecta en 30s' style='width:100%'></div>
+  <div><label>Plataforma</label>
+    <select id='f_platform'>
+      <option value='youtube'>YouTube Shorts</option><option value='tiktok'>TikTok</option><option value='instagram'>Instagram Reels</option>
+    </select></div>
+  <div><label>Tipo</label>
+    <select id='f_post_type'>
+      <option value='short'>Short/Reel</option><option value='story'>Historia</option><option value='post'>Post</option>
+    </select></div>
+  <div><label>Receta asociada</label>
+    <select id='f_recipe_id'><option value=''>Sin receta</option></select></div>
+  <div><label>Serie</label>
+    <select id='f_series'><option value=''>Sin serie</option></select></div>
+  <div><label>Estado</label>
+    <select id='f_status'>
+      <option value='idea'>Idea</option><option value='borrador'>Borrador</option>
+      <option value='listo'>Listo</option><option value='programado'>Programado</option><option value='publicado'>Publicado</option>
+    </select></div>
+  <div><label>Programado</label><input id='f_scheduled_date' type='date'></div>
+  <div><label>Hora</label><input id='f_scheduled_time' type='time' value='12:00'></div>
+  <div><label>Expresión Fueguín</label>
+    <select id='f_fueguin_expression'>
+      <option value=''>Ninguna</option>
+      <option value='feliz'>Feliz</option><option value='sorprendido'>Sorprendido</option>
+      <option value='orgulloso'>Orgulloso</option><option value='fail'>FAIL</option>
+      <option value='nervioso'>Nervioso</option><option value='picante'>Picante</option>
+      <option value='confundido'>CONFUNDIDO</option><option value='aliviado'>Aliviado</option>
+      <option value='pensativo'>Pensativo</option><option value='senalando'>Señalando</option>
+      <option value='callado'>Callado</option><option value='celebrando'>Celebrando</option>
+    </select></div>
+  <div class='full'><label>Descripción</label><textarea id='f_description' rows='2' style='width:100%'></textarea></div>
+  <div class='full'><label>Hashtags (uno por línea)</label><textarea id='f_hashtags' rows='3' style='width:100%' placeholder='guerreroalfuego&#10;recetasfaciles&#10;cocina'></textarea></div>
+  <div class='full'><label>Guion / Texto del vídeo</label><textarea id='f_script' rows='6' style='width:100%;font-family:monospace;font-size:12px' placeholder='Fase 1 - Gancho (0-3s): ...&#10;Fase 2 - Acción (3-20s): ...'></textarea></div>
+  <div class='full'><label>URL publicado</label><input id='f_url' placeholder='https://...'></div>
+  <div class='full'><label>Notas</label><textarea id='f_notes' rows='2' style='width:100%'></textarea></div>
+</div>
+<div class='form-actions'>
+  <button type='button' onclick='closeForm()' style='background:#334155;border:none;border-radius:6px;padding:8px 16px;color:#e2e8f0;cursor:pointer'>Cancelar</button>
+  <button type='submit' style='background:#D62828;border:none;border-radius:6px;padding:8px 16px;color:white;cursor:pointer;font-weight:700'>Guardar</button>
+</div>
+</form>
+</div></div>
+
+<script>
+async function api(path){ return fetch(path).then(r=>r.json()); }
+
+async function loadRecipesSelect(){
+  const data=await api('/api/gaf/recipes');
+  const sel=document.getElementById('f_recipe_id');
+  sel.innerHTML='<option value="">Sin receta</option>';
+  (data.recipes||[]).forEach(r=>{ sel.innerHTML+=`<option value="${r.id}">${r.title}</option>`; });
+}
+
+async function loadSeriesSelect(){
+  const data=await api('/api/gaf/series');
+  const sel=document.getElementById('f_series');
+  sel.innerHTML='<option value="">Sin serie</option>';
+  data.series.forEach(s=>{ sel.innerHTML+=`<option value="${s.id}">${s.name}</option>`; });
+}
+
+async function loadPosts(){
+  const status=document.getElementById('filter-status').value;
+  const platform=document.getElementById('filter-platform').value;
+  let url='/api/gaf/posts';
+  const params=[];
+  if(status) params.push('status='+status);
+  if(platform) params.push('platform='+platform);
+  if(params.length) url+='?'+params.join('&');
+  try{
+    const data=await api(url);
+    const list=data.posts||[];
+    const el=document.getElementById('posts');
+    if(!list.length){ el.innerHTML='<p class="muted">No hay posts. ¡Crea el primero!</p>'; return; }
+    const platformIcon={youtube:'▶️',tiktok:'🎵',instagram:'📸'};
+    const fueguinExp={feliz:'😊',sorprendido:'😮',orgulloso:'😤',fail:'💀',nervioso:'😰',picante:'🌶️',confundido:'🤔',aliviado:'😌',pensativo:'🤨',senalando:'👉',callado:'🤐',celebrando:'🎉'};
+    el.innerHTML='<div class="grid">'+list.map(p=>{
+      const hashtags=p.hashtags?JSON.parse(p.hashtags).map(h=>'#'+h).join(' '):'';
+      return `<div class="post-card">
+        <h3>${p.title||'Sin título'}</h3>
+        <div class="meta">
+          <span class="badge ${p.status}">${p.status}</span>
+          ${platformIcon[p.platform]||'📱'} ${p.platform}
+          ${p.fueguin_expression?fueguinExp[p.fueguin_expression]||'🔥':' '}
+        </div>
+        ${p.scheduled_date?`<div class="meta">📅 ${p.scheduled_date} ${p.scheduled_time||''}</div>`:''}
+        ${p.description?`<div class="meta">${p.description.slice(0,100)}${p.description.length>100?'...':''}</div>`:''}
+        ${hashtags?`<div class="meta" style="color:#60a5fa;font-size:11px">${hashtags}</div>`:''}
+        <details><summary>📄 Guion</summary><pre style="font-size:12px;color:#cbd5e1;white-space:pre-wrap;background:#0f172a;border-radius:8px;padding:8px;margin:4px 0">${p.script||'(sin guion)'}</pre></details>
+        ${p.url?`<div class="meta"><a href="${p.url}" target="_blank" style="color:#60a5fa">${p.url}</a></div>`:''}
+        <div class="actions">
+          <button onclick='editPost("${p.id}")'>✏️ Editar</button>
+          ${p.status==='listo'?`<button onclick='programPost("${p.id}")'>📅 Programar</button>`:''}
+          ${p.status==='programado'?`<button onclick='publishPost("${p.id}")'>✅ Publicar</button>`:''}
+          <button onclick='addToCalendar("${p.id}","${p.platform}","${p.title}")'>📆 Al calendario</button>
+        </div>
+      </div>`;
+    }).join('')+'</div>';
+  }catch(e){ document.getElementById('posts').innerHTML='<p class="muted">Error: '+e.message+'</p>'; }
+}
+
+function showForm(data){
+  document.getElementById('modal').style.display='flex';
+  document.getElementById('formTitle').textContent=data?'Editar post':'Nuevo post';
+  const fields=['id','title','platform','post_type','recipe_id','series','status','scheduled_date','scheduled_time','fueguin_expression','description','script','url','notes'];
+  fields.forEach(f=>{
+    const el=document.getElementById('f_'+f);
+    if(el) el.value=data?.[f]||'';
+  });
+  if(data?.hashtags){
+    try{ document.getElementById('f_hashtags').value=JSON.parse(data.hashtags).join('\n'); }catch(e){}
+  }else document.getElementById('f_hashtags').value='';
+}
+
+function closeForm(){ document.getElementById('modal').style.display='none'; }
+
+async function savePost(e){
+  e.preventDefault();
+  const data={};
+  ['id','title','platform','post_type','recipe_id','series','status','scheduled_date','scheduled_time','fueguin_expression','description','script','url','notes'].forEach(f=>{
+    data[f]=document.getElementById('f_'+f).value;
+  });
+  data.hashtags=JSON.stringify(document.getElementById('f_hashtags').value.split('\n').filter(Boolean));
+  try{
+    const r=await fetch('/api/gaf/post',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).then(r=>r.json());
+    if(r.ok){ closeForm(); loadPosts(); }
+    else alert('Error: '+(r.error||'desconocido'));
+  }catch(e){ alert('Error: '+e.message); }
+  return false;
+}
+
+async function editPost(id){
+  const data=await api('/api/gaf/post?id='+id);
+  showForm(data);
+}
+
+async function programPost(id){
+  await fetch('/api/gaf/post',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,status:'programado'})});
+  loadPosts();
+}
+
+async function publishPost(id){
+  const today=new Date().toISOString().split('T')[0];
+  await fetch('/api/gaf/post',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,status:'publicado',published_date:today})});
+  loadPosts();
+}
+
+async function addToCalendar(postId,platform,title){
+  const date=prompt('Fecha (YYYY-MM-DD):');
+  if(!date) return;
+  const time=prompt('Hora (HH:MM):','12:00')||'12:00';
+  await fetch('/api/gaf/calendar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({post_id:postId,date,time,platform,status:'pendiente'})});
+  alert('✅ Añadido al calendario');
+}
+
+loadRecipesSelect().then(loadSeriesSelect).then(loadPosts);
+</script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang='es'>
+<head>
+<meta charset='utf-8'>
+<meta name='viewport' content='width=device-width,initial-scale=1'>
+<title>Calendario · Guerrero al Fuego</title>
+<link rel='stylesheet' href='/contabilidad/styles.css'>
+<style>
+:root{--gaf-red:#D62828;--gaf-yellow:#FEC601}
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:12px 0}
+.day-card{background:#1e293b;border:1px solid #334155;border-radius:10px;padding:8px;min-height:120px}
+.day-card.today{border-color:var(--gaf-red);border-width:2px}
+.day-card h3{margin:0 0 4px;font-size:13px;color:var(--gaf-yellow)}
+.day-card .entry{background:#0f172a;border-radius:6px;padding:4px 6px;margin:3px 0;font-size:11px;cursor:pointer}
+.day-card .entry:hover{background:#1f2937}
+.day-card .entry .time{color:#64748b;font-size:10px}
+.day-card .entry .plat{display:inline-block;border-radius:4px;padding:1px 4px;font-size:9px;margin-left:2px}
+.plat-youtube{background:#ef4444;color:white}
+.plat-tiktok{background:#1e1e1e;color:white;border:1px solid #333}
+.plat-instagram{background:#ec4899;color:white}
+.nav-week{display:flex;justify-content:space-between;align-items:center;margin:8px 0}
+.nav-week button{background:#334155;border:none;border-radius:8px;padding:6px 12px;color:#e2e8f0;cursor:pointer;font-size:13px}
+.nav-week button:hover{background:#475569}
+.nav-week .date-range{color:#facc15;font-size:14px;font-weight:700}
+@media(max-width:700px){.week-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}}
+</style>
+</head>
+<body>
+<header>
+<h1>📅 Calendario editorial</h1>
+<div class='sub'>Planificación semanal de contenido</div>
+<nav id='nav'><a href='/guerrero-al-fuego/index.html'>Dashboard</a><a href='/guerrero-al-fuego/recetas.html'>Recetas</a><a href='/guerrero-al-fuego/posts.html'>Posts</a><a class='active' href='/guerrero-al-fuego/calendario.html'>Calendario</a></nav><div style="margin-top:6px"><a href="/hub/" style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;background:#1f2937;color:#94a3b8;border-radius:999px;font-size:11px;text-decoration:none;border:1px solid #334155">← Volver al hub</a></div>
+<div class='nav-week'>
+  <button onclick='changeWeek(-1)'>← Semana anterior</button>
+  <span class='date-range' id='week-range'></span>
+  <button onclick='changeWeek(1)'>Semana siguiente →</button>
+</div>
+</header>
+<main>
+<div class='week-grid' id='calendar'><p class='muted'>Cargando calendario...</p></div>
+</main>
+<script>
+let currentDate=new Date().toISOString().split('T')[0];
+
+async function api(path){ return fetch(path).then(r=>r.json()); }
+
+function getMonday(d){
+  d=new Date(d);
+  const day=d.getDay();
+  const diff=d.getDate()-day+(day===0?-6:1);
+  return new Date(d.setDate(diff)).toISOString().split('T')[0];
+}
+
+function formatDate(iso){
+  const d=new Date(iso+'T12:00:00');
+  return d.toLocaleDateString('es-ES',{weekday:'short',day:'numeric',month:'short'});
+}
+
+function isToday(iso){
+  return iso===new Date().toISOString().split('T')[0];
+}
+
+async function loadCalendar(){
+  const monday=getMonday(currentDate);
+  const sunday=new Date(new Date(monday+'T12:00:00').getTime()+6*86400000).toISOString().split('T')[0];
+  document.getElementById('week-range').textContent=formatDate(monday)+' — '+formatDate(sunday);
+  
+  try{
+    const data=await api('/api/gaf/calendar?date='+monday);
+    const entries=data.calendar||[];
+    const days=[];
+    for(let i=0;i<7;i++){
+      const d=new Date(new Date(monday+'T12:00:00').getTime()+i*86400000);
+      days.push(d.toISOString().split('T')[0]);
+    }
+    const el=document.getElementById('calendar');
+    const platClass={youtube:'plat-youtube',tiktok:'plat-tiktok',instagram:'plat-instagram'};
+    el.innerHTML=days.map(day=>{
+      const dayEntries=entries.filter(e=>e.date===day);
+      return `<div class="day-card ${isToday(day)?'today':''}">
+        <h3>${formatDate(day)}</h3>
+        ${dayEntries.length?dayEntries.map(e=>`
+          <div class="entry" onclick='openPost("${e.post_id||''}")'>
+            <div class="time">${e.time||'--:--'}</div>
+            <strong>${e.post_title||'Sin título'}</strong>
+            <span class="${platClass[e.platform]||''}">${e.platform}</span>
+            ${e.status==='publicado'?'✅':''}
+          </div>
+        `).join(''):'<div style="color:#475569;font-size:11px;margin-top:4px">—</div>'}
+      </div>`;
+    }).join('');
+  }catch(e){ document.getElementById('calendar').innerHTML='<p class="muted">Error: '+e.message+'</p>'; }
+}
+
+function changeWeek(delta){
+  const d=new Date(currentDate+'T12:00:00');
+  d.setDate(d.getDate()+delta*7);
+  currentDate=d.toISOString().split('T')[0];
+  loadCalendar();
+}
+
+function openPost(postId){
+  if(postId) window.location.href='/guerrero-al-fuego/posts.html';
+}
+
+loadCalendar();
+</script>
+</body>
+</html>

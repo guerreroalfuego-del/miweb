@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang='es'>
+<head>
+<meta charset='utf-8'>
+<meta name='viewport' content='width=device-width,initial-scale=1'>
+<title>Recetas · Guerrero al Fuego</title>
+<link rel='stylesheet' href='/contabilidad/styles.css'>
+<style>
+:root{--gaf-red:#D62828;--gaf-yellow:#FEC601}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin:12px 0}
+.recipe-card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:14px}
+.recipe-card h3{margin:0 0 4px;font-size:15px;color:var(--gaf-yellow)}
+.recipe-card .meta{color:#94a3b8;font-size:12px;margin:2px 0}
+.recipe-card .difficulty{display:inline-block;border-radius:999px;padding:2px 8px;font-size:10px}
+.diff-facil{background:#22c55e;color:#1e293b}
+.diff-media{background:#f59e0b;color:#1e293b}
+.diff-dificil{background:#ef4444;color:white}
+.badge.idea{background:#64748b;color:white}
+.badge.guion{background:#0ea5e9;color:white}
+.badge.grabado{background:#8b5cf6;color:white}
+.badge.editado{background:#f59e0b;color:#1e293b}
+.badge.publicado{background:#16a34a;color:white}
+details summary{cursor:pointer;color:#60a5fa;font-size:13px;margin:6px 0}
+.actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.actions button{background:#334155;border:none;border-radius:6px;padding:4px 10px;color:#e2e8f0;cursor:pointer;font-size:11px}
+.actions button:hover{background:#475569}
+.filter-bar{display:flex;gap:8px;margin:8px 0;flex-wrap:wrap}
+.filter-bar select,.filter-bar input{background:#1e293b;border:1px solid #334155;border-radius:8px;padding:6px 10px;color:#e5e7eb;font-size:13px}
+#modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:100;align-items:center;justify-content:center}
+#modal .form-box{background:#111827;border:1px solid #334155;border-radius:12px;padding:20px;max-width:600px;width:90%;max-height:80vh;overflow-y:auto}
+#modal h2{color:var(--gaf-yellow);margin:0 0 12px;font-size:16px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.form-grid label{display:block;font-size:12px;color:#94a3b8;margin-bottom:2px}
+.form-grid input,.form-grid select,.form-grid textarea{width:100%;padding:6px;border-radius:6px;border:1px solid #334155;background:#1e293b;color:#e5e7eb;font-size:13px;box-sizing:border-box}
+.form-grid .full{grid-column:1/-1}
+.form-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+</style>
+</head>
+<body>
+<header>
+<h1>📝 Recetas</h1>
+<div class='sub'>Recetario de Guerrero al Fuego</div>
+<nav id='nav'><a href='/guerrero-al-fuego/index.html'>Dashboard</a><a class='active' href='/guerrero-al-fuego/recetas.html'>Recetas</a><a href='/guerrero-al-fuego/posts.html'>Posts</a><a href='/guerrero-al-fuego/calendario.html'>Calendario</a></nav><div style="margin-top:6px"><a href="/hub/" style="display:inline-flex;align-items:center;gap:4px;padding:3px 10px;background:#1f2937;color:#94a3b8;border-radius:999px;font-size:11px;text-decoration:none;border:1px solid #334155">← Volver al hub</a></div>
+<button onclick='showForm()' style='margin-top:8px;background:#D62828;border:none;border-radius:8px;padding:6px 14px;color:white;cursor:pointer;font-size:13px;font-weight:700'>+ Nueva receta</button>
+<div class='filter-bar'>
+  <select id='filter-status' onchange='loadRecipes()'>
+    <option value=''>Todos los estados</option>
+    <option value='idea'>Idea</option><option value='guion'>Guion</option><option value='grabado'>Grabado</option>
+    <option value='editado'>Editado</option><option value='publicado'>Publicado</option>
+  </select>
+  <select id='filter-series' onchange='loadRecipes()'>
+    <option value=''>Todas las series</option>
+  </select>
+</div>
+</header>
+<main><div id='recipes'><p class='muted'>Cargando recetas...</p></div></main>
+
+<!-- Modal formulario -->
+<div id='modal'>
+<div class='form-box'>
+<h2 id='formTitle'>Nueva receta</h2>
+<form id='recipeForm' onsubmit='return saveRecipe(event)'>
+<input type='hidden' id='f_id' name='id'>
+<div class='form-grid'>
+  <div class='full'><label>Título</label><input id='f_title' required placeholder='Ej: Tortilla de patatas' style='width:100%'></div>
+  <div class='full'><label>Descripción</label><textarea id='f_description' rows='2' style='width:100%' placeholder='Descripción corta de la receta'></textarea></div>
+  <div><label>Preparación (min)</label><input id='f_prep_time' type='number' placeholder='10'></div>
+  <div><label>Cocción (min)</label><input id='f_cook_time' type='number' placeholder='15'></div>
+  <div><label>Dificultad</label>
+    <select id='f_difficulty'>
+      <option value='facil'>Fácil</option><option value='media'>Media</option><option value='dificil'>Difícil</option>
+    </select></div>
+  <div><label>Raciones</label><input id='f_servings' type='number' value='2'></div>
+  <div><label>Serie</label>
+    <select id='f_series'></select></div>
+  <div><label>Estado</label>
+    <select id='f_status'>
+      <option value='idea'>Idea</option><option value='guion'>Guion</option>
+      <option value='grabado'>Grabado</option><option value='editado'>Editado</option><option value='publicado'>Publicado</option>
+    </select></div>
+  <div class='full'><label>Tags (separados por coma)</label><input id='f_tags' placeholder='rápida, fácil, verano'></div>
+  <div class='full'><label>Ingredientes (uno por línea)</label><textarea id='f_ingredients' rows='4' style='width:100%' placeholder='4 huevos&#10;3 patatas&#10;1 cebolla&#10;Aceite de oliva'></textarea></div>
+  <div class='full'><label>Pasos (uno por línea)</label><textarea id='f_steps' rows='5' style='width:100%' placeholder='1. Pelar y cortar las patatas&#10;2. Freír en aceite abundante&#10;3. Batir huevos y mezclar&#10;4. Cuajar la tortilla'></textarea></div>
+  <div class='full'><label>Notas</label><textarea id='f_notes' rows='2' style='width:100%'></textarea></div>
+</div>
+<div class='form-actions'>
+  <button type='button' onclick='closeForm()' style='background:#334155;border:none;border-radius:6px;padding:8px 16px;color:#e2e8f0;cursor:pointer'>Cancelar</button>
+  <button type='submit' style='background:#D62828;border:none;border-radius:6px;padding:8px 16px;color:white;cursor:pointer;font-weight:700'>Guardar</button>
+</div>
+</form>
+</div></div>
+
+<script>
+async function api(path){ return fetch(path).then(r=>r.json()); }
+const seriesMap={};
+
+async function loadSeries(){
+  const data=await api('/api/gaf/series');
+  const sel=document.getElementById('f_series');
+  const filter=document.getElementById('filter-series');
+  sel.innerHTML='<option value="">Sin serie</option>';
+  filter.innerHTML='<option value="">Todas las series</option>';
+  data.series.forEach(s=>{
+    seriesMap[s.id]=s;
+    sel.innerHTML+=`<option value="${s.id}">${s.name}</option>`;
+    filter.innerHTML+=`<option value="${s.id}">${s.name}</option>`;
+  });
+}
+
+async function loadRecipes(){
+  const status=document.getElementById('filter-status').value;
+  const series=document.getElementById('filter-series').value;
+  let url='/api/gaf/recipes';
+  const params=[];
+  if(status) params.push('status='+status);
+  if(series) params.push('series='+series);
+  if(params.length) url+='?'+params.join('&');
+  try{
+    const data=await api(url);
+    const list=data.recipes||[];
+    const el=document.getElementById('recipes');
+    if(!list.length){ el.innerHTML='<p class="muted">No hay recetas. ¡Crea la primera!</p>'; return; }
+    el.innerHTML='<div class="grid">'+list.map(r=>{
+      const diffLabel={facil:'Fácil',media:'Media',dificil:'Difícil'}[r.difficulty]||r.difficulty;
+      const seriesName=seriesMap[r.series]?seriesMap[r.series].name:'';
+      const ingredients=parseList(r.ingredients);
+      const steps=parseList(r.steps);
+      return `<div class="recipe-card">
+        <h3>${r.title}</h3>
+        <div class="meta">
+          <span class="badge ${r.status}">${r.status}</span>
+          <span class="difficulty diff-${r.difficulty}">${diffLabel}</span>
+          ${r.series?`<span class="badge" style="background:${seriesMap[r.series]?.color||'#64748b'}">${seriesName}</span>`:''}
+        </div>
+        <div class="meta">⏱ ${r.prep_time||0}min + ${r.cook_time||0}min · ${r.servings||1} raciones</div>
+        ${r.description?`<p style="margin:4px 0;color:#cbd5e1;font-size:13px">${r.description}</p>`:''}
+        ${r.tags?`<div class="meta">🏷 ${r.tags}</div>`:''}
+        <details><summary>📋 Ingredientes</summary><ul class="clean" style="padding-left:16px;margin:4px 0">${ingredients.map(i=>`<li style="font-size:13px">${i}</li>`).join('')}</ul></details>
+        <details><summary>👨‍🍳 Pasos</summary><ol style="padding-left:16px;margin:4px 0">${steps.map(s=>`<li style="font-size:13px;margin:2px 0">${s}</li>`).join('')}</ol></details>
+        ${r.notes?`<details><summary>📝 Notas</summary><p style="font-size:13px;margin:4px 0;color:#94a3b8">${r.notes}</p></details>`:''}
+        <div class="actions">
+          <button onclick='editRecipe("${r.id}")'>✏️ Editar</button>
+          ${r.status!=='publicado'?`<button onclick='quickStatus("${r.id}","${getNextStatus(r.status)}")'>${getNextLabel(r.status)}</button>`:''}
+          ${r.video_url?`<button onclick='window.open("${r.video_url}","_blank")'>▶️ Ver</button>`:''}
+        </div>
+      </div>`;
+    }).join('')+'</div>';
+  }catch(e){ document.getElementById('recipes').innerHTML='<p class="muted">Error: '+e.message+'</p>'; }
+}
+
+function parseList(json){
+  if(!json) return [];
+  try{ const p=JSON.parse(json); return Array.isArray(p)?p:[p]; }catch(e){ return json.split('\n').filter(Boolean); }
+}
+
+function getNextStatus(s){
+  const map={idea:'guion',guion:'grabado',grabado:'editado',editado:'publicado'};
+  return map[s]||'publicado';
+}
+function getNextLabel(s){
+  const map={idea:'→ Guion',guion:'→ Grabado',grabado:'→ Editado',editado:'→ Publicar'};
+  return map[s]||'→ Publicado';
+}
+
+async function quickStatus(id,next){
+  await fetch('/api/gaf/recipe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,status:next})});
+  loadRecipes();
+}
+
+function showForm(data){
+  document.getElementById('modal').style.display='flex';
+  document.getElementById('formTitle').textContent=data?'Editar receta':'Nueva receta';
+  const fields=['id','title','description','prep_time','cook_time','difficulty','servings','series','status','tags','ingredients','steps','notes'];
+  fields.forEach(f=>{
+    const el=document.getElementById('f_'+f);
+    if(!el) return;
+    if(f==='ingredients'||f==='steps'){
+      try{ const arr=JSON.parse(data?.[f]||'[]'); el.value=Array.isArray(arr)?arr.join('\n'):''; }catch(e){ el.value=''; }
+    }else{
+      el.value=data?.[f]||'';
+    }
+  });
+}
+
+function closeForm(){ document.getElementById('modal').style.display='none'; }
+
+async function saveRecipe(e){
+  e.preventDefault();
+  const data={};
+  ['id','title','description','difficulty','series','status','tags','notes'].forEach(f=>{
+    data[f]=document.getElementById('f_'+f).value;
+  });
+  data.prep_time=parseInt(document.getElementById('f_prep_time').value)||0;
+  data.cook_time=parseInt(document.getElementById('f_cook_time').value)||0;
+  data.servings=parseInt(document.getElementById('f_servings').value)||1;
+  // Ingredientes y pasos como JSON array
+  data.ingredients=JSON.stringify(document.getElementById('f_ingredients').value.split('\n').filter(Boolean));
+  data.steps=JSON.stringify(document.getElementById('f_steps').value.split('\n').filter(Boolean));
+  try{
+    const r=await fetch('/api/gaf/recipe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).then(r=>r.json());
+    if(r.ok){ closeForm(); loadRecipes(); }
+    else alert('Error: '+(r.error||'desconocido'));
+  }catch(e){ alert('Error: '+e.message); }
+  return false;
+}
+
+async function editRecipe(id){
+  const data=await api('/api/gaf/recipe?id='+id);
+  showForm(data);
+}
+
+loadSeries().then(loadRecipes);
+</script>
+</body>
+</html>
