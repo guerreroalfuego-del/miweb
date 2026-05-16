@@ -1,87 +1,192 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guerrero al Fuego - Próximamente</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --fire-main: #ff4500;
+            --fire-light: #ff8c00;
+            --fire-dark: #b22222;
+            --bg-color: #0f0f11;
+            --text-color: #ffffff;
+        }
 
-<!-- SEO -->
-<title>Guerrero al Fuego 🔥 | Recetas de cocina con pasión</title>
-<meta name="description" content="Guerrero al Fuego es un proyecto de cocina disruptivo. Recetas originales, fuego y mucho sabor. Próximamente contenido exclusivo para amantes de la cocina.">
-<meta name="keywords" content="cocina, recetas, fuego, guerrero al fuego, cocina casera, recetas originales">
-<meta name="author" content="Guerrero al Fuego">
-<meta name="robots" content="index, follow">
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Outfit', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #2a0800 0%, var(--bg-color) 70%);
+        }
 
-<!-- Open Graph (para redes sociales) -->
-<meta property="og:title" content="Guerrero al Fuego 🔥">
-<meta property="og:description" content="Recetas de cocina con pasión. Próximamente.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://guerreroalfuego.com">
-<meta property="og:site_name" content="Guerrero al Fuego">
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 3rem 2rem;
+            background: rgba(15, 15, 17, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 69, 0, 0.15);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 40px rgba(255, 69, 0, 0.1);
+            animation: float 6s ease-in-out infinite;
+            max-width: 600px;
+            width: 90%;
+        }
 
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Guerrero al Fuego 🔥">
-<meta name="twitter:description" content="Recetas de cocina con pasión. Próximamente.">
+        .logo {
+            max-width: 280px;
+            width: 100%;
+            height: auto;
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 0 20px rgba(255, 69, 0, 0.4));
+            animation: pulse 3s infinite alternate;
+        }
 
-<!-- Canonical -->
-<link rel="canonical" href="https://guerreroalfuego.com">
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin: 0;
+            background: linear-gradient(135deg, #ff8c00, #ff4500, #ff0000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
 
-<!-- Sitemap -->
-<link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+        p {
+            font-size: 1.1rem;
+            color: #e0e0e0;
+            margin-top: 1.5rem;
+            letter-spacing: 1px;
+            font-weight: 400;
+        }
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-  background:#0a0a0a;
-  color:#f5f5f5;
-  font-family:system-ui,-apple-system,Segoe UI,sans-serif;
-  min-height:100dvh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:24px;
-}
-h1{font-size:3rem;margin-bottom:8px}
-h2{font-size:1.2rem;color:#facc15;font-weight:400;margin-bottom:24px}
-p{color:#94a3b8;max-width:400px;line-height:1.6;font-size:14px}
-.badge{
-  display:inline-block;
-  background:#1f2937;
-  border:1px solid #334155;
-  color:#94a3b8;
-  padding:6px 16px;
-  border-radius:999px;
-  font-size:12px;
-  margin-top:24px;
-}
-.fueguin{
-  font-size:6rem;margin-bottom:8px;
-  animation: pulse 2s ease-in-out infinite;
-}
-@keyframes pulse{
-  0%,100%{transform:scale(1)}
-  50%{transform:scale(1.05)}
-}
-</style>
-<!-- Schema.org (datos estructurados para Google) -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "Guerrero al Fuego",
-  "url": "https://guerreroalfuego.com",
-  "description": "Proyecto de cocina disruptivo. Recetas originales con fuego y pasión.",
-  "inLanguage": "es"
-}
-</script>
+        .loader {
+            margin-top: 2.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background-color: var(--fire-main);
+            border-radius: 50%;
+            animation: bounce 1.5s infinite ease-in-out both;
+            box-shadow: 0 0 15px var(--fire-main);
+        }
+
+        .dot:nth-child(1) { animation-delay: -0.32s; background-color: #ffaa00; }
+        .dot:nth-child(2) { animation-delay: -0.16s; background-color: var(--fire-main); }
+        .dot:nth-child(3) { background-color: #ff0000; }
+
+        /* Embers particles in background */
+        .embers {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes pulse {
+            0% { filter: drop-shadow(0 0 15px rgba(255, 69, 0, 0.2)); transform: scale(1); }
+            100% { filter: drop-shadow(0 0 35px rgba(255, 69, 0, 0.6)); transform: scale(1.03); }
+        }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .logo { max-width: 220px; }
+        }
+    </style>
 </head>
 <body>
-<div class="fueguin">🔥</div>
-<h1>Guerrero al Fuego</h1>
-<h2>Próximamente</h2>
-<p>Estamos cocinando algo nuevo. Recetas, fuego y mucho sabor están en camino. Vuelve pronto.</p>
-<div class="badge">🚧 En construcción</div>
+
+    <!-- Embers background effect -->
+    <div class="embers" id="embers"></div>
+
+    <div class="container">
+        <!-- Logo extraido de la carpeta de descargas -->
+        <img src="assets/logo.png" alt="Guerrero al Fuego Logo" class="logo">
+        
+        <h1>Aquí se está cocinando algo...</h1>
+        <p>Preparando el fuego para la próxima gran aventura. Muy pronto estaremos listos.</p>
+        
+        <div class="loader">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+
+    <script>
+        // Script to generate rising embers in the background
+        const embersContainer = document.getElementById('embers');
+        
+        function createEmber() {
+            const ember = document.createElement('div');
+            const size = Math.random() * 4 + 2;
+            
+            ember.style.position = 'absolute';
+            ember.style.bottom = '-10px';
+            ember.style.left = Math.random() * 100 + 'vw';
+            ember.style.width = size + 'px';
+            ember.style.height = size + 'px';
+            
+            // Fire colors: yellow, orange, red
+            const colors = ['#ff4500', '#ff8c00', '#ffaa00', '#ff0000'];
+            ember.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            ember.style.borderRadius = '50%';
+            ember.style.boxShadow = `0 0 ${size * 2.5}px ${ember.style.backgroundColor}`;
+            ember.style.opacity = Math.random() * 0.8 + 0.2;
+            
+            // Animation duration and delay
+            const duration = Math.random() * 4 + 2; // 2s to 6s
+            const driftX = Math.random() * 150 - 75; // -75px to 75px
+            
+            ember.animate([
+                { transform: `translate(0, 0) scale(1)`, opacity: ember.style.opacity },
+                { transform: `translate(${driftX}px, -100vh) scale(0)`, opacity: 0 }
+            ], {
+                duration: duration * 1000,
+                easing: 'ease-in',
+            });
+
+            embersContainer.appendChild(ember);
+
+            setTimeout(() => {
+                ember.remove();
+            }, duration * 1000);
+        }
+
+        // Create embers periodically
+        setInterval(createEmber, 120);
+    </script>
 </body>
 </html>
