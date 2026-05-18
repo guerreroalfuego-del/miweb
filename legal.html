@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Textos Legales — Guerrero al Fuego</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --brasa:#C0392B;--llama:#E67E22;--carbon:#1A1A1A;
+  --tierra:#8B6347;--azafran:#F4D03F;--humo:#F5F0EB;
+  --card-bg:#222018;--border:rgba(230,126,34,0.15);
+}
+body{background:var(--carbon);color:var(--humo);font-family:'Inter',sans-serif;line-height:1.7;padding-top:80px}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 5vw;height:70px;
+  background:rgba(26,26,26,0.85);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo img{height:42px;width:auto;filter:drop-shadow(0 0 8px rgba(230,126,34,0.5))}
+.nav-logo span{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--humo);letter-spacing:1px;font-weight:900}
+.nav-links a{color:#c9b99a;text-decoration:none;font-size:.9rem;font-weight:500;padding:8px 16px;border-radius:20px;transition:all .2s}
+.nav-links a:hover{color:var(--azafran);background:rgba(244,208,63,0.08)}
+
+/* CONTAINER */
+.container{max-width:900px;margin:40px auto;padding:0 20px}
+h1{font-family:'Playfair Display',serif;font-size:2.5rem;margin-bottom:20px;color:var(--azafran)}
+
+/* TABS */
+.tabs{display:flex;gap:10px;border-bottom:1px solid var(--border);margin-bottom:30px;overflow-x:auto;padding-bottom:5px}
+.tab-btn{background:none;border:none;color:#9c8570;font-size:1rem;font-weight:600;padding:10px 20px;cursor:pointer;transition:all .2s;white-space:nowrap;border-radius:8px}
+.tab-btn:hover{color:var(--humo);background:rgba(255,255,255,0.03)}
+.tab-btn.active{color:var(--azafran);background:rgba(244,208,63,0.1);border:1px solid rgba(244,208,63,0.2)}
+
+/* CONTENT */
+.tab-content{display:none}
+.tab-content.active{display:block;animation:fadeIn .3s ease-out}
+h2{font-family:'Playfair Display',serif;font-size:1.5rem;margin:30px 0 15px;color:var(--humo)}
+p{margin-bottom:15px;color:#cbbfae}
+ul{margin:15px 0 20px 20px;color:#cbbfae}
+li{margin-bottom:8px}
+
+/* FOOTER */
+footer{background:#111009;border-top:1px solid var(--border);
+  padding:40px 5vw;text-align:center;color:#6b5a45;margin-top:80px}
+footer p{font-size:.85rem;line-height:1.8}
+footer a{color:var(--llama);text-decoration:none}
+footer a:hover{color:var(--azafran)}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="/guerrero-al-fuego/">
+    <img src="/guerrero-al-fuego/assets/logo.png" alt="Guerrero al Fuego">
+  </a>
+  <div class="nav-links">
+    <a href="/guerrero-al-fuego/index.html">Inicio</a>
+    <a href="/guerrero-al-fuego/recetas.html">Recetas</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1>Información Legal</h1>
+  
+  <div class="tabs">
+    <button class="tab-btn active" onclick="openTab(event, 'aviso')">Aviso Legal</button>
+    <button class="tab-btn" onclick="openTab(event, 'privacidad')">Política de Privacidad</button>
+    <button class="tab-btn" onclick="openTab(event, 'cookies')">Política de Cookies</button>
+  </div>
+
+  <!-- AVISO LEGAL -->
+  <div id="aviso" class="tab-content active">
+    <h2>1. Datos Identificativos</h2>
+    <p>En cumplimiento con el deber de información recogido en artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y del Comercio Electrónico (LSSI-CE), se reflejan los siguientes datos:</p>
+    <ul>
+      <li><strong>Denominación Social:</strong> Guerrero al Fuego (GAF)</li>
+      <li><strong>Dominio:</strong> guerreroalfuego.com</li>
+      <li><strong>Email de contacto:</strong> info@guerreroalfuego.com</li>
+    </ul>
+
+    <h2>2. Usuarios</h2>
+    <p>El acceso y/o uso de este portal atribuye la condición de USUARIO, que acepta, desde dicho acceso y/o uso, las Condiciones Generales de Uso aquí reflejadas.</p>
+
+    <h2>3. Uso del Portal</h2>
+    <p>guerreroalfuego.com proporciona el acceso a multitud de informaciones, servicios, programas o datos (en adelante, "los contenidos") en Internet pertenecientes a Guerrero al Fuego o a sus licenciantes a los que el USUARIO pueda tener acceso.</p>
+    <p>El USUARIO asume la responsabilidad del uso del portal. Dicha responsabilidad se extiende al registro que fuese necesario para acceder a determinados servicios o contenidos.</p>
+  </div>
+
+  <!-- PRIVACIDAD -->
+  <div id="privacidad" class="tab-content">
+    <h2>1. Responsable del Tratamiento</h2>
+    <p>Los datos de carácter personal que se pudieran recabar directamente del interesado serán tratados de forma confidencial y quedarán incorporados a la correspondiente actividad de tratamiento titularidad de Guerrero al Fuego.</p>
+
+    <h2>2. Finalidad del Tratamiento</h2>
+    <p>La finalidad del tratamiento de los datos corresponde a cada una de las actividades de tratamiento que realiza Guerrero al Fuego, que principalmente consisten en:</p>
+    <ul>
+      <li>Gestión del envío de información o recetas solicitadas voluntariamente por el usuario.</li>
+      <li>Responder a consultas o dudas enviadas a través del correo o formularios de contacto.</li>
+    </ul>
+
+    <h2>3. Conservación de Datos</h2>
+    <p>Los datos personales proporcionados se conservarán durante el tiempo necesario para cumplir con la finalidad para la que se recaban y para determinar las posibles responsabilidades que se pudieran derivar de la finalidad.</p>
+
+    <h2>4. Derechos de los Interesados</h2>
+    <p>Cualquier persona tiene derecho a obtener confirmación sobre los tratamientos de sus datos que se llevan a cabo por Guerrero al Fuego. Puede ejercitar sus derechos de acceso, rectificación, supresión y portabilidad de sus datos, de limitación y oposición a su tratamiento escribiendo al email: <strong>info@guerreroalfuego.com</strong>.</p>
+  </div>
+
+  <!-- COOKIES -->
+  <div id="cookies" class="tab-content">
+    <h2>1. ¿Qué son las Cookies?</h2>
+    <p>Una cookie es un fichero que se descarga en su ordenador al acceder a determinadas páginas web. Las cookies permiten a una página web, entre otras cosas, almacenar y recuperar información sobre los hábitos de navegación de un usuario o de su equipo.</p>
+
+    <h2>2. ¿Qué tipos de cookies utiliza este sitio web?</h2>
+    <ul>
+      <li><strong>Cookies Técnicas:</strong> Son aquellas que permiten al usuario la navegación a través de una página web, plataforma o aplicación y la utilización de las diferentes opciones o servicios que en ella existan.</li>
+      <li><strong>Cookies de Personalización:</strong> Permiten recordar información para que el usuario acceda al servicio con determinadas características (por ejemplo, el idioma o la aceptación de cookies).</li>
+    </ul>
+
+    <h2>3. Desactivación de Cookies</h2>
+    <p>Usted puede permitir, bloquear o eliminar las cookies instaladas en su equipo mediante la configuración de las opciones del navegador instalado en su ordenador.</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">🔥 Guerrero al Fuego</div>
+  <p>Cocina con actitud &nbsp;·&nbsp; <a href="/guerrero-al-fuego/index.html">Volver al Inicio</a></p>
+</footer>
+
+<script>
+function openTab(evt, tabName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tab-content");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].classList.remove("active");
+  }
+  tablinks = document.getElementsByClassName("tab-btn");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].classList.remove("active");
+  }
+  document.getElementById(tabName).classList.add("active");
+  evt.currentTarget.classList.add("active");
+}
+
+// Auto open tab based on URL search query
+const urlParams = new URLSearchParams(window.location.search);
+const sec = urlParams.get('sec');
+if (sec) {
+  const btn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.textContent.toLowerCase().includes(sec.substring(0,5)));
+  if (btn) btn.click();
+}
+</script>
+</body>
+</html>

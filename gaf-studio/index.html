@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>🔥 GAF Studio · Panel de Control</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/global.css">
+<style>
+:root {
+  --gaf-red: #d62828;
+  --gaf-red-dim: rgba(214,40,40,0.15);
+  --gaf-orange: #f77f00;
+  --gaf-yellow: #fec601;
+  --gaf-green: #22c55e;
+  --bg-card: rgba(20,20,25,0.7);
+}
+
+body {
+  background: #09090b;
+  color: #f4f4f5;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+/* HEADER */
+.gaf-header {
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+  margin-bottom: 30px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.gaf-header h1 {
+  font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 900;
+  background: linear-gradient(135deg, var(--gaf-red) 30%, var(--gaf-orange) 60%, var(--gaf-yellow) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  margin: 0; letter-spacing: -1px;
+}
+.gaf-header .sub { color: #a1a1aa; font-size: 13px; }
+
+/* GRID */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+@media(max-width:800px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+.card {
+  background: var(--bg-card); backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.06); border-radius: 16px;
+  padding: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+.card h2 { margin: 0 0 14px; font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.card h2 .ct { font-size: 12px; color: #a1a1aa; font-weight: 400; margin-left: auto; }
+
+/* CHECKLIST DIARIA */
+.daily-item {
+  display: flex; align-items: flex-start; gap: 10px; padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04); cursor: pointer;
+}
+.daily-item:last-child { border-bottom: none; }
+.daily-item .check { 
+  width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.2); border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all 0.2s; margin-top: 1px;
+}
+.daily-item.done .check { background: var(--gaf-green); border-color: var(--gaf-green); }
+.daily-item .label { flex: 1; font-size: 13px; line-height: 1.4; }
+.daily-item .sub-label { font-size: 11px; color: #a1a1aa; }
+.daily-item.done .label { color: #a1a1aa; text-decoration: line-through; }
+
+/* RECETAS */
+.recipe-tag {
+  display: inline-block; padding: 2px 8px; border-radius: 6px;
+  font-size: 10px; font-weight: 600; margin: 2px;
+}
+.tag-red { background: rgba(214,40,40,0.2); color: #ef4444; }
+.tag-orange { background: rgba(247,127,0,0.2); color: #fb923c; }
+.tag-yellow { background: rgba(254,198,1,0.15); color: #facc15; }
+.tag-green { background: rgba(34,197,94,0.15); color: #4ade80; }
+.tag-blue { background: rgba(59,130,246,0.15); color: #60a5fa; }
+
+/* PIPELINE */
+.pipeline {
+  display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px;
+}
+.pipe-col {
+  min-width: 140px; flex: 1;
+  background: rgba(255,255,255,0.02); border-radius: 10px; padding: 10px;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+.pipe-col h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #a1a1aa; margin: 0 0 8px; }
+.pipe-item {
+  background: rgba(255,255,255,0.04); border-radius: 12px; padding: 10px; margin-bottom: 8px; font-size: 12px;
+  border-left: 4px solid var(--gaf-red);
+  cursor: grab; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.pipe-item:hover {
+  transform: translateY(-2px);
+  background: rgba(255,255,255,0.08);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+.pipe-item:active { cursor: grabbing; }
+.pipe-item .serie { font-size: 10px; color: #a1a1aa; margin-top: 4px; }
+.recipe-row {
+  display: flex; align-items: center; gap: 12px; padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: all 0.2s ease;
+}
+.recipe-row:hover {
+  background: rgba(255,255,255,0.02);
+  padding-left: 6px;
+}
+.recipe-thumb {
+  width: 32px; height: 32px; border-radius: 50%; object-fit: cover;
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+.sticker-thumb {
+  width: 28px; height: 28px; object-fit: contain;
+  transition: transform 0.2s;
+}
+.pipe-item:hover .sticker-thumb {
+  transform: scale(1.15) rotate(5deg);
+}
+
+/* CALENDARIO */
+.cal-week {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 4px;
+}
+.cal-day {
+  background: rgba(255,255,255,0.03); border-radius: 8px; padding: 6px; text-align: center; font-size: 12px; min-height: 60px;
+}
+.cal-day .num { font-size: 11px; color: #a1a1aa; margin-bottom: 4px; }
+.cal-day .pub { font-size: 9px; padding: 2px 4px; border-radius: 4px; margin: 1px 0; }
+.cal-day.today { border: 1px solid var(--gaf-yellow); }
+
+/* BOTONES */
+.btn {
+  background: var(--gaf-red); color: white; border: none; border-radius: 10px; padding: 8px 16px;
+  font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+}
+.btn:hover { filter: brightness(1.15); transform: translateY(-1px); }
+.btn-sm { padding: 4px 10px; font-size: 11px; border-radius: 6px; background: rgba(255,255,255,0.08); color: #f4f4f5; }
+.btn-sm:hover { background: rgba(255,255,255,0.15); }
+
+/* MÉTRICAS */
+.stat { text-align: center; padding: 12px; }
+.stat .val { font-size: 2rem; font-weight: 900; font-family: 'Outfit', sans-serif; }
+.stat .lbl { font-size: 11px; color: #a1a1aa; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+.stat .val.red { color: var(--gaf-red); }
+.stat .val.orange { color: var(--gaf-orange); }
+.stat .val.yellow { color: var(--gaf-yellow); }
+.stat .val.green { color: var(--gaf-green); }
+
+/* INPUTS */
+.input-line {
+  display: flex; gap: 8px; margin: 10px 0;
+}
+.input-line input, .input-line select {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px; padding: 8px 12px; font-size: 13px; color: white; flex: 1;
+}
+.input-line input::placeholder { color: #52525b; }
+.input-line input:focus, .input-line select:focus { outline: none; border-color: var(--gaf-red); }
+
+select option { background: #1a1a2e; color: white; }
+
+.back { display: inline-block; margin-bottom: 16px; color: var(--gaf-yellow); text-decoration: none; font-size: 13px; }
+.back:hover { text-decoration: underline; }
+
+.racha-bar {
+  display: flex; gap: 3px; margin: 10px 0;
+}
+.racha-day {
+  width: 24px; height: 24px; border-radius: 6px; background: rgba(255,255,255,0.06);
+  display: flex; align-items: center; justify-content: center; font-size: 10px;
+}
+.racha-day.on { background: var(--gaf-red); }
+.racha-day.off { background: rgba(255,255,255,0.03); }
+</style>
+</head>
+<body>
+
+<a href="/guerrero-al-fuego/" class="back">← Volver a Guerrero al Fuego</a>
+
+<div class="gaf-header">
+  <div>
+    <h1>🔥 GAF Studio</h1>
+    <div class="sub">Panel de control · Hoy es <span id="today-date"></span></div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <span id="racha-display" style="font-size:14px;font-weight:600"></span>
+    <button class="btn" onclick="abrirNuevaReceta()">+ Nueva receta</button>
+  </div>
+</div>
+
+<!-- FILA 1: Ritual diario + Métricas rápidas -->
+<div class="grid-3">
+  <div class="card" style="grid-column: span 2;">
+    <h2>☀️ Ritual de hoy <span class="ct"><span id="check-count">0/5</span></span></h2>
+    <div id="daily-checklist"></div>
+  </div>
+  <div class="card">
+    <h2>📊 Métricas</h2>
+    <div class="grid-2">
+      <div class="stat"><div class="val green" id="stat-publicados">0</div><div class="lbl">Publicados</div></div>
+      <div class="stat"><div class="val orange" id="stat-en-cola">0</div><div class="lbl">En cola</div></div>
+      <div class="stat"><div class="val yellow" id="stat-recetas">0</div><div class="lbl">Recetas</div></div>
+      <div class="stat"><div class="val red" id="stat-semanales">0</div><div class="lbl">Esta semana</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FILA 2: Pipeline de contenido -->
+<div class="card" style="margin-bottom:16px">
+  <h2>📋 Pipeline de contenido <span class="ct">Arrastra para cambiar estado</span></h2>
+  <div class="pipeline" id="pipeline"></div>
+</div>
+
+<!-- FILA 3: Recetas recientes -->
+<div class="card" style="margin-bottom:16px">
+  <h2>🍳 Recetas <span class="ct" style="cursor:pointer" onclick="toggleRecetas()">[ver todas]</span></h2>
+  <div id="recetas-list"></div>
+  <div id="recetas-all" style="display:none;margin-top:10px"></div>
+</div>
+
+<!-- FILA 4: Calendario editorial -->
+<div class="card" style="margin-bottom:16px">
+  <h2>📅 Calendario editorial <span class="ct">Semana del <span id="semana-label"></span></span></h2>
+  <div id="calendario"></div>
+</div>
+
+<script>
+// ===========================
+// DATOS INICIALES
+// ===========================
+const SERIES = ['rapida', 'casi-liamos', '3-ingredientes', 'picante', 'resultado'];
+const SERIES_LABEL = {
+  'rapida': '⚡ Rápida Guerrera', 'casi-liamos': '😅 Casi la Liamos',
+  '3-ingredientes': '🥚 3 Ingredientes', 'picante': '🌶️ Picante o No', 'resultado': '✨ Resultado Final'
+};
+const ESTADOS = ['idea', 'borrador', 'listo', 'programado', 'publicado'];
+const ESTADO_LABEL = { 'idea':'💡 Idea', 'borrador':'📝 Borrador', 'listo':'✅ Listo', 'programado':'📅 Programado', 'publicado':'🚀 Publicado' };
+const PLATFORMS = ['tiktok', 'instagram', 'youtube'];
+
+// Datos por defecto (fallback)
+const DEFAULT_RECETAS = [
+  {id:'r1', nombre:'Pollo al limón', serie:'rapida', ingredientes:'pollo, limón, ajo', tiempo:15, dificultad:'fácil'},
+  {id:'r2', nombre:'Huevos rotos', serie:'rapida', ingredientes:'huevos, patatas, jamón', tiempo:20, dificultad:'fácil'},
+  {id:'r3', nombre:'Arroz crujiente', serie:'casi-liamos', ingredientes:'arroz, huevo, salsa soja', tiempo:25, dificultad:'media'},
+  {id:'r4', nombre:'Alitas picantes', serie:'picante', ingredientes:'alitas, guindilla, miel', tiempo:30, dificultad:'media'},
+  {id:'r5', nombre:'Brownie fácil', serie:'3-ingredientes', ingredientes:'chocolate, huevos, mantequilla', tiempo:20, dificultad:'fácil'},
+  {id:'r6', nombre:'Pasta 3 ingredientes', serie:'3-ingredientes', ingredientes:'pasta, tomate, albahaca', tiempo:15, dificultad:'fácil'},
+  {id:'r7', nombre:'Tortilla de patatas', serie:'resultado', ingredientes:'huevos, patatas, cebolla', tiempo:25, dificultad:'media'},
+];
+
+const DEFAULT_POSTS = [
+  {id:'p1', titulo:'Pollo al limón 🔥', recetaId:'r1', estado:'publicado', serie:'rapida', plataforma:'tiktok', fecha:'2026-05-10'},
+  {id:'p2', titulo:'El arroz que casi...', recetaId:'r3', estado:'publicado', serie:'casi-liamos', plataforma:'instagram', fecha:'2026-05-12'},
+  {id:'p3', titulo:'Alitas que pican', recetaId:'r4', estado:'listo', serie:'picante', plataforma:'tiktok', fecha:''},
+  {id:'p4', titulo:'Brownie en 20 min', recetaId:'r5', estado:'borrador', serie:'3-ingredientes', plataforma:'ambos', fecha:''},
+  {id:'p5', titulo:'Huevos rotos XXL', recetaId:'r2', estado:'idea', serie:'rapida', plataforma:'instagram', fecha:''},
+  {id:'p6', titulo:'Pasta que salva cenas', recetaId:'r6', estado:'programado', serie:'3-ingredientes', plataforma:'tiktok', fecha:'2026-05-19'},
+];
+
+// Helper to map recipe titles to their brand assets images
+function getRecipeImageUrl(recipe) {
+  const base = '/guerrero-al-fuego/assets/recetas/';
+  const name = (recipe.nombre || recipe.title || '').toLowerCase();
+  if (name.includes('pollo')) return base + 'fueguin_pollo_limon.png';
+  if (name.includes('huevo')) return base + 'fueguin_huevos_rotos.png';
+  if (name.includes('arroz')) return base + 'gaf_arroz_crujiente.png';
+  if (name.includes('alita')) return base + 'gaf_alitas_picantes.png';
+  if (name.includes('brownie')) return base + 'gaf_brownie.png';
+  if (name.includes('pasta')) return base + 'gaf_pasta_3ingredientes.png';
+  if (name.includes('tortilla')) return base + 'fueguin_tortilla.png';
+  return '';
+}
+
+// Helper to map Fueguin stickers
+function getFueguinStickerUrl(expression) {
+  const base = '/guerrero-al-fuego/assets/stickers/';
+  const exp = (expression || '').toLowerCase();
+  if (exp === 'celebrando' || exp === 'feliz') return base + 'fueguin_celebrando.png';
+  if (exp === 'fail' || exp === 'error') return base + 'fueguin_fail.png';
+  if (exp === 'nervioso') return base + 'fueguin_nervioso.png';
+  if (exp === 'orgulloso') return base + 'fueguin_orgulloso.png';
+  if (exp === 'sorprendido') return base + 'fueguin_sorprendido.png';
+  return base + 'fueguin_feliz.png';
+}
+
+// ===========================
+// LOCAL STORAGE fallback & state
+// ===========================
+let DATA = { recetas: [], posts: [], daily: {}, racha: { dias: [], actual: 0, mejor: 0 } };
+
+function loadLocalBackup() {
+  try {
+    const r = localStorage.getItem('gaf_recetas');
+    const p = localStorage.getItem('gaf_posts');
+    const d = localStorage.getItem('gaf_daily');
+    const racha = localStorage.getItem('gaf_racha');
+    return {
+      recetas: r ? JSON.parse(r) : [...DEFAULT_RECETAS],
+      posts: p ? JSON.parse(p) : [...DEFAULT_POSTS],
+      daily: d ? JSON.parse(d) : {},
+      racha: racha ? JSON.parse(racha) : {dias:[], actual:0, mejor:0},
+    };
+  } catch(e) { 
+    return {recetas:[...DEFAULT_RECETAS], posts:[...DEFAULT_POSTS], daily:{}, racha:{dias:[], actual:0, mejor:0}}; 
+  }
+}
+
+function saveLocalBackup() {
+  localStorage.setItem('gaf_recetas', JSON.stringify(DATA.recetas));
+  localStorage.setItem('gaf_posts', JSON.stringify(DATA.posts));
+  localStorage.setItem('gaf_daily', JSON.stringify(DATA.daily));
+  localStorage.setItem('gaf_racha', JSON.stringify(DATA.racha));
+}
+
+// ===========================
+// RITUAL DIARIO
+// ===========================
+const DAILY_ITEMS = [
+  {id:'receta', label:'Elegir/grabar receta para hoy', sub:'¿Tienes receta o necesitas crear una?'},
+  {id:'grabar', label:'Grabar o editar vídeo', sub:'15-30 min. ¿Qué serie toca?'},
+  {id:'publicar', label:'Publicar o programar', sub:'TikTok, Instagram o ambos'},
+  {id:'cola', label:'Revisar cola de contenido', sub:'¿Hay suficiente en pipeline?'},
+  {id:'metricas', label:'Mirar métricas 2 min', sub:'Último post, tendencias'},
+];
+
+function renderDaily() {
+  const today = new Date().toISOString().slice(0,10);
+  if (!DATA.daily[today]) DATA.daily[today] = {};
+
+  const el = document.getElementById('daily-checklist');
+  const checked = DAILY_ITEMS.filter(i => DATA.daily[today][i.id]).length;
+  document.getElementById('check-count').textContent = `${checked}/${DAILY_ITEMS.length}`;
+
+  el.innerHTML = DAILY_ITEMS.map(item => {
+    const done = DATA.daily[today][item.id] || false;
+    return `<div class="daily-item ${done?'done':''}" onclick="toggleDaily('${item.id}')">
+      <div class="check">${done?'✓':''}</div>
+      <div><div class="label">${item.label}</div><div class="sub-label">${item.sub}</div></div>
+    </div>`;
+  }).join('');
+}
+
+function toggleDaily(id) {
+  const today = new Date().toISOString().slice(0,10);
+  DATA.daily[today][id] = !DATA.daily[today][id];
+  saveLocalBackup();
+  renderDaily();
+  actualizarRacha();
+}
+
+function actualizarRacha() {
+  const today = new Date().toISOString().slice(0,10);
+  const checked = DAILY_ITEMS.filter(i => DATA.daily[today] && DATA.daily[today][i.id]).length;
+  const completo = checked === DAILY_ITEMS.length;
+
+  const racha = DATA.racha;
+  if (completo) {
+    if (!racha.dias.includes(today)) {
+      racha.dias.push(today);
+      const sorted = [...racha.dias].sort().reverse();
+      let streak = 0;
+      for (let i = 0; i < sorted.length; i++) {
+        const d = new Date(sorted[i]);
+        const expected = new Date();
+        expected.setDate(expected.getDate() - i);
+        if (d.toISOString().slice(0,10) === expected.toISOString().slice(0,10)) streak++;
+        else break;
+      }
+      racha.actual = streak;
+      if (streak > racha.mejor) racha.mejor = streak;
+      saveLocalBackup();
+    }
+  }
+
+  document.getElementById('racha-display').textContent = `🔥 Racha: ${racha.actual}d · Mejor: ${racha.mejor}d`;
+  renderRachaBar();
+}
+
+function renderRachaBar() {
+  const racha = DATA.racha;
+  const dias = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const ds = d.toISOString().slice(0,10);
+    const on = racha.dias.includes(ds);
+    const isToday = i === 0;
+    dias.push(`<div class="racha-day ${on?'on':'off'}" style="${isToday?'border:1px solid rgba(254,198,1,0.4)':''}">${d.getDate()}</div>`);
+  }
+  const display = document.getElementById('racha-display');
+  let bar = document.querySelector('.racha-bar');
+  if (!bar) {
+    bar = document.createElement('div');
+    bar.className = 'racha-bar';
+    display.parentElement.appendChild(bar);
+  }
+  bar.innerHTML = dias.join('');
+}
+
+// ===========================
+// PIPELINE
+// ===========================
+function renderPipeline() {
+  const el = document.getElementById('pipeline');
+  el.innerHTML = ESTADOS.map(est => {
+    const items = DATA.posts.filter(p => p.estado === est);
+    return `<div class="pipe-col">
+      <h3>${ESTADO_LABEL[est]} (${items.length})</h3>
+      ${items.map(p => {
+        const stickerUrl = getFueguinStickerUrl(p.fueguin_expression || (p.serie === 'casi-liamos' ? 'fail' : 'feliz'));
+        return `<div class="pipe-item" draggable="true" data-id="${p.id}" data-estado="${est}" style="display:flex;align-items:center;gap:10px">
+          <img src="${stickerUrl}" class="sticker-thumb" alt="sticker">
+          <div style="flex:1">
+            <div style="font-weight:600;color:#f4f4f5">${p.titulo}</div>
+            <div class="serie">${SERIES_LABEL[p.serie] || p.serie} · ${p.plataforma}</div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }).join('');
+
+  document.querySelectorAll('.pipe-item[draggable]').forEach(el => {
+    el.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', el.dataset.id + '|' + el.dataset.estado);
+    });
+  });
+  
+  document.querySelectorAll('.pipe-col').forEach(col => {
+    col.addEventListener('dragover', e => e.preventDefault());
+    col.addEventListener('drop', e => {
+      e.preventDefault();
+      const data = e.dataTransfer.getData('text/plain').split('|');
+      const postId = data[0];
+      const oldEstado = data[1];
+      
+      const estMap = {'💡': 'idea', '📝': 'borrador', '✅': 'listo', '📅': 'programado', '🚀': 'publicado'};
+      let estadoKey = 'idea';
+      for (const [emoji, key] of Object.entries(estMap)) {
+        if (col.querySelector('h3').textContent.includes(emoji)) { estadoKey = key; break; }
+      }
+      
+      const post = DATA.posts.find(p => p.id === postId);
+      if (post && estadoKey !== oldEstado) {
+        post.estado = estadoKey;
+        if (estadoKey === 'publicado' && !post.fecha) {
+          post.fecha = new Date().toISOString().slice(0,10);
+        }
+        saveLocalBackup();
+        updatePostOnServer(post); // Database sync
+        renderPipeline();
+        renderCalendario();
+        actualizarMetricas();
+      }
+    });
+  });
+}
+
+function updatePostOnServer(post) {
+  const dbPost = {
+    id: post.id,
+    title: post.titulo,
+    recipe_id: post.recetaId,
+    status: post.estado,
+    series: post.serie,
+    platform: post.plataforma,
+    published_date: post.estado === 'publicado' ? post.fecha : null,
+    scheduled_date: post.estado === 'programado' ? post.fecha : null
+  };
+  fetch('/api/gaf/post', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(dbPost)
+  })
+  .then(res => res.json())
+  .then(data => console.log('Post updated in DB:', data))
+  .catch(err => console.error('Database sync failed (using localStorage):', err));
+}
+
+// ===========================
+// RECETAS
+// ===========================
+function renderRecetas() {
+  const el = document.getElementById('recetas-list');
+  const all = document.getElementById('recetas-all');
+  const recientes = DATA.recetas.slice(-4).reverse();
+  
+  el.innerHTML = recientes.map(r => {
+    const imgUrl = getRecipeImageUrl(r);
+    const imgHtml = imgUrl ? `<img src="${imgUrl}" class="recipe-thumb" alt="receta">` : `<div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-size:14px">🍳</div>`;
+    return `<div class="recipe-row">
+      ${imgHtml}
+      <span style="font-size:14px;flex:1;font-weight:600;color:#f4f4f5">${r.nombre}</span>
+      <span class="recipe-tag tag-${(r.dificultad || 'fácil')==='fácil'?'green':'orange'}">${r.dificultad || 'fácil'}</span>
+      <span class="recipe-tag tag-blue">${SERIES_LABEL[r.serie]?.split(' ')[0] || r.serie}</span>
+      <span style="color:#a1a1aa;font-size:11px">${r.tiempo} min</span>
+    </div>`;
+  }).join('');
+
+  all.innerHTML = DATA.recetas.map(r => {
+    const imgUrl = getRecipeImageUrl(r);
+    const imgHtml = imgUrl ? `<img src="${imgUrl}" class="recipe-thumb" alt="receta">` : `<div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-size:14px">🍳</div>`;
+    const postsRel = DATA.posts.filter(p => p.recetaId === r.id);
+    const publicado = postsRel.some(p => p.estado === 'publicado');
+    return `<div class="recipe-row">
+      ${imgHtml}
+      <span style="flex:1;font-size:13px;font-weight:500;color:#e4e4e7">${r.nombre} ${publicado?'✅':''}</span>
+      <span class="recipe-tag tag-${(r.dificultad || 'fácil')==='fácil'?'green':'orange'}">${r.dificultad || 'fácil'}</span>
+      <span class="recipe-tag tag-blue">${r.serie}</span>
+      <span style="color:#a1a1aa;font-size:11px">${r.ingredientes || ''}</span>
+    </div>`;
+  }).join('');
+}
+
+function toggleRecetas() {
+  const el = document.getElementById('recetas-all');
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+function abrirNuevaReceta() {
+  const nombre = prompt('Nombre de la receta:');
+  if (!nombre) return;
+  const serie = prompt('Serie (rapida, casi-liamos, 3-ingredientes, picante, resultado):', 'rapida');
+  if (!serie || !SERIES.includes(serie)) return alert('Serie no válida');
+  const ingredientes = prompt('Ingredientes principales:');
+  const tiempo = prompt('Tiempo en minutos:', '15');
+  const dificultad = prompt('Dificultad (fácil/media/difícil):', 'fácil');
+  
+  const id = 'r' + Date.now();
+  const newRecipe = {id, nombre, serie, ingredientes, tiempo: parseInt(tiempo) || 15, dificultad};
+  DATA.recetas.push(newRecipe);
+  saveLocalBackup();
+  saveRecipeOnServer(newRecipe); // Database sync
+  renderRecetas();
+  actualizarMetricas();
+}
+
+function saveRecipeOnServer(receta) {
+  const dbRecipe = {
+    id: receta.id,
+    title: receta.nombre,
+    series: receta.serie,
+    ingredients: receta.ingredientes,
+    prep_time: receta.tiempo,
+    difficulty: receta.dificultad,
+    status: 'idea'
+  };
+  fetch('/api/gaf/recipe', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(dbRecipe)
+  })
+  .then(res => res.json())
+  .then(data => console.log('Recipe saved in DB:', data))
+  .catch(err => console.error('Database sync failed:', err));
+}
+
+// ===========================
+// MÉTRICAS
+// ===========================
+function actualizarMetricas() {
+  const publicados = DATA.posts.filter(p => p.estado === 'publicado').length;
+  const enCola = DATA.posts.filter(p => ['idea','borrador','listo','programado'].includes(p.estado)).length;
+  const recetas = DATA.recetas.length;
+
+  const hoy = new Date();
+  const inicioSemana = new Date(hoy); inicioSemana.setDate(hoy.getDate() - hoy.getDay());
+  const semanales = DATA.posts.filter(p => {
+    if (p.estado !== 'publicado' || !p.fecha) return false;
+    return p.fecha >= inicioSemana.toISOString().slice(0,10);
+  }).length;
+
+  document.getElementById('stat-publicados').textContent = publicados;
+  document.getElementById('stat-en-cola').textContent = enCola;
+  document.getElementById('stat-recetas').textContent = recetas;
+  document.getElementById('stat-semanales').textContent = semanales;
+}
+
+// ===========================
+// CALENDARIO
+// ===========================
+function renderCalendario() {
+  const hoy = new Date();
+  const inicioSemana = new Date(hoy);
+  inicioSemana.setDate(hoy.getDate() - hoy.getDay());
+  inicioSemana.setDate(inicioSemana.getDate() + (inicioSemana.getDay() === 0 ? -6 : 1));
+  
+  document.getElementById('semana-label').textContent = 
+    inicioSemana.toLocaleDateString('es', {day:'numeric', month:'long'});
+
+  const dias = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(inicioSemana);
+    d.setDate(inicioSemana.getDate() + i);
+    dias.push(d);
+  }
+
+  const el = document.getElementById('calendario');
+  el.innerHTML = '<div class="cal-week">' + 
+    ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'].map(d => `<div style="text-align:center;font-size:11px;color:#a1a1aa;padding:4px">${d}</div>`).join('') +
+    '</div>' + 
+    '<div class="cal-week">' + 
+    dias.map(d => {
+      const ds = d.toISOString().slice(0,10);
+      const isToday = ds === hoy.toISOString().slice(0,10);
+      const pubs = DATA.posts.filter(p => p.estado === 'publicado' && p.fecha === ds);
+      const progs = DATA.posts.filter(p => p.estado === 'programado' && p.fecha === ds);
+      return `<div class="cal-day ${isToday?'today':''}">
+        <div class="num">${d.getDate()}</div>
+        ${progs.map(p => `<div class="pub" style="background:rgba(254,198,1,0.2);color:#facc15">📅 ${p.titulo.slice(0,12)}</div>`).join('')}
+        ${pubs.map(p => `<div class="pub" style="background:rgba(34,197,94,0.15);color:#4ade80">🚀 ${p.titulo.slice(0,12)}</div>`).join('')}
+      </div>`;
+    }).join('') +
+    '</div>';
+}
+
+// ===========================
+// DUAL LOADING SYSTEM (API + Local Backup)
+// ===========================
+async function initDashboard() {
+  document.getElementById('today-date').textContent = 
+    new Date().toLocaleDateString('es', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+  
+  // 1. Initial load from local backup
+  DATA = loadLocalBackup();
+  
+  // 2. Try loading from SQLite API on PC Chispy
+  try {
+    const resRecipes = await fetch('/api/gaf/recipes');
+    const resPosts = await fetch('/api/gaf/posts');
+    if (resRecipes.ok && resPosts.ok) {
+      const apiRecipes = await resRecipes.json();
+      const apiPosts = await resPosts.json();
+      
+      if (apiRecipes && apiRecipes.recipes && apiRecipes.recipes.length > 0) {
+        DATA.recetas = apiRecipes.recipes.map(r => ({
+          id: r.id,
+          nombre: r.title || r.nombre,
+          serie: r.series || r.serie,
+          ingredientes: typeof r.ingredients === 'string' && r.ingredients.startsWith('[') ? JSON.parse(r.ingredients).join(', ') : (r.ingredients || r.ingredientes || ''),
+          tiempo: r.prep_time || r.tiempo,
+          dificultad: r.difficulty || r.dificultad
+        }));
+      }
+      
+      if (apiPosts && apiPosts.posts && apiPosts.posts.length > 0) {
+        DATA.posts = apiPosts.posts.map(p => ({
+          id: p.id,
+          titulo: p.title || p.titulo,
+          recetaId: p.recipe_id || p.recetaId,
+          estado: p.status || p.estado,
+          serie: p.series || p.serie,
+          plataforma: p.platform || p.plataforma,
+          fecha: p.published_date || p.scheduled_date || p.fecha || '',
+          fueguin_expression: p.fueguin_expression || ''
+        }));
+      }
+      console.log("GAF Studio successfully synchronized with SQLite database.");
+    }
+  } catch (e) {
+    console.warn("Could not sync with SQLite API. Running in offline/localStorage mode:", e);
+  }
+
+  // 3. Render everything
+  renderDaily();
+  renderPipeline();
+  renderRecetas();
+  renderCalendario();
+  actualizarMetricas();
+  actualizarRacha();
+}
+
+document.addEventListener('DOMContentLoaded', initDashboard);
+</script>
+</body>
+</html>

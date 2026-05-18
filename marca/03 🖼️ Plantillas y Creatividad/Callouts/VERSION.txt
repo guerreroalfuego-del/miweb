@@ -1,0 +1,6 @@
+CALLOUTS — HISTORIAL
+
+v1.0 (2026)
+- Texto: OJO, ASI NO, ASI SI, CONFIA, ERROR
+- Formas: Círculo
+- Flechas: Flecha derecha

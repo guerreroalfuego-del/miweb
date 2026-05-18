@@ -1,0 +1,85 @@
+INDICE GENERAL — GUERRERO AL FUEGO
+================================
+
+Este documento sirve como mapa maestro del proyecto Guerrero al Fuego.
+Indica qué contiene cada carpeta y dónde debe guardarse cada tipo de archivo.
+
+--------------------------------------------------
+00_ADMIN_Y_LEGAL
+--------------------------------------------------
+Contiene los documentos fundamentales y de control.
+- Cimientos_de_Marca_Guerrero_al_Fuego.pdf
+- notas_autoria_y_propiedad.txt
+- fechas_clave_del_proyecto.txt
+
+--------------------------------------------------
+01_MARCA
+--------------------------------------------------
+Todo lo relacionado con la identidad visual y narrativa.
+
+Logo/
+- Logos oficiales y versiones
+
+Avatar_Fueguin/
+- PNG: Avatares finales listos para uso
+- SVG: Versiones escalables
+- Prompts: Prompts y documentación de autoría
+
+Iconos_Recetas/
+- Iconos oficiales de categorías y sistemas visuales
+
+Sellos_y_Etiquetas/
+- Sellos reutilizables de marca
+
+Guia_Marca/
+- Guías visuales y normas de uso
+
+--------------------------------------------------
+02_CONTENIDO
+--------------------------------------------------
+Vídeos y piezas publicadas o en producción.
+
+Shorts/
+TikTok/
+Instagram/
+Cada uno con:
+- publicados
+- proyectos
+- en_edicion (si aplica)
+
+--------------------------------------------------
+03_PLANTILLAS
+--------------------------------------------------
+Plantillas reutilizables de diseño y vídeo.
+
+- Thumbnails
+- Shorts_Base
+- Textos
+
+--------------------------------------------------
+04_PROMPTS_Y_SISTEMA
+--------------------------------------------------
+Prompts generales y documentación de sistema.
+
+--------------------------------------------------
+05_MUSICA_Y_SONIDO
+--------------------------------------------------
+Música libre, efectos y licencias.
+
+--------------------------------------------------
+06_PUBLICACIONES_Y_CALENDARIO
+--------------------------------------------------
+Planificación, ideas y calendarios.
+
+--------------------------------------------------
+99_ARCHIVO
+--------------------------------------------------
+Versiones antiguas y material descartado.
+
+--------------------------------------------------
+NORMA FINAL
+--------------------------------------------------
+Si un archivo no encaja claramente en una carpeta,
+NO se guarda hasta decidir su ubicación correcta.
+
+Este índice es el punto de referencia del proyecto.

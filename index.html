@@ -1,192 +1,773 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guerrero al Fuego - Próximamente</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --fire-main: #ff4500;
-            --fire-light: #ff8c00;
-            --fire-dark: #b22222;
-            --bg-color: #0f0f11;
-            --text-color: #ffffff;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guerrero al Fuego — Cocina con actitud</title>
+<meta name="description" content="Recetas con carácter, técnica real y mucho fuego. El recetario oficial de Guerrero al Fuego.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@400;500;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --brasa:#C0392B;--llama:#E67E22;--carbon:#1A1A1A;
+  --tierra:#8B6347;--azafran:#F4D03F;--humo:#F5F0EB;
+  --card-bg:#222018;--border:rgba(230,126,34,0.15);
+}
+html{scroll-behavior:smooth}
+body{background:var(--carbon);color:var(--humo);font-family:'Inter',sans-serif;overflow-x:hidden}
 
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Outfit', sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            background: radial-gradient(circle at center, #2a0800 0%, var(--bg-color) 70%);
-        }
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 5vw;height:70px;
+  background:rgba(26,26,26,0.85);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);transition:all .3s}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo img{height:42px;width:auto;filter:drop-shadow(0 0 8px rgba(230,126,34,0.5))}
+.nav-logo span{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--humo);letter-spacing:1px;font-weight:900}
+.nav-links{display:flex;gap:12px;align-items:center}
+.nav-links a{color:#c9b99a;text-decoration:none;font-size:.9rem;font-weight:500;padding:8px 16px;border-radius:20px;transition:all .2s}
+.nav-links a:hover{color:var(--azafran);background:rgba(244,208,63,0.08)}
 
-        .container {
-            text-align: center;
-            z-index: 10;
-            padding: 3rem 2rem;
-            background: rgba(15, 15, 17, 0.7);
-            backdrop-filter: blur(12px);
-            border-radius: 24px;
-            border: 1px solid rgba(255, 69, 0, 0.15);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 40px rgba(255, 69, 0, 0.1);
-            animation: float 6s ease-in-out infinite;
-            max-width: 600px;
-            width: 90%;
-        }
+.nav-socials{display:flex;gap:8px;margin-left:10px;border-left:1px solid rgba(255,255,255,0.1);padding-left:12px}
+.nav-social-btn{display:flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.04);
+  border:1px solid var(--border);text-decoration:none;color:#c9b99a;transition:all .3s}
+.nav-social-btn svg{width:18px;height:18px;fill:currentColor;transition:all .3s}
+.nav-social-btn.nav-yt:hover{background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.4);color:#ef4444;transform:scale(1.08)}
+.nav-social-btn.nav-ig:hover{background:rgba(236,72,153,0.1);border-color:rgba(236,72,153,0.4);color:#ec4899;transform:scale(1.08)}
 
-        .logo {
-            max-width: 280px;
-            width: 100%;
-            height: auto;
-            margin-bottom: 2rem;
-            filter: drop-shadow(0 0 20px rgba(255, 69, 0, 0.4));
-            animation: pulse 3s infinite alternate;
-        }
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:120px 5vw 80px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 80%, rgba(192,57,43,0.25) 0%, transparent 70%),
+             radial-gradient(ellipse 60% 40% at 50% 100%, rgba(230,126,34,0.15) 0%, transparent 60%),
+             #1A1A1A;z-index:0}
+.embers{position:absolute;inset:0;pointer-events:none;z-index:1}
 
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 900;
-            margin: 0;
-            background: linear-gradient(135deg, #ff8c00, #ff4500, #ff0000);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            line-height: 1.2;
-        }
+.hero-content{position:relative;z-index:2;max-width:700px;text-align:center}
+.hero-logo{width:190px;max-width:45vw;height:auto;margin:0 auto 1.5rem;display:block;
+  filter:drop-shadow(0 0 30px rgba(230,126,34,0.55));
+  animation:pulse 3s ease-in-out infinite alternate}
 
-        p {
-            font-size: 1.1rem;
-            color: #e0e0e0;
-            margin-top: 1.5rem;
-            letter-spacing: 1px;
-            font-weight: 400;
-        }
+/* BRAND MOTTO BADGE */
+.motto-badge {
+  display: inline-block;
+  padding: 8px 20px;
+  background: rgba(192, 57, 43, 0.15);
+  border: 1px solid rgba(192, 57, 43, 0.4);
+  color: #ff8a70;
+  border-radius: 30px;
+  font-size: .85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 1.5rem;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 0 20px rgba(192, 57, 43, 0.2);
+}
 
-        .loader {
-            margin-top: 2.5rem;
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-        }
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,7vw,4.5rem);
+  font-weight:900;line-height:1.08;margin-bottom:1.2rem;
+  background:linear-gradient(135deg,#ffcc70,#E67E22,#C0392B);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:clamp(1rem,2.5vw,1.25rem);color:#c9b99a;max-width:520px;margin:0 auto 2.5rem;line-height:1.65}
+.hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
 
-        .dot {
-            width: 12px;
-            height: 12px;
-            background-color: var(--fire-main);
-            border-radius: 50%;
-            animation: bounce 1.5s infinite ease-in-out both;
-            box-shadow: 0 0 15px var(--fire-main);
-        }
+/* 3D FUEGUÍN MASCOT WITH COMIC BUBBLE */
+.fueguin-container-3d {
+  position: absolute;
+  top: 130px;
+  left: 6vw;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  max-width: 260px;
+  animation: floatMascot 4s ease-in-out infinite;
+  cursor: pointer;
+}
+.comic-speech-bubble {
+  position: relative;
+  background: linear-gradient(135deg, #2b2015, #1f150e);
+  border: 2px solid var(--llama);
+  border-radius: 20px;
+  padding: 14px 18px;
+  color: var(--humo);
+  font-size: .88rem;
+  line-height: 1.45;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  font-weight: 500;
+  text-align: left;
+  border-bottom-right-radius: 2px;
+}
+/* Triangular pointer pointing down-right towards Fueguín */
+.comic-speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  right: 50px;
+  border-width: 15px 15px 0 0;
+  border-style: solid;
+  border-color: var(--llama) transparent;
+  display: block;
+  width: 0;
+}
+.comic-speech-bubble::before {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  right: 51px;
+  border-width: 13px 13px 0 0;
+  border-style: solid;
+  border-color: #1f150e transparent;
+  display: block;
+  width: 0;
+  z-index: 2;
+}
+.fueguin-character-img {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.3);
+  border: 3px solid var(--azafran);
+  overflow: hidden;
+  box-shadow: 0 0 25px rgba(244,208,63,0.35);
+  transition: all .3s ease;
+}
+.fueguin-character-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.fueguin-container-3d:hover .fueguin-character-img {
+  transform: scale(1.1) rotate(5deg);
+  border-color: var(--llama);
+  box-shadow: 0 0 35px rgba(230,126,34,0.5);
+}
 
-        .dot:nth-child(1) { animation-delay: -0.32s; background-color: #ffaa00; }
-        .dot:nth-child(2) { animation-delay: -0.16s; background-color: var(--fire-main); }
-        .dot:nth-child(3) { background-color: #ff0000; }
+.btn-primary{background:linear-gradient(135deg,var(--brasa),var(--llama));color:white;
+  padding:14px 36px;border-radius:30px;text-decoration:none;font-weight:600;
+  font-size:1rem;transition:all .3s;box-shadow:0 4px 20px rgba(192,57,43,0.4);border:none;cursor:pointer}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(192,57,43,0.6)}
+.btn-ghost{border:1px solid rgba(244,208,63,0.4);color:var(--azafran);
+  padding:14px 36px;border-radius:30px;text-decoration:none;font-weight:500;font-size:1rem;transition:all .3s;background:none;cursor:pointer}
+.btn-ghost:hover{background:rgba(244,208,63,0.1);border-color:var(--azafran)}
+.scroll-hint{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:2;
+  color:#666;font-size:.8rem;display:flex;flex-direction:column;align-items:center;gap:8px}
+.scroll-arrow{width:24px;height:24px;border-right:2px solid #E67E22;border-bottom:2px solid #E67E22;
+  transform:rotate(45deg);animation:bounce2 2s infinite}
 
-        /* Embers particles in background */
-        .embers {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
+/* SECTIONS */
+section{padding:100px 5vw 80px;position:relative}
+.section-header{text-align:center;margin-bottom:3.5rem}
+.section-header h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.8rem);
+  color:var(--humo);margin-bottom:.6rem}
+.section-header p{color:#a08060;font-size:1.05rem}
+.section-header .line{width:60px;height:3px;background:linear-gradient(90deg,var(--brasa),var(--llama));
+  margin:1rem auto 0;border-radius:2px}
 
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-12px); }
-            100% { transform: translateY(0px); }
-        }
+/* RECIPES TEASER CARD */
+.recipes-section{background:#1e1b15}
+.recipes-teaser{max-width:800px;margin:0 auto;background:rgba(34,32,24,0.7);
+  border:1px dashed rgba(230,126,34,0.4);border-radius:24px;padding:46px 36px;
+  text-align:center;box-shadow:0 15px 40px rgba(0,0,0,0.3);position:relative;overflow:hidden}
+.recipes-teaser .icon{font-size:3.5rem;margin-bottom:16px;animation:pulse 2s infinite alternate}
+.recipes-teaser h3{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--azafran);margin-bottom:12px}
+.recipes-teaser p{color:#c9b99a;line-height:1.7;font-size:1.05rem;max-width:620px;margin:0 auto 16px}
+.recipes-teaser .highlight{color:var(--llama);font-weight:700}
 
-        @keyframes pulse {
-            0% { filter: drop-shadow(0 0 15px rgba(255, 69, 0, 0.2)); transform: scale(1); }
-            100% { filter: drop-shadow(0 0 35px rgba(255, 69, 0, 0.6)); transform: scale(1.03); }
-        }
+/* SERIES */
+.series-section{background:var(--carbon)}
+.series-scroll{display:flex;gap:20px;overflow-x:auto;padding:8px 0 24px;
+  scrollbar-width:thin;scrollbar-color:rgba(230,126,34,0.3) transparent;max-width:1200px;margin:0 auto}
+.series-scroll::-webkit-scrollbar{height:4px}
+.series-scroll::-webkit-scrollbar-thumb{background:rgba(230,126,34,0.3);border-radius:2px}
+.series-card{flex:0 0 260px;background:var(--card-bg);border:1px solid var(--border);
+  border-radius:16px;padding:30px 24px;text-align:center;text-decoration:none;
+  transition:all .3s;display:block}
+.series-card:hover{transform:translateY(-4px);border-color:rgba(230,126,34,0.5);box-shadow:0 8px 25px rgba(230,126,34,0.1)}
+.series-icon{font-size:2.8rem;display:block;margin-bottom:16px}
+.series-card h3{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--humo);margin-bottom:8px}
+.series-card p{font-size:.85rem;color:#9c8570;line-height:1.55}
 
-        @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
-            40% { transform: scale(1); opacity: 1; }
-        }
+/* MEMES SECTION */
+.memes-section{background:#171510;border-top:1px solid var(--border)}
+.memes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;max-width:1100px;margin:0 auto}
+.meme-card{background:#28251e;border:1px solid var(--border);border-radius:20px;padding:20px;
+  box-shadow:0 15px 35px rgba(0,0,0,0.4);transition:all .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display:flex;flex-direction:column;justify-content:space-between}
+.meme-card:nth-child(even){transform:rotate(1deg)}
+.meme-card:nth-child(odd){transform:rotate(-1deg)}
+.meme-card:hover{transform:translateY(-10px) rotate(0deg);border-color:var(--llama);box-shadow:0 20px 45px rgba(230,126,34,0.25)}
+.meme-img-container{width:100%;aspect-ratio:1;border-radius:12px;overflow:hidden;background:#1a1914;
+  margin-bottom:15px;border:1px solid rgba(255,255,255,0.03);position:relative}
+.meme-img-container img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.meme-card:hover .meme-img-container img{transform:scale(1.05)}
+.meme-caption{font-size:.95rem;color:#c9b99a;line-height:1.6;font-style:italic;margin-bottom:18px;min-height:50px}
+.meme-text-card{background:linear-gradient(135deg,#301e14,#1c120c);border:1px dashed var(--border);
+  padding:24px;border-radius:12px;display:flex;align-items:center;justify-content:center;aspect-ratio:1;margin-bottom:15px;text-align:center}
+.meme-text-content{font-family:'Dancing Script',cursive;font-size:1.5rem;color:var(--azafran);line-height:1.4}
+.meme-actions{display:flex;align-items:center;justify-content:between;gap:10px;border-top:1px solid rgba(255,255,255,0.06);padding-top:14px}
+.meme-vote-btn{background:rgba(230,126,34,0.1);border:1px solid rgba(230,126,34,0.2);color:var(--humo);
+  padding:8px 16px;border-radius:30px;font-size:.85rem;font-weight:700;cursor:pointer;transition:all .2s;
+  display:inline-flex;align-items:center;gap:6px}
+.meme-vote-btn:hover{background:var(--llama);border-color:var(--llama);color:white;transform:scale(1.05)}
+.meme-vote-btn:active{transform:scale(0.95)}
+.vote-count{color:var(--azafran);font-weight:700}
 
-        @media (max-width: 600px) {
-            h1 { font-size: 2rem; }
-            .logo { max-width: 220px; }
-        }
-    </style>
+/* SOBRE MÍ */
+.sobre-section{background:#1e1b15;border-top:1px solid var(--border)}
+.sobre-container{max-width:980px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center}
+.sobre-text{font-size:1.05rem;line-height:1.8;color:#d4c4b5}
+.sobre-text p{margin-bottom:20px}
+.sobre-text strong{color:var(--azafran)}
+.sobre-quote-card{background:var(--card-bg);border:1px solid var(--border);border-radius:20px;
+  padding:36px;position:relative;box-shadow:0 15px 35px rgba(0,0,0,0.3)}
+.sobre-quote-card::before{content:'“';position:absolute;top:-10px;left:20px;font-family:'Playfair Display',serif;
+  font-size:8rem;color:rgba(230,126,34,0.1);line-height:1}
+.sobre-quote{font-family:'Dancing Script',cursive;font-size:1.8rem;color:var(--llama);
+  line-height:1.4;margin-bottom:18px}
+.sobre-author{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--humo);letter-spacing:1px}
+
+/* CONTACTO */
+.contacto-section{background:var(--carbon);border-top:1px solid var(--border)}
+.contacto-container{max-width:980px;margin:0 auto;display:grid;grid-template-columns:1fr 1.2fr;gap:40px}
+.contacto-info{display:flex;flex-direction:column;justify-content:center}
+.contacto-info h3{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--azafran);margin-bottom:15px}
+.contacto-info p{color:#c9b99a;line-height:1.6;margin-bottom:25px}
+.email-box{display:inline-flex;align-items:center;gap:12px;background:rgba(230,126,34,0.06);
+  border:1px dashed var(--border);padding:16px 24px;border-radius:16px;text-decoration:none;
+  color:var(--humo);transition:all .3s;width:100%}
+.email-box:hover{transform:translateY(-2px);border-color:var(--llama);background:rgba(230,126,34,0.12);
+  box-shadow:0 10px 25px rgba(230,126,34,0.15)}
+.email-box .icon{font-size:1.8rem}
+.email-box span{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--llama)}
+
+/* SOCIAL LINKS GRID */
+.social-links-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:16px;width:100%}
+.social-box{display:flex;align-items:center;gap:12px;padding:14px 20px;border-radius:16px;text-decoration:none;color:var(--humo);border:1px solid var(--border);transition:all .3s ease}
+.social-box .icon svg{width:24px;height:24px;fill:currentColor;transition:color .3s;display:block}
+.social-box .info{display:flex;flex-direction:column}
+.social-box .platform{font-size:.8rem;font-weight:500;color:#9c8570;text-transform:uppercase;letter-spacing:.5px}
+.social-box .handle{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--humo);transition:color .3s}
+
+.yt-box{background:rgba(239,68,68,0.04);border-color:rgba(239,68,68,0.15)}
+.yt-box .icon{color:#8b7865;transition:color .3s}
+.yt-box:hover{transform:translateY(-2px);background:rgba(239,68,68,0.08);border-color:rgba(239,68,68,0.45);box-shadow:0 8px 25px rgba(239,68,68,0.15)}
+.yt-box:hover .icon{color:#ef4444}
+.yt-box:hover .handle{color:#ef4444}
+
+.ig-box{background:rgba(236,72,153,0.04);border-color:rgba(236,72,153,0.15)}
+.ig-box .icon{color:#8b7865;transition:color .3s}
+.ig-box:hover{transform:translateY(-2px);background:rgba(236,72,153,0.08);border-color:rgba(236,72,153,0.45);box-shadow:0 8px 25px rgba(236,72,153,0.15)}
+.ig-box:hover .icon{color:#ec4899}
+.ig-box:hover .handle{color:#ec4899}
+
+.contacto-form{background:var(--card-bg);border:1px solid var(--border);border-radius:20px;
+  padding:36px;box-shadow:0 15px 35px rgba(0,0,0,0.3);display:flex;flex-direction:column;gap:18px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group label{font-size:.8rem;color:#9b826b;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.form-group input, .form-group textarea{background:rgba(0,0,0,0.3);border:1px solid var(--border);
+  border-radius:10px;padding:12px 16px;color:white;font-size:.95rem;outline:none;transition:border-color .2s;font-family:inherit}
+.form-group input:focus, .form-group textarea:focus{border-color:var(--llama)}
+.form-group textarea{resize:none}
+.consent-checkbox{display:flex;gap:10px;align-items:flex-start;font-size:.8rem;color:#c9b99a;margin-top:5px;line-height:1.4}
+.consent-checkbox input{margin-top:3px;accent-color:var(--llama)}
+.consent-checkbox a{color:var(--llama);text-decoration:none}
+.consent-checkbox a:hover{text-decoration:underline}
+
+/* NEWSLETTER */
+.newsletter-section{background:#1e1b15;border-top:1px solid var(--border)}
+.newsletter-card{background:linear-gradient(145deg, #2b1f14, #1a0f08);
+  border:1px solid rgba(230,126,34,0.25);border-radius:24px;padding:50px 40px;
+  max-width:800px;margin:0 auto;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,0.4)}
+.newsletter-card h2{font-family:'Playfair Display',serif;font-size:2rem;color:var(--azafran);margin-bottom:12px}
+.newsletter-card p{color:#cbbfae;font-size:1rem;margin-bottom:30px;line-height:1.6}
+.newsletter-form{display:flex;gap:12px;max-width:550px;margin:0 auto;flex-wrap:wrap}
+.newsletter-form input{flex:1;min-width:240px;background:rgba(0,0,0,0.4);border:1px solid rgba(230,126,34,0.3);
+  border-radius:30px;padding:14px 24px;color:white;font-size:.95rem;outline:none;transition:border-color .2s}
+.newsletter-form input:focus{border-color:var(--llama)}
+.newsletter-form button{background:linear-gradient(135deg,var(--brasa),var(--llama));color:white;
+  border:none;padding:14px 30px;border-radius:30px;font-weight:700;font-size:.95rem;cursor:pointer;
+  transition:all .3s;box-shadow:0 4px 15px rgba(192,57,43,0.3)}
+.newsletter-form button:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(192,57,43,0.5)}
+
+/* COOKIE BANNER */
+.cookie-banner{position:fixed;bottom:-150px;left:20px;right:20px;max-width:550px;background:rgba(30,28,24,0.95);
+  border:1px solid var(--border);border-radius:16px;padding:20px;z-index:999;
+  box-shadow:0 15px 40px rgba(0,0,0,0.5);backdrop-filter:blur(10px);
+  display:flex;flex-direction:column;gap:14px;transition:bottom .5s cubic-bezier(0.175, 0.885, 0.32, 1.275)}
+.cookie-banner.active{bottom:20px}
+.cookie-banner p{font-size:.85rem;color:#cbbfae;line-height:1.5}
+.cookie-banner a{color:var(--llama);text-decoration:none;font-weight:600}
+.cookie-banner a:hover{text-decoration:underline}
+.cookie-btns{display:flex;gap:10px;justify-content:flex-end}
+.cookie-btn{padding:8px 20px;border-radius:20px;font-size:.8rem;font-weight:600;cursor:pointer;border:none;transition:all .2s}
+.cookie-accept{background:var(--llama);color:white}
+.cookie-accept:hover{background:var(--brasa)}
+.cookie-reject{background:rgba(255,255,255,0.06);color:#cbbfae;border:1px solid rgba(255,255,255,0.1)}
+.cookie-reject:hover{background:rgba(255,255,255,0.1);color:white}
+
+/* FOOTER */
+footer{background:#111009;border-top:1px solid var(--border);
+  padding:50px 5vw;text-align:center;color:#6b5a45}
+footer .footer-logo{font-family:'Playfair Display',serif;font-size:1.5rem;
+  color:var(--llama);margin-bottom:16px;font-weight:900;letter-spacing:1px}
+footer p{font-size:.85rem;line-height:1.8}
+footer a{color:var(--llama);text-decoration:none}
+footer a:hover{color:var(--azafran)}
+.footer-legal{margin-top:16px;display:flex;justify-content:center;gap:16px;flex-wrap:wrap;font-size:.78rem}
+
+.footer-socials{display:flex;justify-content:center;gap:20px;margin-top:20px}
+.footer-social-link{display:inline-flex;align-items:center;gap:8px;color:#cbbfae;text-decoration:none;font-size:.85rem;font-weight:600;transition:color .2s}
+.footer-social-link svg{width:16px;height:16px;fill:currentColor}
+.footer-social-link:hover{color:var(--azafran)}
+
+/* ANIMATIONS */
+@keyframes pulse{0%{filter:drop-shadow(0 0 15px rgba(230,126,34,0.3))}
+  100%{filter:drop-shadow(0 0 40px rgba(230,126,34,0.7))}}
+@keyframes bounce2{0%,100%{transform:rotate(45deg) translateY(0)}50%{transform:rotate(45deg) translateY(6px)}}
+@keyframes riseEmber{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--dx),calc(-100vh - 50px)) scale(0);opacity:0}}
+@keyframes floatMascot {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+/* RESPONSIVE LAYOUT FOR MASCOT */
+@media(max-width:992px){
+  .hero {
+    padding: 100px 5vw 100px;
+    flex-direction: column;
+  }
+  .fueguin-container-3d {
+    position: relative;
+    bottom: auto;
+    right: auto;
+    margin: 3.5rem auto 0;
+    max-width: 280px;
+    animation: floatMascot 4s ease-in-out infinite;
+  }
+  .comic-speech-bubble::after {
+    right: 50%;
+    transform: translateX(50%);
+  }
+  .comic-speech-bubble::before {
+    right: 50%;
+    transform: translateX(50%);
+  }
+}
+
+@media(max-width:768px){
+  .sobre-container, .contacto-container{grid-template-columns:1fr;gap:30px}
+  .hero h1{font-size:2.5rem}
+  .newsletter-card{padding:40px 24px}
+  .contacto-info{text-align:center;align-items:center}
+  .email-box{margin:0 auto}
+  .nav-socials{display:none}
+}
+@media(max-width:480px){
+  .newsletter-form{flex-direction:column;align-items:stretch}
+  .newsletter-form button{width:100%}
+  .hero-ctas{flex-direction:column;align-items:center}
+}
+</style>
 </head>
 <body>
 
-    <!-- Embers background effect -->
-    <div class="embers" id="embers"></div>
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="/guerrero-al-fuego/">
+    <img src="/guerrero-al-fuego/assets/logo.png" alt="Guerrero al Fuego">
+  </a>
+  <div class="nav-links">
+    <a href="recetas.html">Recetas</a>
+    <a href="#series">Series</a>
+    <a href="#memes">Humor</a>
+    <a href="#sobre-mi">Sobre Mí</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+  <div class="nav-socials">
+    <a href="https://www.youtube.com/@guerreroalfuego" target="_blank" class="nav-social-btn nav-yt" title="YouTube">
+      <svg viewBox="0 0 24 24"><path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.108C19.53 3.5 12 3.5 12 3.5s-7.53 0-9.388.555A3.003 3.003 0 0 0 .502 6.163C0 8.07 0 12 0 12s0 3.93.502 5.837a3.003 3.003 0 0 0 2.11 2.108C4.47 20.5 12 20.5 12 20.5s7.53 0 9.388-.555a3.003 3.003 0 0 0 2.11-2.108C24 15.93 24 12 24 12s0-3.93-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+    </a>
+    <a href="https://www.instagram.com/guerreroalfuego/" target="_blank" class="nav-social-btn nav-ig" title="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+    </a>
+  </div>
+</nav>
 
-    <div class="container">
-        <!-- Logo extraido de la carpeta de descargas -->
-        <img src="assets/logo.png" alt="Guerrero al Fuego Logo" class="logo">
-        
-        <h1>Aquí se está cocinando algo...</h1>
-        <p>Preparando el fuego para la próxima gran aventura. Muy pronto estaremos listos.</p>
-        
-        <div class="loader">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-        </div>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="embers" id="embers"></div>
+  
+  <div class="hero-content">
+    <!-- Centered Brand Logo -->
+    <img src="/guerrero-al-fuego/assets/logo.png" alt="Guerrero al Fuego" class="hero-logo">
+    
+    <!-- Centered Motto Badge -->
+    <div class="motto-badge">🔥 "No soy chef, soy guerrero"</div>
+
+    <h1>Cocina con actitud.<br>Come con ganas.</h1>
+    <p>Recetas directas, técnica real de cocina y mucho fuego. Aprende a domar las llamas con Fueguín.</p>
+    <div class="hero-ctas">
+      <a href="recetas.html" class="btn-primary">🔥 Ver recetas</a>
+      <a href="#sobre-mi" class="btn-ghost">Conoce al Guerrero</a>
     </div>
+  </div>
+  
+  <!-- 3D FUEGUÍN MASCOT SIDE COMPANION WITH COMIC SPEECH BUBBLE -->
+  <div class="fueguin-container-3d" onclick="alert('🔥 Fueguín dice: ¡Eso es! Síguenos en YouTube e Instagram para aprender trucos de cocina y no perderte ni un solo meme culinario.')" title="¡Haz clic para hablar con Fueguín!">
+    <div class="comic-speech-bubble">
+      <strong>¡Al ataque!</strong> Soy Fueguín, tu guía culinario y de humor. Domemos juntos el fuego... ¡y que arda la cocina! 💥
+    </div>
+    <div class="fueguin-character-img">
+      <img src="/guerrero-al-fuego/assets/fueguin-avatar.png" alt="Fueguín">
+    </div>
+  </div>
 
-    <script>
-        // Script to generate rising embers in the background
-        const embersContainer = document.getElementById('embers');
+  <div class="scroll-hint">
+    <span>Explorar</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- RECETAS TEASER -->
+<section class="recipes-section">
+  <div class="section-header">
+    <h2>El Recetario de la Hermandad</h2>
+    <p>Platos con carácter directos de los fogones</p>
+    <div class="line"></div>
+  </div>
+  
+  <div class="recipes-teaser">
+    <div class="icon">🛒🔥</div>
+    <h3>¡Estamos comprando los ingredientes!</h3>
+    <p>Fueguín se ha comido los apuntes donde teníamos anotadas las recetas secretas de la hermandad y estamos volviendo a encender las brasas.</p>
+    <p class="highlight">¡Suscríbete a nuestra Comunidad o síguenos en redes para enterarte cuando tiremos la carne al asador!</p>
+    <a href="recetas.html" class="btn-ghost" style="margin-top:15px;display:inline-block">Explorar de todos modos →</a>
+  </div>
+</section>
+
+<!-- SERIES -->
+<section class="series-section" id="series">
+  <div class="section-header">
+    <h2>Las Series</h2>
+    <p>Temporadas con alma, actitud y mucha cocina</p>
+    <div class="line"></div>
+  </div>
+  <div class="series-scroll" id="series-list">
+    <!-- cargado por JS -->
+  </div>
+</section>
+
+<!-- HUMOR / MEMES -->
+<section class="memes-section" id="memes">
+  <div class="section-header">
+    <h2>El Callejón de los Memes</h2>
+    <p>Cocinar es un arte serio... pero nosotros no nos lo tomamos tan a pecho</p>
+    <div class="line"></div>
+  </div>
+  
+  <div class="memes-grid">
+    <!-- MEME 1 -->
+    <div class="meme-card">
+      <div class="meme-img-container">
+        <img src="/guerrero-al-fuego/assets/fueguin-meme.png" alt="La ira de Fueguín">
+      </div>
+      <p class="meme-caption">"Cuando le echas agua a la sartén ardiendo y Fueguín decide que es un buen momento para redecorar tus cejas."</p>
+      <div class="meme-actions">
+        <button class="meme-vote-btn" onclick="voteMeme('fueguin_ira', this)">🔥 Dar Brasa (<span class="vote-count" id="count-fueguin_ira">42</span>)</button>
+      </div>
+    </div>
+    
+    <!-- MEME 2 -->
+    <div class="meme-card">
+      <div class="meme-img-container">
+        <img src="/guerrero-al-fuego/assets/reality-meme.png" alt="Expectativa vs Realidad">
+      </div>
+      <p class="meme-caption">"Tu chuletón gourmet idealizado vs el disco de carbón activado involuntario. Al menos tiene fibra de sobra."</p>
+      <div class="meme-actions">
+        <button class="meme-vote-btn" onclick="voteMeme('reality_steak', this)">🔥 Dar Brasa (<span class="vote-count" id="count-reality_steak">89</span>)</button>
+      </div>
+    </div>
+    
+    <!-- MEME 3 -->
+    <div class="meme-card">
+      <div class="meme-text-card">
+        <div class="meme-text-content">
+          "Si al terminar de cocinar tu cocina no parece una zona catastrófica digna de declaración oficial de emergencia... ¿realmente has cocinado con actitud?"
+          <div style="font-family:'Inter',sans-serif;font-size:12px;color:#9b826b;margin-top:14px;font-style:normal;font-weight:600;">— MANDAMIENTO IV DE FUEGUÍN</div>
+        </div>
+      </div>
+      <p class="meme-caption">"El desorden no es suciedad, es rastro de batalla culinaria. Un guerrero nunca limpia antes de comer."</p>
+      <div class="meme-actions">
+        <button class="meme-vote-btn" onclick="voteMeme('mandamiento_4', this)">🔥 Dar Brasa (<span class="vote-count" id="count-mandamiento_4">137</span>)</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE MÍ -->
+<section class="sobre-section" id="sobre-mi">
+  <div class="section-header">
+    <h2>El Guerrero de los Fogones</h2>
+    <p>Quién está detrás de la llama</p>
+    <div class="line"></div>
+  </div>
+  <div class="sobre-container">
+    <div class="sobre-text">
+      <p>Aquí no vas a encontrar decoraciones cursis ni técnicas de laboratorio imposibles de repetir en casa. <strong>Guerrero al Fuego</strong> nace del amor por la cocina honesta, el calor de la brasa y la comida que reconforta el alma.</p>
+      <p>Creemos que la cocina es una aventura cotidiana. Se trata de entender los ingredientes, respetar el fuego y, sobre todo, no tenerle miedo a cometer errores. Junto a <strong>Fueguín</strong>, nuestra mascota oficial y voz de la conciencia gastronómica, te enseñamos cocina real explicada con actitud y humor.</p>
+      <p>Prepara tus sartenes y afila tus cuchillos. Aquí se viene a cocinar de verdad.</p>
+    </div>
+    <div class="sobre-quote-card">
+      <div class="sobre-quote">"No soy chef, soy guerrero. El único ingrediente que no te puede faltar nunca en los fogones es la actitud."</div>
+      <div class="sobre-author">— Guerrero al Fuego</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="contacto-section" id="contacto">
+  <div class="section-header">
+    <h2>¿Hablamos de Cocina?</h2>
+    <p>Colaboraciones, dudas culinarias o simplemente saludar</p>
+    <div class="line"></div>
+  </div>
+  <div class="contacto-container">
+    <div class="contacto-info">
+      <h3>Ponte en contacto</h3>
+      <p>¿Tienes una propuesta interesante, quieres colaborar en un vídeo o simplemente te apetece comentarnos qué tal te salió la última receta picante?</p>
+      <p>Escríbenos directamente o utiliza el formulario de la derecha. El Guerrero siempre lee sus mensajes.</p>
+      
+      <div style="display:flex;flex-direction:column;gap:14px;width:100%">
+        <a href="mailto:info@guerreroalfuego.com" class="email-box" title="Enviar email directo">
+          <span class="icon">✉️</span>
+          <span>info@guerreroalfuego.com</span>
+        </a>
         
-        function createEmber() {
-            const ember = document.createElement('div');
-            const size = Math.random() * 4 + 2;
-            
-            ember.style.position = 'absolute';
-            ember.style.bottom = '-10px';
-            ember.style.left = Math.random() * 100 + 'vw';
-            ember.style.width = size + 'px';
-            ember.style.height = size + 'px';
-            
-            // Fire colors: yellow, orange, red
-            const colors = ['#ff4500', '#ff8c00', '#ffaa00', '#ff0000'];
-            ember.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-            
-            ember.style.borderRadius = '50%';
-            ember.style.boxShadow = `0 0 ${size * 2.5}px ${ember.style.backgroundColor}`;
-            ember.style.opacity = Math.random() * 0.8 + 0.2;
-            
-            // Animation duration and delay
-            const duration = Math.random() * 4 + 2; // 2s to 6s
-            const driftX = Math.random() * 150 - 75; // -75px to 75px
-            
-            ember.animate([
-                { transform: `translate(0, 0) scale(1)`, opacity: ember.style.opacity },
-                { transform: `translate(${driftX}px, -100vh) scale(0)`, opacity: 0 }
-            ], {
-                duration: duration * 1000,
-                easing: 'ease-in',
-            });
+        <div class="social-links-grid">
+          <a href="https://www.youtube.com/@guerreroalfuego" target="_blank" class="social-box yt-box" title="Canal de YouTube">
+            <span class="icon">
+              <svg viewBox="0 0 24 24"><path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.108C19.53 3.5 12 3.5 12 3.5s-7.53 0-9.388.555A3.003 3.003 0 0 0 .502 6.163C0 8.07 0 12 0 12s0 3.93.502 5.837a3.003 3.003 0 0 0 2.11 2.108C4.47 20.5 12 20.5 12 20.5s7.53 0 9.388-.555a3.003 3.003 0 0 0 2.11-2.108C24 15.93 24 12 24 12s0-3.93-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </span>
+            <div class="info">
+              <span class="platform">YouTube</span>
+              <span class="handle">@guerreroalfuego</span>
+            </div>
+          </a>
+          <a href="https://www.instagram.com/guerreroalfuego/" target="_blank" class="social-box ig-box" title="Perfil de Instagram">
+            <span class="icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+            </span>
+            <div class="info">
+              <span class="platform">Instagram</span>
+              <span class="handle">@guerreroalfuego</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <form class="contacto-form" onsubmit="handleContactSubmit(event)">
+      <div class="form-group">
+        <label for="c_nombre">Nombre</label>
+        <input type="text" id="c_nombre" name="nombre" required placeholder="Tu nombre">
+      </div>
+      <div class="form-group">
+        <label for="c_email">Email</label>
+        <input type="email" id="c_email" name="email" required placeholder="tu@correo.com">
+      </div>
+      <div class="form-group">
+        <label for="c_asunto">Asunto</label>
+        <input type="text" id="c_asunto" name="asunto" required placeholder="¿En qué te puedo ayudar?">
+      </div>
+      <div class="form-group">
+        <label for="c_mensaje">Mensaje</label>
+        <textarea id="c_mensaje" name="mensaje" rows="4" required placeholder="Escribe tu mensaje aquí..."></textarea>
+      </div>
+      <div class="consent-checkbox">
+        <input type="checkbox" id="c_consent" required>
+        <label for="c_consent">He leído y acepto la <a href="legal.html?sec=privacidad" target="_blank">Política de Privacidad</a>.</label>
+      </div>
+      <button type="submit" class="btn-primary" style="margin-top:10px">Enviar Mensaje</button>
+    </form>
+  </div>
+</section>
 
-            embersContainer.appendChild(ember);
+<!-- NEWSLETTER -->
+<section class="newsletter-section">
+  <div class="newsletter-card">
+    <h2>Únete a la Hermandad del Fuego</h2>
+    <p>Recibe en tu correo recetas exclusivas, trucos que los restaurantes se callan y consejos directos del Guerrero.</p>
+    <form class="newsletter-form" onsubmit="event.preventDefault(); alert('🔥 Fueguín dice: ¡Epa! He intentado guardar tu correo, pero el Guerrero está tan concentrado en no quemar la carne que todavía no ha conectado los cables de la Hermandad... ¡Vuelve a intentarlo cuando tengamos las brasas listas! 😉'); this.reset();">
+      <input type="email" placeholder="Introduce tu correo electrónico" required>
+      <button type="submit">Unirme a la Hermandad</button>
+    </form>
+  </div>
+</section>
 
-            setTimeout(() => {
-                ember.remove();
-            }, duration * 1000);
-        }
+<!-- COOKIE BANNER -->
+<div class="cookie-banner" id="cookieBanner">
+  <p>Usamos cookies cookies técnicas propias para garantizar que disfrutes del fuego sin contratiempos. Puedes obtener más detalles en nuestra <a href="legal.html?sec=cookies" target="_blank">Política de Cookies</a>.</p>
+  <div class="cookie-btns">
+    <button class="cookie-btn cookie-reject" onclick="consentCookies(false)">Rechazar</button>
+    <button class="cookie-btn cookie-accept" onclick="consentCookies(true)">Aceptar</button>
+  </div>
+</div>
 
-        // Create embers periodically
-        setInterval(createEmber, 120);
-    </script>
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">🔥 Guerrero al Fuego</div>
+  <p>Cocina con actitud &nbsp;·&nbsp; <a href="recetas.html">Recetas</a> &nbsp;·&nbsp; <a href="#series">Series</a> &nbsp;·&nbsp; <a href="#memes">Humor</a> &nbsp;·&nbsp; <a href="#sobre-mi">Sobre Mí</a> &nbsp;·&nbsp; <a href="#contacto">Contacto</a></p>
+  
+  <div class="footer-socials">
+    <a href="https://www.youtube.com/@guerreroalfuego" target="_blank" class="footer-social-link">
+      <svg viewBox="0 0 24 24"><path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.108C19.53 3.5 12 3.5 12 3.5s-7.53 0-9.388.555A3.003 3.003 0 0 0 .502 6.163C0 8.07 0 12 0 12s0 3.93.502 5.837a3.003 3.003 0 0 0 2.11 2.108C4.47 20.5 12 20.5 12 20.5s7.53 0 9.388-.555a3.003 3.003 0 0 0 2.11-2.108C24 15.93 24 12 24 12s0-3.93-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      YouTube
+    </a>
+    <a href="https://www.instagram.com/guerreroalfuego/" target="_blank" class="footer-social-link">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+      Instagram
+    </a>
+  </div>
+
+  <div class="footer-legal">
+    <a href="legal.html?sec=aviso" target="_blank">Aviso Legal</a>
+    <a href="legal.html?sec=privacidad" target="_blank">Política de Privacidad</a>
+    <a href="legal.html?sec=cookies" target="_blank">Política de Cookies</a>
+  </div>
+  <p style="margin-top:20px;font-size:.8rem">© 2026 Guerrero al Fuego. Todos los derechos reservados.</p>
+</footer>
+
+<script>
+// -- COOKIE CONSENT BANNER ---
+function checkCookieConsent(){
+  const consent = localStorage.getItem('gaf_cookie_consent');
+  if(!consent){
+    setTimeout(() => {
+      document.getElementById('cookieBanner').classList.add('active');
+    }, 1200);
+  }
+}
+function consentCookies(accepted){
+  localStorage.setItem('gaf_cookie_consent', accepted ? 'accepted' : 'rejected');
+  document.getElementById('cookieBanner').classList.remove('active');
+}
+checkCookieConsent();
+
+// -- CONTACT SUBMIT ---
+function handleContactSubmit(event){
+  event.preventDefault();
+  alert('🔥 Fueguín dice: ¡Epa! He intentado enviar tu mensaje por el aire, pero el Guerrero está tan concentrado en no quemar la carne que todavía no ha conectado los cables del formulario de contacto... ¡Vuelve a intentarlo cuando tengamos las brasas listas! 😉');
+  event.target.reset();
+}
+
+// -- MEME INTERACTIVE VOTES ---
+function voteMeme(id, btn){
+  const countSpan = document.getElementById('count-' + id);
+  let votes = parseInt(countSpan.textContent);
+  votes++;
+  countSpan.textContent = votes;
+  
+  // Guardar en local
+  localStorage.setItem('gaf_vote_' + id, votes);
+  
+  // Pequeño feedback de animación
+  btn.style.transform = 'scale(1.15) rotate(2deg)';
+  btn.style.background = '#E67E22';
+  btn.style.color = 'white';
+  setTimeout(()=>{
+    btn.style.transform = '';
+    btn.style.background = '';
+    btn.style.color = '';
+  }, 150);
+}
+
+// Inicializar votos guardados y comprobar envíos de formulario
+document.addEventListener('DOMContentLoaded', () => {
+  // Cargar votos guardados
+  ['fueguin_ira', 'reality_steak', 'mandamiento_4'].forEach(id => {
+    const saved = localStorage.getItem('gaf_vote_' + id);
+    if (saved) {
+      document.getElementById('count-' + id).textContent = saved;
+    }
+  });
+});
+
+// -- EMBERS ---
+const EC = document.getElementById('embers');
+function mkEmber(){
+  const e = document.createElement('div');
+  const s = Math.random()*4+2, dur = Math.random()*5+3;
+  const dx = (Math.random()-0.5)*180;
+  const cols = ['#ff4500','#ff8c00','#ffaa00','#ffcc00'];
+  const c = cols[Math.floor(Math.random()*cols.length)];
+  Object.assign(e.style,{
+    position:'absolute',bottom:'-10px',
+    left:Math.random()*100+'vw',
+    width:s+'px',height:s+'px',
+    background:c,borderRadius:'50%',
+    boxShadow:`0 0 ${s*2}px ${c}`,
+    '--dx':dx+'px',
+    animation:`riseEmber ${dur}s ease-in forwards`
+  });
+  EC.appendChild(e);
+  setTimeout(()=>e.remove(), dur*1000);
+}
+setInterval(mkEmber, 180);
+
+// -- SERIES ICONS / COLORS ---
+const SERIES_META = {
+  'rapida':    {icon:'⚡',label:'Rápida Guerrera',   desc:'Lista en menos de 20 minutos. Sin excusas.'},
+  'casi-liamos':{icon:'💥',label:'Casi La Liamos',  desc:'Las que casi salen mal... y salen buenísimas.'},
+  '3-ingredientes':{icon:'🎯',label:'3 Ingredientes',desc:'Menos es más. Mucho más.'},
+  'picante':   {icon:'🌶️',label:'Nivel Picante',    desc:'Para los que no le tienen miedo al fuego.'},
+  'resultado': {icon:'🏆',label:'Resultado Épico',   desc:'Las que merecen el esfuerzo extra.'}
+};
+
+function seriesMeta(id, name){
+  const m = SERIES_META[id] || {};
+  return {
+    icon: m.icon || '🍳',
+    label: m.label || name,
+    desc: m.desc || ''
+  };
+}
+
+// -- LOAD SERIES ---
+async function loadSeries(){
+  const el = document.getElementById('series-list');
+  try{
+    const d = await fetch('/api/gaf/series').then(r=>r.json());
+    const list = d.series || [];
+    if(!list.length){
+      el.innerHTML='<p style="color:#5a4a35;padding:20px">Cargando series...</p>';
+      return;
+    }
+    el.innerHTML = list.map(s=>{
+      const m = seriesMeta(s.id, s.name);
+      return `<a href="recetas.html" class="series-card">
+        <span class="series-icon">${m.icon}</span>
+        <h3>${m.label}</h3>
+        <p>${m.desc}</p>
+      </a>`;
+    }).join('');
+  }catch(e){
+    el.innerHTML = Object.entries(SERIES_META).map(([id,m])=>`
+      <a href="recetas.html" class="series-card">
+        <span class="series-icon">${m.icon}</span>
+        <h3>${m.label}</h3>
+        <p>${m.desc}</p>
+      </a>`).join('');
+  }
+}
+loadSeries();
+</script>
 </body>
 </html>
