@@ -1,680 +1,2322 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>🔥 GAF Studio · Panel de Control</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/global.css">
-<style>
-:root {
-  --gaf-red: #d62828;
-  --gaf-red-dim: rgba(214,40,40,0.15);
-  --gaf-orange: #f77f00;
-  --gaf-yellow: #fec601;
-  --gaf-green: #22c55e;
-  --bg-card: rgba(20,20,25,0.7);
-}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🔥 GAF Studio · Panel de Control Premium</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gaf-red: #D62828;
+      --gaf-red-glow: rgba(214, 40, 40, 0.45);
+      --gaf-orange: #F77F00;
+      --gaf-yellow: #FEC601;
+      --gaf-yellow-glow: rgba(254, 198, 1, 0.3);
+      --gaf-green: #22C55E;
+      --gaf-blue: #3B82F6;
+      --bg-app: #08080a;
+      --bg-sidebar: #101013;
+      --bg-card: rgba(22, 22, 27, 0.7);
+      --border-card: rgba(255, 255, 255, 0.05);
+      --border-accent: rgba(214, 40, 40, 0.15);
+      --text-main: #F4F4F5;
+      --text-muted: #A1A1AA;
+      --font-outfit: 'Outfit', sans-serif;
+      --font-inter: 'Inter', sans-serif;
+    }
 
-body {
-  background: #09090b;
-  color: #f4f4f5;
-  font-family: 'Inter', sans-serif;
-  margin: 0;
-  padding: 20px;
-  min-height: 100vh;
-}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-/* HEADER */
-.gaf-header {
-  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
-  margin-bottom: 30px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.06);
-}
-.gaf-header h1 {
-  font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 900;
-  background: linear-gradient(135deg, var(--gaf-red) 30%, var(--gaf-orange) 60%, var(--gaf-yellow) 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  margin: 0; letter-spacing: -1px;
-}
-.gaf-header .sub { color: #a1a1aa; font-size: 13px; }
+    body {
+      background: var(--bg-app);
+      color: var(--text-main);
+      font-family: var(--font-inter);
+      min-height: 100vh;
+      display: flex;
+      overflow-x: hidden;
+    }
 
-/* GRID */
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-.grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
-@media(max-width:800px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--gaf-orange); }
 
-.card {
-  background: var(--bg-card); backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.06); border-radius: 16px;
-  padding: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-}
-.card h2 { margin: 0 0 14px; font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-.card h2 .ct { font-size: 12px; color: #a1a1aa; font-weight: 400; margin-left: auto; }
+    /* APP LAYOUT */
+    .app-container {
+      display: flex;
+      width: 100vw;
+      min-height: 100vh;
+    }
 
-/* CHECKLIST DIARIA */
-.daily-item {
-  display: flex; align-items: flex-start; gap: 10px; padding: 8px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.04); cursor: pointer;
-}
-.daily-item:last-child { border-bottom: none; }
-.daily-item .check { 
-  width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.2); border-radius: 50%; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all 0.2s; margin-top: 1px;
-}
-.daily-item.done .check { background: var(--gaf-green); border-color: var(--gaf-green); }
-.daily-item .label { flex: 1; font-size: 13px; line-height: 1.4; }
-.daily-item .sub-label { font-size: 11px; color: #a1a1aa; }
-.daily-item.done .label { color: #a1a1aa; text-decoration: line-through; }
+    /* SIDEBAR */
+    aside.sidebar {
+      width: 260px;
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border-accent);
+      padding: 24px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
 
-/* RECETAS */
-.recipe-tag {
-  display: inline-block; padding: 2px 8px; border-radius: 6px;
-  font-size: 10px; font-weight: 600; margin: 2px;
-}
-.tag-red { background: rgba(214,40,40,0.2); color: #ef4444; }
-.tag-orange { background: rgba(247,127,0,0.2); color: #fb923c; }
-.tag-yellow { background: rgba(254,198,1,0.15); color: #facc15; }
-.tag-green { background: rgba(34,197,94,0.15); color: #4ade80; }
-.tag-blue { background: rgba(59,130,246,0.15); color: #60a5fa; }
+    .brand-section {
+      text-align: center;
+      margin-bottom: 30px;
+    }
 
-/* PIPELINE */
-.pipeline {
-  display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px;
-}
-.pipe-col {
-  min-width: 140px; flex: 1;
-  background: rgba(255,255,255,0.02); border-radius: 10px; padding: 10px;
-  border: 1px solid rgba(255,255,255,0.04);
-}
-.pipe-col h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #a1a1aa; margin: 0 0 8px; }
-.pipe-item {
-  background: rgba(255,255,255,0.04); border-radius: 12px; padding: 10px; margin-bottom: 8px; font-size: 12px;
-  border-left: 4px solid var(--gaf-red);
-  cursor: grab; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-.pipe-item:hover {
-  transform: translateY(-2px);
-  background: rgba(255,255,255,0.08);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-}
-.pipe-item:active { cursor: grabbing; }
-.pipe-item .serie { font-size: 10px; color: #a1a1aa; margin-top: 4px; }
-.recipe-row {
-  display: flex; align-items: center; gap: 12px; padding: 8px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-  transition: all 0.2s ease;
-}
-.recipe-row:hover {
-  background: rgba(255,255,255,0.02);
-  padding-left: 6px;
-}
-.recipe-thumb {
-  width: 32px; height: 32px; border-radius: 50%; object-fit: cover;
-  border: 1px solid rgba(255,255,255,0.15);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-.sticker-thumb {
-  width: 28px; height: 28px; object-fit: contain;
-  transition: transform 0.2s;
-}
-.pipe-item:hover .sticker-thumb {
-  transform: scale(1.15) rotate(5deg);
-}
+    .brand-title {
+      font-family: var(--font-outfit);
+      font-size: 1.6rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--gaf-red) 30%, var(--gaf-orange) 70%, var(--gaf-yellow) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
 
-/* CALENDARIO */
-.cal-week {
-  display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 4px;
-}
-.cal-day {
-  background: rgba(255,255,255,0.03); border-radius: 8px; padding: 6px; text-align: center; font-size: 12px; min-height: 60px;
-}
-.cal-day .num { font-size: 11px; color: #a1a1aa; margin-bottom: 4px; }
-.cal-day .pub { font-size: 9px; padding: 2px 4px; border-radius: 4px; margin: 1px 0; }
-.cal-day.today { border: 1px solid var(--gaf-yellow); }
+    .brand-tagline {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--gaf-yellow);
+      margin-top: 4px;
+      font-weight: 700;
+    }
 
-/* BOTONES */
-.btn {
-  background: var(--gaf-red); color: white; border: none; border-radius: 10px; padding: 8px 16px;
-  font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s;
-}
-.btn:hover { filter: brightness(1.15); transform: translateY(-1px); }
-.btn-sm { padding: 4px 10px; font-size: 11px; border-radius: 6px; background: rgba(255,255,255,0.08); color: #f4f4f5; }
-.btn-sm:hover { background: rgba(255,255,255,0.15); }
+    .nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex-grow: 1;
+    }
 
-/* MÉTRICAS */
-.stat { text-align: center; padding: 12px; }
-.stat .val { font-size: 2rem; font-weight: 900; font-family: 'Outfit', sans-serif; }
-.stat .lbl { font-size: 11px; color: #a1a1aa; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
-.stat .val.red { color: var(--gaf-red); }
-.stat .val.orange { color: var(--gaf-orange); }
-.stat .val.yellow { color: var(--gaf-yellow); }
-.stat .val.green { color: var(--gaf-green); }
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: 12px;
+      transition: all 0.25s ease;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+    }
 
-/* INPUTS */
-.input-line {
-  display: flex; gap: 8px; margin: 10px 0;
-}
-.input-line input, .input-line select {
-  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 8px; padding: 8px 12px; font-size: 13px; color: white; flex: 1;
-}
-.input-line input::placeholder { color: #52525b; }
-.input-line input:focus, .input-line select:focus { outline: none; border-color: var(--gaf-red); }
+    .nav-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.03);
+      transform: translateX(4px);
+    }
 
-select option { background: #1a1a2e; color: white; }
+    .nav-btn.active {
+      color: white;
+      background: linear-gradient(135deg, var(--gaf-red), var(--gaf-orange));
+      box-shadow: 0 4px 15px rgba(214, 40, 40, 0.25);
+    }
 
-.back { display: inline-block; margin-bottom: 16px; color: var(--gaf-yellow); text-decoration: none; font-size: 13px; }
-.back:hover { text-decoration: underline; }
+    .nav-btn .icon {
+      font-size: 1.15rem;
+    }
 
-.racha-bar {
-  display: flex; gap: 3px; margin: 10px 0;
-}
-.racha-day {
-  width: 24px; height: 24px; border-radius: 6px; background: rgba(255,255,255,0.06);
-  display: flex; align-items: center; justify-content: center; font-size: 10px;
-}
-.racha-day.on { background: var(--gaf-red); }
-.racha-day.off { background: rgba(255,255,255,0.03); }
-</style>
+    .sidebar-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 16px;
+      margin-top: 16px;
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gaf-yellow);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .back-btn:hover {
+      color: white;
+      text-decoration: underline;
+    }
+
+    /* MAIN CONTENT */
+    main.main-content {
+      flex-grow: 1;
+      padding: 30px;
+      overflow-y: auto;
+      height: 100vh;
+    }
+
+    /* HEADER */
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .header-title h1 {
+      font-family: var(--font-outfit);
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .header-title p {
+      font-size: 12.5px;
+      color: var(--text-muted);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sync-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(34, 197, 94, 0.08);
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--gaf-green);
+    }
+
+    .sync-badge.offline {
+      background: rgba(254, 198, 1, 0.08);
+      border-color: rgba(254, 198, 1, 0.2);
+      color: var(--gaf-yellow);
+    }
+
+    .sync-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 8px currentColor;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, var(--gaf-red), var(--gaf-orange));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 4px 12px rgba(214, 40, 40, 0.2);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(214, 40, 40, 0.35);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-main);
+      box-shadow: none;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: none;
+    }
+
+    /* TAB PANELS */
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.35s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* GRID & CARDS */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: 1.1fr 0.9fr 1fr; gap: 20px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    @media(max-width: 1100px) { .grid-3 { grid-template-columns: 1.2fr 1fr; } .grid-3 .grid-col-full { grid-column: span 2; } }
+    @media(max-width: 850px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; } .grid-3 .grid-col-full { grid-column: span 1; } }
+
+    .card {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-card);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(214, 40, 40, 0.15);
+    }
+
+    .card h2 {
+      font-family: var(--font-outfit);
+      font-size: 15.5px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card h2 .ct {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-left: auto;
+    }
+
+    /* ☀️ DAILY RITUAL WIDGET */
+    .ritual-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .daily-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .daily-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .daily-item:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(214, 40, 40, 0.15);
+      transform: translateX(4px);
+    }
+
+    .daily-item .check {
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      flex-shrink: 0;
+      transition: all 0.2s;
+      margin-top: 1px;
+    }
+
+    .daily-item.done {
+      background: rgba(34, 197, 94, 0.03);
+      border-color: rgba(34, 197, 94, 0.12);
+    }
+
+    .daily-item.done .check {
+      background: var(--gaf-green);
+      border-color: var(--gaf-green);
+      color: #08080a;
+      font-weight: bold;
+    }
+
+    .daily-item .label {
+      font-size: 12.5px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .daily-item .sub-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .daily-item.done .label {
+      color: var(--text-muted);
+      text-decoration: line-through;
+    }
+
+    /* 🔥 STREAK / RACHA BAR */
+    .racha-widget {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .racha-header {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--gaf-yellow);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .racha-bar {
+      display: flex;
+      gap: 5px;
+      margin-top: 8px;
+    }
+
+    .racha-day {
+      flex: 1;
+      height: 28px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-muted);
+      transition: all 0.3s;
+    }
+
+    .racha-day.on {
+      background: linear-gradient(135deg, var(--gaf-red), var(--gaf-orange));
+      border-color: var(--gaf-orange);
+      color: white;
+      box-shadow: 0 0 10px rgba(247, 127, 0, 0.3);
+    }
+
+    .racha-day.today-current {
+      border: 1.5px solid var(--gaf-yellow);
+    }
+
+    /* 📊 QUICK STATS WIDGET */
+    .stat-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .stat-box {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .stat-val {
+      font-family: var(--font-outfit);
+      font-size: 1.8rem;
+      font-weight: 900;
+    }
+
+    .stat-lbl {
+      font-size: 9.5px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    .stat-val.red { color: var(--gaf-red); text-shadow: 0 0 10px var(--gaf-red-glow); }
+    .stat-val.orange { color: var(--gaf-orange); }
+    .stat-val.yellow { color: var(--gaf-yellow); }
+    .stat-val.green { color: var(--gaf-green); }
+
+    /* 🤖 FUEGUÍN CO-PILOT WIDGET */
+    .copilot-card {
+      background: linear-gradient(145deg, #1b130e, #0e0a07);
+      border: 1px solid rgba(247, 127, 0, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .copilot-card::before {
+      content: '';
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      background: radial-gradient(circle, rgba(247, 127, 0, 0.08) 0%, transparent 70%);
+      top: -30px;
+      right: -30px;
+      pointer-events: none;
+    }
+
+    .copilot-bubble {
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px dashed rgba(247, 127, 0, 0.3);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 12.5px;
+      line-height: 1.5;
+      font-style: italic;
+      color: #ffd2bd;
+      margin-bottom: 12px;
+      min-height: 70px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .copilot-bubble strong {
+      color: var(--gaf-yellow);
+      display: block;
+      font-style: normal;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .copilot-action-line {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .copilot-mascot-pic {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid var(--gaf-yellow);
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    /* 📋 KANBAN PIPELINE BOARD */
+    .kanban-board {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      align-items: flex-start;
+    }
+
+    .kanban-col {
+      flex: 1;
+      min-width: 200px;
+      background: rgba(255, 255, 255, 0.015);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      border-radius: 14px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: 480px;
+      transition: all 0.25s;
+    }
+
+    .kanban-col.drag-over {
+      background: rgba(214, 40, 40, 0.03);
+      border-color: rgba(214, 40, 40, 0.2);
+    }
+
+    .kanban-col h3 {
+      font-family: var(--font-outfit);
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 8px;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .kanban-col h3 .badge-count {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-size: 10px;
+      color: var(--text-main);
+    }
+
+    .kanban-card {
+      background: #15151a;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-left: 4px solid var(--gaf-red);
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 12px;
+      cursor: grab;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .kanban-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(214, 40, 40, 0.3);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+      background: #1a1a21;
+    }
+
+    .kanban-card:active {
+      cursor: grabbing;
+    }
+
+    .kanban-card .sticker-thumb {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .kanban-card .title {
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+
+    .kanban-card .meta {
+      font-size: 9.5px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 6px;
+    }
+
+    /* 🍳 RECETARIO & GUIONES VIEW */
+    .recetas-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .recetas-filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .select-input, .text-input {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 12.5px;
+      color: white;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .select-input:focus, .text-input:focus {
+      border-color: var(--gaf-red);
+    }
+
+    .recetas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .receta-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s;
+    }
+
+    .receta-card:hover {
+      border-color: rgba(214, 40, 40, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .receta-card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .receta-card-thumb {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .receta-card-title {
+      flex: 1;
+    }
+
+    .receta-card-title h3 {
+      font-family: var(--font-outfit);
+      font-size: 14.5px;
+      color: var(--gaf-yellow);
+      margin-bottom: 2px;
+    }
+
+    .receta-card-title p {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .recipe-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 12px;
+    }
+
+    .recipe-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 9.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .recipe-badge.facil { background: rgba(34, 197, 94, 0.12); color: var(--gaf-green); }
+    .recipe-badge.media { background: rgba(245, 158, 11, 0.12); color: var(--gaf-orange); }
+    .recipe-badge.dificil { background: rgba(239, 68, 68, 0.12); color: var(--gaf-red); }
+    
+    .recipe-badge.status-tag {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-main);
+    }
+
+    .receta-card-preview {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-bottom: 14px;
+      min-height: 34px;
+    }
+
+    .receta-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+      padding-top: 12px;
+    }
+
+    .receta-card-time {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .receta-card-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    /* 📅 INTERACTIVE EDITORIAL CALENDAR */
+    .calendar-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .calendar-nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .calendar-month-title {
+      font-family: var(--font-outfit);
+      font-size: 16.5px;
+      font-weight: 700;
+      color: var(--gaf-yellow);
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+
+    .calendar-grid-header {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .calendar-cell {
+      background: rgba(255, 255, 255, 0.015);
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      padding: 8px;
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: all 0.2s;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .calendar-cell:hover {
+      background: rgba(255, 255, 255, 0.03);
+      border-color: rgba(214, 40, 40, 0.15);
+    }
+
+    .calendar-cell.today {
+      border: 1.5px solid var(--gaf-yellow);
+      background: rgba(254, 198, 1, 0.02);
+    }
+
+    .calendar-cell .day-num {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      align-self: flex-end;
+    }
+
+    .calendar-cell.today .day-num {
+      color: var(--gaf-yellow);
+    }
+
+    .calendar-cell.other-month {
+      opacity: 0.25;
+      pointer-events: none;
+    }
+
+    .calendar-event {
+      font-size: 9.5px;
+      padding: 3px 6px;
+      border-radius: 6px;
+      font-weight: 600;
+      line-height: 1.2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .calendar-event.youtube { background: rgba(239, 68, 68, 0.12); color: #f87171; border-left: 2.5px solid #ef4444; }
+    .calendar-event.tiktok { background: rgba(255, 255, 255, 0.06); color: #e4e4e7; border-left: 2.5px solid #ffffff; }
+    .calendar-event.instagram { background: rgba(236, 72, 153, 0.12); color: #f472b6; border-left: 2.5px solid #ec4899; }
+
+    /* 📊 CHANNEL METRICS & GOALS HUB */
+    .metrics-header {
+      font-family: var(--font-outfit);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--gaf-yellow);
+      margin-bottom: 12px;
+    }
+
+    .goal-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .goal-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .goal-progress-bar {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .goal-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gaf-red), var(--gaf-orange));
+      border-radius: 4px;
+      transition: width 0.5s ease-out;
+    }
+
+    /* 📝 SPLIT PANEL FORM MODAL */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      animation: modalFadeIn 0.25s ease;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-box-split {
+      background: #0d0d10;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      width: 92%;
+      max-width: 980px;
+      height: 85vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    }
+
+    .modal-split-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-split-header h2 {
+      font-family: var(--font-outfit);
+      font-size: 17px;
+      color: var(--gaf-yellow);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-split-body {
+      display: flex;
+      flex-grow: 1;
+      overflow: hidden;
+    }
+
+    .modal-panel {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .modal-panel.left-culinary {
+      border-right: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.01);
+    }
+
+    .modal-panel.right-creator {
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    .panel-section-title {
+      font-family: var(--font-outfit);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gaf-orange);
+      margin-bottom: 14px;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+      padding-bottom: 4px;
+    }
+
+    .modal-split-footer {
+      padding: 16px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      background: rgba(0, 0, 0, 0.15);
+    }
+
+    /* INPUT STYLES */
+    .form-group-split {
+      margin-bottom: 14px;
+    }
+
+    .form-group-split label {
+      display: block;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .input-split {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 8px 10px;
+      color: white;
+      font-size: 12.5px;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .input-split:focus {
+      border-color: var(--gaf-red);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .input-split-textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .row-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* INGREDIENT SCALER COMPONENT */
+    .scaler-card {
+      background: rgba(247, 127, 0, 0.04);
+      border: 1px dashed rgba(247, 127, 0, 0.25);
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .scaler-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gaf-yellow);
+    }
+
+    .scaler-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .scaler-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.05);
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .scaler-btn:hover {
+      background: var(--gaf-orange);
+      border-color: var(--gaf-orange);
+    }
+
+    .scaler-val {
+      font-family: var(--font-outfit);
+      font-size: 15px;
+      font-weight: 700;
+      width: 20px;
+      text-align: center;
+    }
+
+    /* HELPER UTILITIES */
+    .badge-post-platform {
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    .badge-post-platform.youtube { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+    .badge-post-platform.tiktok { background: rgba(255,255,255,0.08); color: #e4e4e7; }
+    .badge-post-platform.instagram { background: rgba(236, 72, 153, 0.15); color: #f472b6; }
+    .badge-post-platform.ambos { background: rgba(139, 92, 246, 0.15); color: #c084fc; }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #15151a;
+      border: 1px solid var(--gaf-green);
+      border-radius: 12px;
+      padding: 14px 20px;
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      z-index: 2000;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  </style>
 </head>
 <body>
 
-<a href="../" class="back">← Volver a Guerrero al Fuego</a>
+  <div class="app-container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="brand-section">
+        <div class="brand-title">
+          <span>🔥 GAF Studio</span>
+        </div>
+        <div class="brand-tagline">Centro de Mando</div>
+      </div>
 
-<div class="gaf-header">
-  <div>
-    <h1>🔥 GAF Studio</h1>
-    <div class="sub">Panel de control · Hoy es <span id="today-date"></span></div>
-  </div>
-  <div style="display:flex;gap:8px;align-items:center">
-    <span id="racha-display" style="font-size:14px;font-weight:600"></span>
-    <button class="btn" onclick="abrirNuevaReceta()">+ Nueva receta</button>
-  </div>
-</div>
+      <div class="nav-links">
+        <button class="nav-btn active" onclick="switchTab('dashboard')">
+          <span class="icon">🏠</span> <span>Dashboard</span>
+        </button>
+        <button class="nav-btn" onclick="switchTab('recetas')">
+          <span class="icon">🍳</span> <span>Recetario & Guiones</span>
+        </button>
+        <button class="nav-btn" onclick="switchTab('pipeline')">
+          <span class="icon">📋</span> <span>Pipeline Kanban</span>
+        </button>
+        <button class="nav-btn" onclick="switchTab('calendario')">
+          <span class="icon">📅</span> <span>Calendario Editorial</span>
+        </button>
+        <button class="nav-btn" onclick="switchTab('metricas')">
+          <span class="icon">📊</span> <span>Métricas de Canal</span>
+        </button>
+      </div>
 
-<!-- FILA 1: Ritual diario + Métricas rápidas -->
-<div class="grid-3">
-  <div class="card" style="grid-column: span 2;">
-    <h2>☀️ Ritual de hoy <span class="ct"><span id="check-count">0/5</span></span></h2>
-    <div id="daily-checklist"></div>
+      <div class="sidebar-footer">
+        <a href="../" class="back-btn">
+          <span>←</span> <span>Volver a la Web Pública</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- MAIN PANEL -->
+    <main class="main-content">
+      <!-- MAIN HEADER -->
+      <header class="app-header">
+        <div class="header-title">
+          <h1 id="tab-title-text">Panel de control</h1>
+          <p>Organiza tus recetas, planifica tus vídeos y expande tu comunidad</p>
+        </div>
+        <div class="header-actions">
+          <div id="sync-status" class="sync-badge">
+            <div class="sync-dot"></div>
+            <span id="sync-text">🟢 Sincronizado</span>
+          </div>
+          <button class="btn" onclick="abrirNuevaRecetaModal()">+ Nueva Receta</button>
+        </div>
+      </header>
+
+      <!-- 🏠 TAB: DASHBOARD -->
+      <div id="tab-dashboard" class="tab-content active">
+        <div class="grid-3">
+          <!-- Daily Checklist -->
+          <div class="card grid-col-full" style="grid-column: span 2;">
+            <div class="ritual-header">
+              <h2>☀️ Ritual de Hoy</h2>
+              <span id="check-count" class="btn btn-secondary btn-sm" style="cursor:default;font-weight:700">0/5 completado</span>
+            </div>
+            <div class="daily-list" id="daily-checklist">
+              <!-- JS Loaded -->
+            </div>
+          </div>
+
+          <!-- Streak & Quick Stats -->
+          <div class="racha-widget" style="display:flex;flex-direction:column;gap:18px">
+            <!-- Streak -->
+            <div class="card">
+              <h2>🔥 Consistencia</h2>
+              <div class="racha-header">
+                <span id="racha-text">Racha: 0 días</span>
+              </div>
+              <p class="sub-label" style="font-size:11px;color:var(--text-muted);margin-top:4px">Completa tu ritual diario para mantener la racha activa.</p>
+              <div class="racha-bar" id="racha-bar">
+                <!-- JS Loaded -->
+              </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="card">
+              <h2>📊 Resumen del Canal</h2>
+              <div class="stat-row">
+                <div class="stat-box">
+                  <div class="stat-val green" id="stat-publicados">0</div>
+                  <div class="stat-lbl">Publicados</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-val orange" id="stat-en-cola">0</div>
+                  <div class="stat-lbl">En Cola</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-val yellow" id="stat-recetas">0</div>
+                  <div class="stat-lbl">Recetas</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-val red" id="stat-semanales">0</div>
+                  <div class="stat-lbl">Esta Semana</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:20px">
+          <!-- Co-Pilot Fueguín -->
+          <div class="card copilot-card">
+            <h2>🤖 Fueguín Brand Co-Pilot</h2>
+            <div class="copilot-bubble" id="copilot-bubble">
+              <strong>¡Hola Guerrero!</strong> ¿Te has quedado sin ideas culinarias? Haz clic en el botón de abajo y te daré una idea de contenido viral directo de mis fogones. ¡Que arda la cocina!
+            </div>
+            <div class="copilot-action-line">
+              <img src="../assets/stickers/fueguin_celebrando.png" class="copilot-mascot-pic" alt="Fueguín" id="copilot-pic">
+              <button class="btn" style="padding:8px 14px;font-size:12px" onclick="generarIdeaFueguin()">🔥 Generar Idea de Vídeo</button>
+            </div>
+          </div>
+
+          <!-- Resumen del Calendario -->
+          <div class="card">
+            <h2>📅 Vista Semanal</h2>
+            <div id="dashboard-semana-calendario">
+              <!-- JS Loaded -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 🍳 TAB: RECETARIO & GUIONES -->
+      <div id="tab-recetas" class="tab-content">
+        <div class="recetas-bar">
+          <div class="recetas-filters">
+            <input type="text" id="recipe-search" class="text-input" placeholder="Buscar por nombre o ingredientes..." oninput="filtrarRecetas()">
+            <select id="recipe-filter-series" class="select-input" onchange="filtrarRecetas()">
+              <option value="">Todas las series</option>
+              <option value="rapida">⚡ Rápida Guerrera</option>
+              <option value="casi-liamos">😅 Casi la Liamos</option>
+              <option value="3-ingredientes">🥚 3 Ingredientes</option>
+              <option value="picante">🌶️ Picante o No</option>
+              <option value="resultado">✨ Resultado Final</option>
+            </select>
+            <select id="recipe-filter-difficulty" class="select-input" onchange="filtrarRecetas()">
+              <option value="">Todas las dificultades</option>
+              <option value="facil">Fácil</option>
+              <option value="media">Media</option>
+              <option value="dificil">Difícil</option>
+            </select>
+          </div>
+          <button class="btn" onclick="abrirNuevaRecetaModal()">+ Nueva Receta</button>
+        </div>
+
+        <div class="recetas-grid" id="recetas-grid">
+          <!-- JS Loaded -->
+        </div>
+      </div>
+
+      <!-- 📋 TAB: PIPELINE KANBAN -->
+      <div id="tab-pipeline" class="tab-content">
+        <div class="kanban-board" id="kanban-board">
+          <!-- JS Columns Loaded -->
+        </div>
+      </div>
+
+      <!-- 📅 TAB: CALENDARIO EDITORIAL -->
+      <div id="tab-calendario" class="tab-content">
+        <div class="card calendar-wrapper">
+          <div class="calendar-nav-bar">
+            <button class="btn btn-secondary btn-sm" onclick="navegarMes(-1)">◀ Anterior</button>
+            <div class="calendar-month-title" id="calendar-month-title">Mayo 2026</div>
+            <button class="btn btn-secondary btn-sm" onclick="navegarMes(1)">Siguiente ▶</button>
+          </div>
+          
+          <div class="calendar-grid-header">
+            <div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div>
+          </div>
+          
+          <div class="calendar-grid" id="calendar-grid">
+            <!-- JS Days Loaded -->
+          </div>
+        </div>
+      </div>
+
+      <!-- 📊 TAB: METRICAS Y AUDITORÍA -->
+      <div id="tab-metricas" class="tab-content">
+        <div class="grid-2">
+          <!-- Metric Cards YouTube -->
+          <div class="card goal-card">
+            <h3 class="metrics-header" style="color:#ff4545">📺 Comunidad de YouTube</h3>
+            <div class="goal-info">
+              <div>
+                <div style="font-size:11px;color:var(--text-muted)">Subcriptores actuales</div>
+                <div style="font-size:2rem;font-weight:900;font-family:var(--font-outfit)" id="yt-subs">12,450</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-size:11px;color:var(--text-muted)">Meta del canal</div>
+                <div style="font-size:1.4rem;font-weight:700;color:var(--gaf-yellow)" id="yt-goal">15,000</div>
+              </div>
+            </div>
+            <div class="goal-progress-bar">
+              <div class="goal-progress-fill" id="yt-progress-fill" style="width: 83%"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted)">
+              <span id="yt-percent-text">83% completado</span>
+              <button class="btn btn-secondary btn-sm" onclick="ajustarMetricas('youtube')">Editar Datos</button>
+            </div>
+          </div>
+
+          <!-- Metric Cards Instagram -->
+          <div class="card goal-card">
+            <h3 class="metrics-header" style="color:#ec4899">📸 Comunidad de Instagram</h3>
+            <div class="goal-info">
+              <div>
+                <div style="font-size:11px;color:var(--text-muted)">Seguidores actuales</div>
+                <div style="font-size:2rem;font-weight:900;font-family:var(--font-outfit)" id="ig-followers">8,920</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-size:11px;color:var(--text-muted)">Meta de la cuenta</div>
+                <div style="font-size:1.4rem;font-weight:700;color:var(--gaf-yellow)" id="ig-goal">10,000</div>
+              </div>
+            </div>
+            <div class="goal-progress-bar">
+              <div class="goal-progress-fill" id="ig-progress-fill" style="width: 89%" ></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted)">
+              <span id="ig-percent-text">89% completado</span>
+              <button class="btn btn-secondary btn-sm" onclick="ajustarMetricas('instagram')">Editar Datos</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metric Analysis Card -->
+        <div class="card" style="margin-top:20px">
+          <h2>🔥 Score de Actitud Culinaria</h2>
+          <div style="display:flex;align-items:center;gap:30px;flex-wrap:wrap">
+            <div style="width:120px;height:120px;border-radius:50%;background:rgba(247,127,0,0.1);border:4px solid var(--gaf-orange);display:flex;align-items:center;justify-content:center;flex-direction:column;box-shadow:0 0 20px rgba(247,127,0,0.2)">
+              <span style="font-size:2.2rem;font-weight:900;font-family:var(--font-outfit);color:var(--gaf-yellow)" id="actitud-score">94</span>
+              <span style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted)">Puntos</span>
+            </div>
+            <div style="flex:1;min-width:260px">
+              <h3 style="font-family:var(--font-outfit);font-size:15px;color:var(--text-main);margin-bottom:6px">¡Nivel de Actitud: Domador de Llamas!</h3>
+              <p style="font-size:12.5px;color:var(--text-muted);line-height:1.6">Tu constancia publicando recetas de la hermandad y completando tu ritual diario mantiene al algoritmo contento. Sigue así y Fueguín te condecorará como Guerrero Legendario en los fogones.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
   </div>
-  <div class="card">
-    <h2>📊 Métricas</h2>
-    <div class="grid-2">
-      <div class="stat"><div class="val green" id="stat-publicados">0</div><div class="lbl">Publicados</div></div>
-      <div class="stat"><div class="val orange" id="stat-en-cola">0</div><div class="lbl">En cola</div></div>
-      <div class="stat"><div class="val yellow" id="stat-recetas">0</div><div class="lbl">Recetas</div></div>
-      <div class="stat"><div class="val red" id="stat-semanales">0</div><div class="lbl">Esta semana</div></div>
+
+  <!-- 📝 MODAL: RECETA & GUIONISTA SPLIT FORM -->
+  <div class="modal-overlay" id="recipe-modal">
+    <div class="modal-box-split">
+      <div class="modal-split-header">
+        <h2 id="modal-title-text">🍳 Editar Ficha Culinaria</h2>
+        <button class="btn btn-secondary btn-sm" style="padding:6px 12px;font-size:16px" onclick="cerrarRecipeModal()">✕</button>
+      </div>
+
+      <form id="split-recipe-form" onsubmit="guardarRecipeSplitForm(event)" style="display:flex;flex-direction:column;flex-grow:1;overflow:hidden">
+        <input type="hidden" id="f_id" name="id">
+
+        <div class="modal-split-body">
+          <!-- PANEL IZQUIERDO: Culinario -->
+          <div class="modal-panel left-culinary">
+            <div class="panel-section-title">🍳 Ficha Culinaria</div>
+            
+            <div class="form-group-split">
+              <label>Título de la receta</label>
+              <input type="text" id="f_title" class="input-split" required placeholder="Ej: Pollo al limón Guerrero">
+            </div>
+
+            <div class="row-split">
+              <div class="form-group-split">
+                <label>Serie</label>
+                <select id="f_series" class="input-split">
+                  <option value="rapida">⚡ Rápida Guerrera</option>
+                  <option value="casi-liamos">😅 Casi la Liamos</option>
+                  <option value="3-ingredientes">🥚 3 Ingredientes</option>
+                  <option value="picante">🌶️ Picante o No</option>
+                  <option value="resultado">✨ Resultado Final</option>
+                </select>
+              </div>
+              <div class="form-group-split">
+                <label>Dificultad</label>
+                <select id="f_difficulty" class="input-split">
+                  <option value="facil">Fácil</option>
+                  <option value="media">Media</option>
+                  <option value="dificil">Difícil</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row-split">
+              <div class="form-group-split">
+                <label>Preparación (min)</label>
+                <input type="number" id="f_prep_time" class="input-split" placeholder="15">
+              </div>
+              <div class="form-group-split">
+                <label>Cocción (min)</label>
+                <input type="number" id="f_cook_time" class="input-split" placeholder="15">
+              </div>
+            </div>
+
+            <!-- Escalador de Raciones -->
+            <div class="scaler-card">
+              <div class="scaler-label">⚖️ Escalador de Raciones (Multiplicador):</div>
+              <div class="scaler-control">
+                <button type="button" class="scaler-btn" onclick="alterarEscala(-0.5)">-</button>
+                <div class="scaler-val" id="scaler-val-display">1.0</div>
+                <button type="button" class="scaler-btn" onclick="alterarEscala(0.5)">+</button>
+              </div>
+            </div>
+
+            <div class="form-group-split">
+              <label>Ingredientes (Uno por línea con cantidad numérica)</label>
+              <textarea id="f_ingredients" class="input-split input-split-textarea" rows="6" placeholder="4 pechugas de pollo&#10;2 limones&#10;3 dientes de ajo&#10;1 cucharadita de sal" oninput="actualizarIngredientesEscalados()"></textarea>
+              <div id="ingredients-scaled-preview" style="font-size:11px;color:var(--gaf-yellow);margin-top:4px;white-space:pre-wrap;background:rgba(0,0,0,0.2);padding:6px;border-radius:6px;border:1px solid rgba(254,198,1,0.1)">Ingredientes escalados: escribe cantidades para ver la magia...</div>
+            </div>
+
+            <div class="form-group-split">
+              <label>Pasos de cocina (Uno por línea)</label>
+              <textarea id="f_steps" class="input-split input-split-textarea" rows="6" placeholder="1. Cortar el pollo en tiras&#10;2. Exprimir el zumo de limón&#10;3. Dorar ajos en sartén con aceite y sal&#10;4. Agregar pollo y limón y reducir"></textarea>
+            </div>
+          </div>
+
+          <!-- PANEL DERECHO: Script y Vídeo -->
+          <div class="modal-panel right-creator">
+            <div class="panel-section-title">🎬 Guion de Contenido de Vídeo</div>
+
+            <div class="form-group-split">
+              <label>Estado del Vídeo (Kanban)</label>
+              <select id="f_status" class="input-split">
+                <option value="idea">💡 Idea</option>
+                <option value="borrador">📝 Borrador</option>
+                <option value="listo">✅ Listo</option>
+                <option value="programado">📅 Programado</option>
+                <option value="publicado">🚀 Publicado</option>
+              </select>
+            </div>
+
+            <div class="row-split">
+              <div class="form-group-split">
+                <label>Plataforma principal</label>
+                <select id="f_platform" class="input-split">
+                  <option value="youtube">YouTube Shorts</option>
+                  <option value="tiktok">TikTok</option>
+                  <option value="instagram">Instagram Reels</option>
+                  <option value="ambos">Multiplataforma (Todos)</option>
+                </select>
+              </div>
+              <div class="form-group-split">
+                <label>Fueguín Sticker Expresión</label>
+                <select id="f_fueguin_expression" class="input-split">
+                  <option value="feliz">Feliz 😊</option>
+                  <option value="sorprendido">Sorprendido 😮</option>
+                  <option value="orgulloso">Orgulloso 😤</option>
+                  <option value="fail">FAIL 💀</option>
+                  <option value="nervioso">Nervioso 😰</option>
+                  <option value="celebrando">Celebrando 🎉</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group-split">
+              <label>Vídeo Hook / El Gancho (Primeros 3 segundos cruciales)</label>
+              <input type="text" id="f_hook" class="input-split" placeholder="Ej: ¿Cansado de que el pollo te quede como una suela de zapato? Mira esto...">
+            </div>
+
+            <div class="form-group-split">
+              <label>Script de Escenas / Guión Estructurado</label>
+              <textarea id="f_script" class="input-split input-split-textarea" rows="6" placeholder="Fase 1 - Hook (0-3s): Mostrar el resultado crujiente con música enérgica.&#10;Fase 2 - Cocina (3-15s): Corte rápido de ingredientes y Fueguín quemando algo.&#10;Fase 3 - Truco (15-25s): Añadir la ralladura de limón al final para potenciar el aroma.&#10;Fase 4 - CTA (25-30s): Dale brasa y únete a la hermandad."></textarea>
+            </div>
+
+            <div class="form-group-split">
+              <label>Descripción / Copy para Redes</label>
+              <textarea id="f_description" class="input-split input-split-textarea" rows="3" placeholder="Pollo al limón extremadamente jugoso. Un truco sencillo pero guerrero..."></textarea>
+            </div>
+
+            <div class="form-group-split">
+              <label>Hashtags (Uno por línea)</label>
+              <textarea id="f_hashtags" class="input-split input-split-textarea" rows="2" placeholder="guerreroalfuego&#10;recetasfaciles&#10;polloallimon"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- FOOTER ACCIONES -->
+        <div class="modal-split-footer">
+          <button type="button" class="btn btn-secondary" onclick="cerrarRecipeModal()">Cancelar</button>
+          <button type="submit" class="btn">🔥 Guardar Receta & Guión</button>
+        </div>
+      </form>
     </div>
   </div>
-</div>
 
-<!-- FILA 2: Pipeline de contenido -->
-<div class="card" style="margin-bottom:16px">
-  <h2>📋 Pipeline de contenido <span class="ct">Arrastra para cambiar estado</span></h2>
-  <div class="pipeline" id="pipeline"></div>
-</div>
+  <!-- TOAST NOTIFICATIONS -->
+  <div class="toast" id="toast-notif">
+    <span>🔥</span>
+    <span id="toast-text">Cambios guardados en base de datos.</span>
+  </div>
 
-<!-- FILA 3: Recetas recientes -->
-<div class="card" style="margin-bottom:16px">
-  <h2>🍳 Recetas <span class="ct" style="cursor:pointer" onclick="toggleRecetas()">[ver todas]</span></h2>
-  <div id="recetas-list"></div>
-  <div id="recetas-all" style="display:none;margin-top:10px"></div>
-</div>
-
-<!-- FILA 4: Calendario editorial -->
-<div class="card" style="margin-bottom:16px">
-  <h2>📅 Calendario editorial <span class="ct">Semana del <span id="semana-label"></span></span></h2>
-  <div id="calendario"></div>
-</div>
-
-<script>
-// ===========================
-// DATOS INICIALES
-// ===========================
-const SERIES = ['rapida', 'casi-liamos', '3-ingredientes', 'picante', 'resultado'];
-const SERIES_LABEL = {
-  'rapida': '⚡ Rápida Guerrera', 'casi-liamos': '😅 Casi la Liamos',
-  '3-ingredientes': '🥚 3 Ingredientes', 'picante': '🌶️ Picante o No', 'resultado': '✨ Resultado Final'
-};
-const ESTADOS = ['idea', 'borrador', 'listo', 'programado', 'publicado'];
-const ESTADO_LABEL = { 'idea':'💡 Idea', 'borrador':'📝 Borrador', 'listo':'✅ Listo', 'programado':'📅 Programado', 'publicado':'🚀 Publicado' };
-const PLATFORMS = ['tiktok', 'instagram', 'youtube'];
-
-// Datos por defecto (fallback)
-const DEFAULT_RECETAS = [
-  {id:'r1', nombre:'Pollo al limón', serie:'rapida', ingredientes:'pollo, limón, ajo', tiempo:15, dificultad:'fácil'},
-  {id:'r2', nombre:'Huevos rotos', serie:'rapida', ingredientes:'huevos, patatas, jamón', tiempo:20, dificultad:'fácil'},
-  {id:'r3', nombre:'Arroz crujiente', serie:'casi-liamos', ingredientes:'arroz, huevo, salsa soja', tiempo:25, dificultad:'media'},
-  {id:'r4', nombre:'Alitas picantes', serie:'picante', ingredientes:'alitas, guindilla, miel', tiempo:30, dificultad:'media'},
-  {id:'r5', nombre:'Brownie fácil', serie:'3-ingredientes', ingredientes:'chocolate, huevos, mantequilla', tiempo:20, dificultad:'fácil'},
-  {id:'r6', nombre:'Pasta 3 ingredientes', serie:'3-ingredientes', ingredientes:'pasta, tomate, albahaca', tiempo:15, dificultad:'fácil'},
-  {id:'r7', nombre:'Tortilla de patatas', serie:'resultado', ingredientes:'huevos, patatas, cebolla', tiempo:25, dificultad:'media'},
-];
-
-const DEFAULT_POSTS = [
-  {id:'p1', titulo:'Pollo al limón 🔥', recetaId:'r1', estado:'publicado', serie:'rapida', plataforma:'tiktok', fecha:'2026-05-10'},
-  {id:'p2', titulo:'El arroz que casi...', recetaId:'r3', estado:'publicado', serie:'casi-liamos', plataforma:'instagram', fecha:'2026-05-12'},
-  {id:'p3', titulo:'Alitas que pican', recetaId:'r4', estado:'listo', serie:'picante', plataforma:'tiktok', fecha:''},
-  {id:'p4', titulo:'Brownie en 20 min', recetaId:'r5', estado:'borrador', serie:'3-ingredientes', plataforma:'ambos', fecha:''},
-  {id:'p5', titulo:'Huevos rotos XXL', recetaId:'r2', estado:'idea', serie:'rapida', plataforma:'instagram', fecha:''},
-  {id:'p6', titulo:'Pasta que salva cenas', recetaId:'r6', estado:'programado', serie:'3-ingredientes', plataforma:'tiktok', fecha:'2026-05-19'},
-];
-
-// Helper to map recipe titles to their brand assets images
-function getRecipeImageUrl(recipe) {
-  const base = '../assets/recetas/';
-  const name = (recipe.nombre || recipe.title || '').toLowerCase();
-  if (name.includes('pollo')) return base + 'fueguin_pollo_limon.png';
-  if (name.includes('huevo')) return base + 'fueguin_huevos_rotos.png';
-  if (name.includes('arroz')) return base + 'gaf_arroz_crujiente.png';
-  if (name.includes('alita')) return base + 'gaf_alitas_picantes.png';
-  if (name.includes('brownie')) return base + 'gaf_brownie.png';
-  if (name.includes('pasta')) return base + 'gaf_pasta_3ingredientes.png';
-  if (name.includes('tortilla')) return base + 'fueguin_tortilla.png';
-  return '';
-}
-
-// Helper to map Fueguin stickers
-function getFueguinStickerUrl(expression) {
-  const base = '../assets/stickers/';
-  const exp = (expression || '').toLowerCase();
-  if (exp === 'celebrando' || exp === 'feliz') return base + 'fueguin_celebrando.png';
-  if (exp === 'fail' || exp === 'error') return base + 'fueguin_fail.png';
-  if (exp === 'nervioso') return base + 'fueguin_nervioso.png';
-  if (exp === 'orgulloso') return base + 'fueguin_orgulloso.png';
-  if (exp === 'sorprendido') return base + 'fueguin_sorprendido.png';
-  return base + 'fueguin_feliz.png';
-}
-
-// ===========================
-// LOCAL STORAGE fallback & state
-// ===========================
-let DATA = { recetas: [], posts: [], daily: {}, racha: { dias: [], actual: 0, mejor: 0 } };
-
-function loadLocalBackup() {
-  try {
-    const r = localStorage.getItem('gaf_recetas');
-    const p = localStorage.getItem('gaf_posts');
-    const d = localStorage.getItem('gaf_daily');
-    const racha = localStorage.getItem('gaf_racha');
-    return {
-      recetas: r ? JSON.parse(r) : [...DEFAULT_RECETAS],
-      posts: p ? JSON.parse(p) : [...DEFAULT_POSTS],
-      daily: d ? JSON.parse(d) : {},
-      racha: racha ? JSON.parse(racha) : {dias:[], actual:0, mejor:0},
+  <script>
+    // ===========================
+    // DATA STATE MANAGEMENT
+    // ===========================
+    let DATA = { recetas: [], posts: [], daily: {}, racha: { dias: [], actual: 0, mejor: 0 }, metrics: { ytSubs: 12450, ytGoal: 15000, igFollowers: 8920, igGoal: 10000 } };
+    
+    const SERIES_LABELS = {
+      'rapida': '⚡ Rápida Guerrera', 'casi-liamos': '😅 Casi la Liamos',
+      '3-ingredientes': '🥚 3 Ingredientes', 'picante': '🌶️ Picante o No', 'resultado': '✨ Resultado Final'
     };
-  } catch(e) { 
-    return {recetas:[...DEFAULT_RECETAS], posts:[...DEFAULT_POSTS], daily:{}, racha:{dias:[], actual:0, mejor:0}}; 
-  }
-}
+    
+    const ESTADOS = ['idea', 'borrador', 'listo', 'programado', 'publicado'];
+    const ESTADO_LABELS = { 'idea': '💡 Idea', 'borrador': '📝 Borrador', 'listo': '✅ Listo', 'programado': '📅 Programado', 'publicado': '🚀 Publicado' };
+    
+    let activeTab = 'dashboard';
+    let currentMultiplier = 1.0;
+    
+    // CALENDAR STATES
+    let currentMonth = new Date().getMonth();
+    let currentYear = new Date().getFullYear();
 
-function saveLocalBackup() {
-  localStorage.setItem('gaf_recetas', JSON.stringify(DATA.recetas));
-  localStorage.setItem('gaf_posts', JSON.stringify(DATA.posts));
-  localStorage.setItem('gaf_daily', JSON.stringify(DATA.daily));
-  localStorage.setItem('gaf_racha', JSON.stringify(DATA.racha));
-}
+    // FALLBACK MOCK DATA FOR LOCAL STORAGE
+    const FALLBACK_RECETAS = [
+      { id: 'r1', nombre: 'Pollo al limón', serie: 'rapida', ingredientes: '4 pechugas de pollo\n2 limones\n3 dientes de ajo\n1 cucharadita de sal', pasos: '1. Picar ajos y exprimir limones.\n2. Dorar en sartén y añadir el pollo.', tiempo: 15, dificultad: 'facil', estado: 'publicado', platform: 'tiktok', fueguin_expression: 'feliz', script: 'Fase 1: Enseñar pollo jugoso.\nFase 2: Cocinar a fuego vivo.\nFase 3: Llamado a la hermandad.', hook: '¿Pollo seco? Nunca más en esta cocina...', description: 'El pollo al limón definitivo, rápido y guerrero.', hashtags: 'guerreroalfuego\npollo\nrecetasfaciles' },
+      { id: 'r2', nombre: 'Huevos rotos', serie: 'rapida', ingredientes: '4 huevos grandes\n3 patatas patateras\n100g jamón ibérico\n1 chorro aceite oliva', pasos: '1. Freír patatas cortadas gruesas.\n2. Cuajar ligeramente los huevos y romper encima.', tiempo: 20, dificultad: 'facil', estado: 'programado', platform: 'instagram', fueguin_expression: 'orgulloso', script: 'Fase 1: Yemas estallando.\nFase 2: Patatas crujientes.', hook: 'Huevos rotos perfectos sin fallar en el intento.', description: 'El clásico de las tabernas directo a tus fogones.', hashtags: 'guerreroalfuego\nhuevosrotos\nrecetastradicionales' },
+      { id: 'r3', nombre: 'Arroz crujiente', serie: 'casi-liamos', ingredientes: '200g arroz cocido frío\n1 huevo batido\n2 cucharadas salsa soja\n1 pizca pimienta', pasos: '1. Calentar la sartén al máximo con aceite.\n2. Saltear el arroz hasta que empiece a chasquear y añadir soja.', tiempo: 25, dificultad: 'media', estado: 'publicado', platform: 'youtube', fueguin_expression: 'fail', script: 'Fase 1: El arroz casi se quema.\nFase 2: Salvamos la tortilla al final.', hook: 'Pensé que tenía que tirar todo a la basura... pero salió esto.', description: 'El arroz crujiente que se salvó por los pelos.', hashtags: 'guerreroalfuego\narrozcrujiente\nfailculinario' },
+      { id: 'r4', nombre: 'Alitas picantes', serie: 'picante', ingredientes: '12 alitas de pollo\n2 guindillas de cayena\n3 cucharadas de miel\n1 pizca pimentón picante', pasos: '1. Precalentar horno a 200C.\n2. Mezclar miel con guindillas machacadas y pimentón.\n3. Pintar alitas y hornear 30 min.', tiempo: 30, dificultad: 'media', estado: 'listo', platform: 'tiktok', fueguin_expression: 'nervioso', script: 'Fase 1: Rostro de Fueguín sudando picante.\nFase 2: Alitas caramelizadas.', hook: '¿Te atreves con estas alitas picantes o le temes al fuego?', description: 'Alitas glaseadas con miel y picante de verdad.', hashtags: 'guerreroalfuego\nalitas\npicante' },
+      { id: 'r5', nombre: 'Brownie de chocolate', serie: '3-ingredientes', ingredientes: '200g chocolate fondant\n3 huevos camperos\n80g mantequilla con sal', pasos: '1. Derretir chocolate y mantequilla juntos.\n2. Batir huevos a punto de nieve e incorporar con movimientos envolventes.\n3. Hornear a 180C por 20 min.', tiempo: 20, dificultad: 'facil', estado: 'borrador', platform: 'ambos', fueguin_expression: 'sorprendido', script: 'Fase 1: Textura fudgy por dentro.\nFase 2: Mezcla de 3 ingredientes sin harina.', hook: '¿Solo 3 ingredientes para un brownie espectacular?', description: 'Brownie ultra húmedo sin harina.', hashtags: 'guerreroalfuego\nbrownie\nchocolate' }
+    ];
 
-// ===========================
-// RITUAL DIARIO
-// ===========================
-const DAILY_ITEMS = [
-  {id:'receta', label:'Elegir/grabar receta para hoy', sub:'¿Tienes receta o necesitas crear una?'},
-  {id:'grabar', label:'Grabar o editar vídeo', sub:'15-30 min. ¿Qué serie toca?'},
-  {id:'publicar', label:'Publicar o programar', sub:'TikTok, Instagram o ambos'},
-  {id:'cola', label:'Revisar cola de contenido', sub:'¿Hay suficiente en pipeline?'},
-  {id:'metricas', label:'Mirar métricas 2 min', sub:'Último post, tendencias'},
-];
+    const DAILY_TASKS = [
+      { id: 'receta', label: 'Elegir o redactar receta para hoy', sub: 'Planifica tu creación culinaria en el Recetario' },
+      { id: 'grabar', label: 'Grabar o editar vídeo corto', sub: 'Mantén la retención alta con un buen gancho visual' },
+      { id: 'publicar', label: 'Publicar o programar en redes', sub: 'TikTok, Instagram Reels o Shorts de YouTube' },
+      { id: 'cola', label: 'Revisar tu pipeline Kanban', sub: 'Arrastra tus ideas para mantener ordenada la cola' },
+      { id: 'metricas', label: 'Monitorear crecimiento de canal', sub: 'Analiza tu racha y ajusta tus objetivos' }
+    ];
 
-function renderDaily() {
-  const today = new Date().toISOString().slice(0,10);
-  if (!DATA.daily[today]) DATA.daily[today] = {};
+    const FUEGUIN_IDEAS = [
+      { hook: "¿Cansado de que la tortilla te quede seca como cartón?", title: "Tortilla cremosa nivel Guerrero", quote: "¡Cuidado al darle la vuelta! Si se cae al suelo... Fueguín no la limpia, se la come." },
+      { hook: "El truco definitivo de las patatas de bolsa que los chefs ocultan...", title: "Patatas deluxe de sartén rápida", quote: "Pela las patatas con actitud. Un guerrero no le teme al pelador de patatas." },
+      { hook: "Te enseño a hacer una salsa picante que te derretirá las pestañas", title: "Salsa de fuego del Guerrero", quote: "Perfecta para gastar bromas o para sentir que estás comiendo directamente carbón encendido." },
+      { hook: "¿Tienes 3 ingredientes en la nevera y te da pereza cocinar?", title: "La pasta salvavidas definitiva", quote: "Solo necesitas pasta, tomate y ajo. Si quemas el ajo, Fueguín te estará observando con decepción." },
+      { hook: "Esta es la forma real en la que se doran unas costillas sin horno", title: "Costillas glaseadas de sartén y brasa", quote: "Crujiente por fuera, tierno por dentro. Si no te chupas los dedos, es que te falta actitud." }
+    ];
 
-  const el = document.getElementById('daily-checklist');
-  const checked = DAILY_ITEMS.filter(i => DATA.daily[today][i.id]).length;
-  document.getElementById('check-count').textContent = `${checked}/${DAILY_ITEMS.length}`;
-
-  el.innerHTML = DAILY_ITEMS.map(item => {
-    const done = DATA.daily[today][item.id] || false;
-    return `<div class="daily-item ${done?'done':''}" onclick="toggleDaily('${item.id}')">
-      <div class="check">${done?'✓':''}</div>
-      <div><div class="label">${item.label}</div><div class="sub-label">${item.sub}</div></div>
-    </div>`;
-  }).join('');
-}
-
-function toggleDaily(id) {
-  const today = new Date().toISOString().slice(0,10);
-  DATA.daily[today][id] = !DATA.daily[today][id];
-  saveLocalBackup();
-  renderDaily();
-  actualizarRacha();
-}
-
-function actualizarRacha() {
-  const today = new Date().toISOString().slice(0,10);
-  const checked = DAILY_ITEMS.filter(i => DATA.daily[today] && DATA.daily[today][i.id]).length;
-  const completo = checked === DAILY_ITEMS.length;
-
-  const racha = DATA.racha;
-  if (completo) {
-    if (!racha.dias.includes(today)) {
-      racha.dias.push(today);
-      const sorted = [...racha.dias].sort().reverse();
-      let streak = 0;
-      for (let i = 0; i < sorted.length; i++) {
-        const d = new Date(sorted[i]);
-        const expected = new Date();
-        expected.setDate(expected.getDate() - i);
-        if (d.toISOString().slice(0,10) === expected.toISOString().slice(0,10)) streak++;
-        else break;
+    // ===========================
+    // INITIALIZATION & TAB SWITCHING
+    // ===========================
+    function switchTab(tabId) {
+      activeTab = tabId;
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+      
+      const targetTab = document.getElementById(`tab-${tabId}`);
+      if (targetTab) targetTab.classList.add('active');
+      
+      // Update sidebar state
+      const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(btn => btn.getAttribute('onclick').includes(tabId));
+      if (activeBtn) activeBtn.classList.add('active');
+      
+      // Update header titles dynamically
+      const titleMap = {
+        dashboard: { main: '🏠 Dashboard General', sub: 'Planificación de marca diaria, tareas de ritual y co-pilot Fueguín.' },
+        recetas: { main: '🍳 Recetario & Fichas de Script', sub: 'Crea recetas, escala porciones en tiempo real y escribe tus ganchos de vídeo.' },
+        pipeline: { main: '📋 Pipeline de Contenidos', sub: 'Arrastra y suelta tus vídeos cortos de cocina a través del proceso editorial.' },
+        calendario: { main: '📅 Calendario de Publicación', sub: 'Calendario interactivo mensual de tus publicaciones en redes.' },
+        metricas: { main: '📊 Métricas y Score de Actitud', sub: 'Compara tu crecimiento de suscriptores y visualiza tus metas.' }
+      };
+      
+      const titleText = document.getElementById('tab-title-text');
+      const subText = titleText ? titleText.nextElementSibling : null;
+      if (titleText && titleMap[tabId]) {
+        titleText.textContent = titleMap[tabId].main;
+        if (subText) subText.textContent = titleMap[tabId].sub;
       }
-      racha.actual = streak;
-      if (streak > racha.mejor) racha.mejor = streak;
-      saveLocalBackup();
+      
+      // Load specific tab data
+      if (tabId === 'recetas') renderRecetas();
+      else if (tabId === 'pipeline') renderPipelineKanban();
+      else if (tabId === 'calendario') renderCalendarioMensual();
+      else if (tabId === 'metricas') renderCanalMetricas();
     }
-  }
 
-  document.getElementById('racha-display').textContent = `🔥 Racha: ${racha.actual}d · Mejor: ${racha.mejor}d`;
-  renderRachaBar();
-}
+    // ===========================
+    // SYNC STATE SYSTEM (LOCAL STORAGE & MOCK API)
+    // ===========================
+    function loadData() {
+      try {
+        const localRecetas = localStorage.getItem('gaf_recetas_db');
+        const localDaily = localStorage.getItem('gaf_daily_db');
+        const localRacha = localStorage.getItem('gaf_racha_db');
+        const localMetrics = localStorage.getItem('gaf_metrics_db');
+        
+        DATA.recetas = localRecetas ? JSON.parse(localRecetas) : [...FALLBACK_RECETAS];
+        DATA.daily = localDaily ? JSON.parse(localDaily) : {};
+        DATA.racha = localRacha ? JSON.parse(localRacha) : { dias: [], actual: 0, mejor: 0 };
+        DATA.metrics = localMetrics ? JSON.parse(localMetrics) : { ytSubs: 12450, ytGoal: 15000, igFollowers: 8920, igGoal: 10000 };
+      } catch (e) {
+        DATA.recetas = [...FALLBACK_RECETAS];
+        DATA.daily = {};
+        DATA.racha = { dias: [], actual: 0, mejor: 0 };
+      }
+    }
 
-function renderRachaBar() {
-  const racha = DATA.racha;
-  const dias = [];
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(); d.setDate(d.getDate() - i);
-    const ds = d.toISOString().slice(0,10);
-    const on = racha.dias.includes(ds);
-    const isToday = i === 0;
-    dias.push(`<div class="racha-day ${on?'on':'off'}" style="${isToday?'border:1px solid rgba(254,198,1,0.4)':''}">${d.getDate()}</div>`);
-  }
-  const display = document.getElementById('racha-display');
-  let bar = document.querySelector('.racha-bar');
-  if (!bar) {
-    bar = document.createElement('div');
-    bar.className = 'racha-bar';
-    display.parentElement.appendChild(bar);
-  }
-  bar.innerHTML = dias.join('');
-}
+    function saveData() {
+      localStorage.setItem('gaf_recetas_db', JSON.stringify(DATA.recetas));
+      localStorage.setItem('gaf_daily_db', JSON.stringify(DATA.daily));
+      localStorage.setItem('gaf_racha_db', JSON.stringify(DATA.racha));
+      localStorage.setItem('gaf_metrics_db', JSON.stringify(DATA.metrics));
+    }
 
-// ===========================
-// PIPELINE
-// ===========================
-function renderPipeline() {
-  const el = document.getElementById('pipeline');
-  el.innerHTML = ESTADOS.map(est => {
-    const items = DATA.posts.filter(p => p.estado === est);
-    return `<div class="pipe-col">
-      <h3>${ESTADO_LABEL[est]} (${items.length})</h3>
-      ${items.map(p => {
-        const stickerUrl = getFueguinStickerUrl(p.fueguin_expression || (p.serie === 'casi-liamos' ? 'fail' : 'feliz'));
-        return `<div class="pipe-item" draggable="true" data-id="${p.id}" data-estado="${est}" style="display:flex;align-items:center;gap:10px">
-          <img src="${stickerUrl}" class="sticker-thumb" alt="sticker">
-          <div style="flex:1">
-            <div style="font-weight:600;color:#f4f4f5">${p.titulo}</div>
-            <div class="serie">${SERIES_LABEL[p.serie] || p.serie} · ${p.plataforma}</div>
+    async function syncConServidor() {
+      const badge = document.getElementById('sync-status');
+      const text = document.getElementById('sync-text');
+      
+      try {
+        // Try fetching recipes from local SQLite API on개발 machine
+        const resRecs = await fetch('/api/gaf/recipes');
+        if (resRecs.ok) {
+          const apiData = await resRecs.json();
+          if (apiData && apiData.recipes && apiData.recipes.length > 0) {
+            // Merge SQLite database into our application state
+            DATA.recetas = apiData.recipes.map(r => ({
+              id: r.id,
+              nombre: r.title,
+              serie: r.series,
+              ingredientes: typeof r.ingredients === 'string' && r.ingredients.startsWith('[') ? JSON.parse(r.ingredients).join('\n') : (r.ingredients || ''),
+              pasos: typeof r.steps === 'string' && r.steps.startsWith('[') ? JSON.parse(r.steps).join('\n') : (r.steps || ''),
+              tiempo: r.prep_time,
+              dificultad: r.difficulty || 'facil',
+              estado: r.status || 'idea',
+              platform: r.platform || 'tiktok',
+              fueguin_expression: r.fueguin_expression || 'feliz',
+              script: r.script || '',
+              hook: r.hook || '',
+              description: r.description || '',
+              hashtags: r.hashtags || ''
+            }));
+            saveData();
+          }
+          badge.className = 'sync-badge';
+          text.textContent = '🟢 Sincronizado';
+        } else {
+          throw new Error("No exitoso");
+        }
+      } catch (e) {
+        // Fallback to local storage (Offline Cloudflare backup mode)
+        badge.className = 'sync-badge offline';
+        text.textContent = '🟡 Copia de Seguridad';
+      }
+    }
+
+    function triggerToast(message) {
+      const toast = document.getElementById('toast-notif');
+      const toastText = document.getElementById('toast-text');
+      if (toast && toastText) {
+        toastText.textContent = message;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+      }
+    }
+
+    // ===========================
+    // ☀️ RITUAL & CONSISTENCIA
+    // ===========================
+    function renderDailyRitual() {
+      const today = new Date().toISOString().slice(0, 10);
+      if (!DATA.daily[today]) DATA.daily[today] = {};
+      
+      const el = document.getElementById('daily-checklist');
+      const checked = DAILY_TASKS.filter(t => DATA.daily[today][t.id]).length;
+      
+      document.getElementById('check-count').textContent = `${checked}/${DAILY_TASKS.length} completado`;
+      
+      el.innerHTML = DAILY_TASKS.map(task => {
+        const done = DATA.daily[today][task.id] || false;
+        return `<div class="daily-item ${done ? 'done' : ''}" onclick="toggleDailyRitual('${task.id}')">
+          <div class="check">${done ? '✓' : ''}</div>
+          <div>
+            <div class="label">${task.label}</div>
+            <div class="sub-label">${task.sub}</div>
           </div>
         </div>`;
-      }).join('')}
-    </div>`;
-  }).join('');
-
-  document.querySelectorAll('.pipe-item[draggable]').forEach(el => {
-    el.addEventListener('dragstart', e => {
-      e.dataTransfer.setData('text/plain', el.dataset.id + '|' + el.dataset.estado);
-    });
-  });
-  
-  document.querySelectorAll('.pipe-col').forEach(col => {
-    col.addEventListener('dragover', e => e.preventDefault());
-    col.addEventListener('drop', e => {
-      e.preventDefault();
-      const data = e.dataTransfer.getData('text/plain').split('|');
-      const postId = data[0];
-      const oldEstado = data[1];
-      
-      const estMap = {'💡': 'idea', '📝': 'borrador', '✅': 'listo', '📅': 'programado', '🚀': 'publicado'};
-      let estadoKey = 'idea';
-      for (const [emoji, key] of Object.entries(estMap)) {
-        if (col.querySelector('h3').textContent.includes(emoji)) { estadoKey = key; break; }
-      }
-      
-      const post = DATA.posts.find(p => p.id === postId);
-      if (post && estadoKey !== oldEstado) {
-        post.estado = estadoKey;
-        if (estadoKey === 'publicado' && !post.fecha) {
-          post.fecha = new Date().toISOString().slice(0,10);
-        }
-        saveLocalBackup();
-        updatePostOnServer(post); // Database sync
-        renderPipeline();
-        renderCalendario();
-        actualizarMetricas();
-      }
-    });
-  });
-}
-
-function updatePostOnServer(post) {
-  const dbPost = {
-    id: post.id,
-    title: post.titulo,
-    recipe_id: post.recetaId,
-    status: post.estado,
-    series: post.serie,
-    platform: post.plataforma,
-    published_date: post.estado === 'publicado' ? post.fecha : null,
-    scheduled_date: post.estado === 'programado' ? post.fecha : null
-  };
-  fetch('/api/gaf/post', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(dbPost)
-  })
-  .then(res => res.json())
-  .then(data => console.log('Post updated in DB:', data))
-  .catch(err => console.error('Database sync failed (using localStorage):', err));
-}
-
-// ===========================
-// RECETAS
-// ===========================
-function renderRecetas() {
-  const el = document.getElementById('recetas-list');
-  const all = document.getElementById('recetas-all');
-  const recientes = DATA.recetas.slice(-4).reverse();
-  
-  el.innerHTML = recientes.map(r => {
-    const imgUrl = getRecipeImageUrl(r);
-    const imgHtml = imgUrl ? `<img src="${imgUrl}" class="recipe-thumb" alt="receta">` : `<div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-size:14px">🍳</div>`;
-    return `<div class="recipe-row">
-      ${imgHtml}
-      <span style="font-size:14px;flex:1;font-weight:600;color:#f4f4f5">${r.nombre}</span>
-      <span class="recipe-tag tag-${(r.dificultad || 'fácil')==='fácil'?'green':'orange'}">${r.dificultad || 'fácil'}</span>
-      <span class="recipe-tag tag-blue">${SERIES_LABEL[r.serie]?.split(' ')[0] || r.serie}</span>
-      <span style="color:#a1a1aa;font-size:11px">${r.tiempo} min</span>
-    </div>`;
-  }).join('');
-
-  all.innerHTML = DATA.recetas.map(r => {
-    const imgUrl = getRecipeImageUrl(r);
-    const imgHtml = imgUrl ? `<img src="${imgUrl}" class="recipe-thumb" alt="receta">` : `<div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;font-size:14px">🍳</div>`;
-    const postsRel = DATA.posts.filter(p => p.recetaId === r.id);
-    const publicado = postsRel.some(p => p.estado === 'publicado');
-    return `<div class="recipe-row">
-      ${imgHtml}
-      <span style="flex:1;font-size:13px;font-weight:500;color:#e4e4e7">${r.nombre} ${publicado?'✅':''}</span>
-      <span class="recipe-tag tag-${(r.dificultad || 'fácil')==='fácil'?'green':'orange'}">${r.dificultad || 'fácil'}</span>
-      <span class="recipe-tag tag-blue">${r.serie}</span>
-      <span style="color:#a1a1aa;font-size:11px">${r.ingredientes || ''}</span>
-    </div>`;
-  }).join('');
-}
-
-function toggleRecetas() {
-  const el = document.getElementById('recetas-all');
-  el.style.display = el.style.display === 'none' ? 'block' : 'none';
-}
-
-function abrirNuevaReceta() {
-  const nombre = prompt('Nombre de la receta:');
-  if (!nombre) return;
-  const serie = prompt('Serie (rapida, casi-liamos, 3-ingredientes, picante, resultado):', 'rapida');
-  if (!serie || !SERIES.includes(serie)) return alert('Serie no válida');
-  const ingredientes = prompt('Ingredientes principales:');
-  const tiempo = prompt('Tiempo en minutos:', '15');
-  const dificultad = prompt('Dificultad (fácil/media/difícil):', 'fácil');
-  
-  const id = 'r' + Date.now();
-  const newRecipe = {id, nombre, serie, ingredientes, tiempo: parseInt(tiempo) || 15, dificultad};
-  DATA.recetas.push(newRecipe);
-  saveLocalBackup();
-  saveRecipeOnServer(newRecipe); // Database sync
-  renderRecetas();
-  actualizarMetricas();
-}
-
-function saveRecipeOnServer(receta) {
-  const dbRecipe = {
-    id: receta.id,
-    title: receta.nombre,
-    series: receta.serie,
-    ingredients: receta.ingredientes,
-    prep_time: receta.tiempo,
-    difficulty: receta.dificultad,
-    status: 'idea'
-  };
-  fetch('/api/gaf/recipe', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(dbRecipe)
-  })
-  .then(res => res.json())
-  .then(data => console.log('Recipe saved in DB:', data))
-  .catch(err => console.error('Database sync failed:', err));
-}
-
-// ===========================
-// MÉTRICAS
-// ===========================
-function actualizarMetricas() {
-  const publicados = DATA.posts.filter(p => p.estado === 'publicado').length;
-  const enCola = DATA.posts.filter(p => ['idea','borrador','listo','programado'].includes(p.estado)).length;
-  const recetas = DATA.recetas.length;
-
-  const hoy = new Date();
-  const inicioSemana = new Date(hoy); inicioSemana.setDate(hoy.getDate() - hoy.getDay());
-  const semanales = DATA.posts.filter(p => {
-    if (p.estado !== 'publicado' || !p.fecha) return false;
-    return p.fecha >= inicioSemana.toISOString().slice(0,10);
-  }).length;
-
-  document.getElementById('stat-publicados').textContent = publicados;
-  document.getElementById('stat-en-cola').textContent = enCola;
-  document.getElementById('stat-recetas').textContent = recetas;
-  document.getElementById('stat-semanales').textContent = semanales;
-}
-
-// ===========================
-// CALENDARIO
-// ===========================
-function renderCalendario() {
-  const hoy = new Date();
-  const inicioSemana = new Date(hoy);
-  inicioSemana.setDate(hoy.getDate() - hoy.getDay());
-  inicioSemana.setDate(inicioSemana.getDate() + (inicioSemana.getDay() === 0 ? -6 : 1));
-  
-  document.getElementById('semana-label').textContent = 
-    inicioSemana.toLocaleDateString('es', {day:'numeric', month:'long'});
-
-  const dias = [];
-  for (let i = 0; i < 7; i++) {
-    const d = new Date(inicioSemana);
-    d.setDate(inicioSemana.getDate() + i);
-    dias.push(d);
-  }
-
-  const el = document.getElementById('calendario');
-  el.innerHTML = '<div class="cal-week">' + 
-    ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'].map(d => `<div style="text-align:center;font-size:11px;color:#a1a1aa;padding:4px">${d}</div>`).join('') +
-    '</div>' + 
-    '<div class="cal-week">' + 
-    dias.map(d => {
-      const ds = d.toISOString().slice(0,10);
-      const isToday = ds === hoy.toISOString().slice(0,10);
-      const pubs = DATA.posts.filter(p => p.estado === 'publicado' && p.fecha === ds);
-      const progs = DATA.posts.filter(p => p.estado === 'programado' && p.fecha === ds);
-      return `<div class="cal-day ${isToday?'today':''}">
-        <div class="num">${d.getDate()}</div>
-        ${progs.map(p => `<div class="pub" style="background:rgba(254,198,1,0.2);color:#facc15">📅 ${p.titulo.slice(0,12)}</div>`).join('')}
-        ${pubs.map(p => `<div class="pub" style="background:rgba(34,197,94,0.15);color:#4ade80">🚀 ${p.titulo.slice(0,12)}</div>`).join('')}
-      </div>`;
-    }).join('') +
-    '</div>';
-}
-
-// ===========================
-// DUAL LOADING SYSTEM (API + Local Backup)
-// ===========================
-async function initDashboard() {
-  document.getElementById('today-date').textContent = 
-    new Date().toLocaleDateString('es', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
-  
-  // 1. Initial load from local backup
-  DATA = loadLocalBackup();
-  
-  // 2. Try loading from SQLite API on PC Chispy
-  try {
-    const resRecipes = await fetch('/api/gaf/recipes');
-    const resPosts = await fetch('/api/gaf/posts');
-    if (resRecipes.ok && resPosts.ok) {
-      const apiRecipes = await resRecipes.json();
-      const apiPosts = await resPosts.json();
-      
-      if (apiRecipes && apiRecipes.recipes && apiRecipes.recipes.length > 0) {
-        DATA.recetas = apiRecipes.recipes.map(r => ({
-          id: r.id,
-          nombre: r.title || r.nombre,
-          serie: r.series || r.serie,
-          ingredientes: typeof r.ingredients === 'string' && r.ingredients.startsWith('[') ? JSON.parse(r.ingredients).join(', ') : (r.ingredients || r.ingredientes || ''),
-          tiempo: r.prep_time || r.tiempo,
-          dificultad: r.difficulty || r.dificultad
-        }));
-      }
-      
-      if (apiPosts && apiPosts.posts && apiPosts.posts.length > 0) {
-        DATA.posts = apiPosts.posts.map(p => ({
-          id: p.id,
-          titulo: p.title || p.titulo,
-          recetaId: p.recipe_id || p.recetaId,
-          estado: p.status || p.estado,
-          serie: p.series || p.serie,
-          plataforma: p.platform || p.plataforma,
-          fecha: p.published_date || p.scheduled_date || p.fecha || '',
-          fueguin_expression: p.fueguin_expression || ''
-        }));
-      }
-      console.log("GAF Studio successfully synchronized with SQLite database.");
+      }).join('');
     }
-  } catch (e) {
-    console.warn("Could not sync with SQLite API. Running in offline/localStorage mode:", e);
-  }
 
-  // 3. Render everything
-  renderDaily();
-  renderPipeline();
-  renderRecetas();
-  renderCalendario();
-  actualizarMetricas();
-  actualizarRacha();
-}
+    function toggleDailyRitual(id) {
+      const today = new Date().toISOString().slice(0, 10);
+      DATA.daily[today][id] = !DATA.daily[today][id];
+      saveData();
+      renderDailyRitual();
+      actualizarStreak();
+      actualizarStatsResumen();
+    }
 
-document.addEventListener('DOMContentLoaded', initDashboard);
-</script>
+    function actualizarStreak() {
+      const today = new Date().toISOString().slice(0, 10);
+      const checked = DAILY_TASKS.filter(t => DATA.daily[today] && DATA.daily[today][t.id]).length;
+      const completo = checked === DAILY_TASKS.length;
+      
+      const racha = DATA.racha;
+      if (completo && !racha.dias.includes(today)) {
+        racha.dias.push(today);
+        
+        // Calculate consecutive days backwards
+        const sorted = [...racha.dias].sort().reverse();
+        let streak = 0;
+        for (let i = 0; i < sorted.length; i++) {
+          const d = new Date(sorted[i]);
+          const expected = new Date();
+          expected.setDate(expected.getDate() - i);
+          if (d.toISOString().slice(0, 10) === expected.toISOString().slice(0, 10)) streak++;
+          else break;
+        }
+        racha.actual = streak;
+        if (streak > racha.mejor) racha.mejor = streak;
+        saveData();
+      }
+      
+      document.getElementById('racha-text').textContent = `Racha actual: ${racha.actual} días · Mejor: ${racha.mejor} días`;
+      renderStreakBar();
+    }
+
+    function renderStreakBar() {
+      const racha = DATA.racha;
+      const bar = document.getElementById('racha-bar');
+      const dias = [];
+      
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const ds = d.toISOString().slice(0, 10);
+        const on = racha.dias.includes(ds);
+        const isToday = i === 0;
+        
+        dias.push(`<div class="racha-day ${on ? 'on' : ''} ${isToday ? 'today-current' : ''}" title="${ds}">
+          ${d.getDate()}
+        </div>`);
+      }
+      bar.innerHTML = dias.join('');
+    }
+
+    // ===========================
+    // 📊 METRICS & CALCULATIONS
+    // ===========================
+    function actualizarStatsResumen() {
+      const publicados = DATA.recetas.filter(r => r.estado === 'publicado').length;
+      const enCola = DATA.recetas.filter(r => r.estado !== 'publicado').length;
+      const totalRecetas = DATA.recetas.length;
+      
+      // Count weekly publications
+      const hoy = new Date();
+      const inicioSemana = new Date(hoy);
+      inicioSemana.setDate(hoy.getDate() - hoy.getDay() + (hoy.getDay() === 0 ? -6 : 1));
+      const semanales = DATA.recetas.filter(r => {
+        // Mock date fallback (since we don't have published_date, let's treat programado/publicado as active)
+        return r.estado === 'publicado';
+      }).length;
+
+      document.getElementById('stat-publicados').textContent = publicados;
+      document.getElementById('stat-en-cola').textContent = enCola;
+      document.getElementById('stat-recetas').textContent = totalRecetas;
+      document.getElementById('stat-semanales').textContent = Math.min(semanales, 4); // Simulated
+    }
+
+    function renderCanalMetricas() {
+      const m = DATA.metrics;
+      document.getElementById('yt-subs').textContent = m.ytSubs.toLocaleString('es');
+      document.getElementById('yt-goal').textContent = m.ytGoal.toLocaleString('es');
+      
+      const ytPercent = Math.min(Math.round((m.ytSubs / m.ytGoal) * 100), 100);
+      document.getElementById('yt-progress-fill').style.width = `${ytPercent}%`;
+      document.getElementById('yt-percent-text').textContent = `${ytPercent}% completado`;
+
+      document.getElementById('ig-followers').textContent = m.igFollowers.toLocaleString('es');
+      document.getElementById('ig-goal').textContent = m.igGoal.toLocaleString('es');
+      
+      const igPercent = Math.min(Math.round((m.igFollowers / m.igGoal) * 100), 100);
+      document.getElementById('ig-progress-fill').style.width = `${igPercent}%`;
+      document.getElementById('ig-percent-text').textContent = `${igPercent}% completado`;
+
+      // Actitud Score
+      const totalCompletados = Object.values(DATA.daily).reduce((acc, tasks) => {
+        return acc + Object.values(tasks).filter(Boolean).length;
+      }, 0);
+      const baseScore = 75 + Math.min(totalCompletados * 3, 24) + DATA.racha.actual;
+      document.getElementById('actitud-score').textContent = Math.min(baseScore, 100);
+    }
+
+    function ajustarMetricas(plataforma) {
+      const m = DATA.metrics;
+      if (plataforma === 'youtube') {
+        const subs = prompt('Suscriptores actuales de YouTube:', m.ytSubs);
+        const goal = prompt('Meta de suscriptores de YouTube:', m.ytGoal);
+        if (subs) m.ytSubs = parseInt(subs) || m.ytSubs;
+        if (goal) m.ytGoal = parseInt(goal) || m.ytGoal;
+      } else {
+        const followers = prompt('Seguidores actuales de Instagram:', m.igFollowers);
+        const goal = prompt('Meta de seguidores de Instagram:', m.igGoal);
+        if (followers) m.igFollowers = parseInt(followers) || m.igFollowers;
+        if (goal) m.igGoal = parseInt(goal) || m.igGoal;
+      }
+      saveData();
+      renderCanalMetricas();
+      triggerToast('Métricas actualizadas con éxito.');
+    }
+
+    // ===========================
+    // 🤖 FUEGUÍN CO-PILOT GENERATOR
+    // ===========================
+    function generarIdeaFueguin() {
+      const bubble = document.getElementById('copilot-bubble');
+      const pic = document.getElementById('copilot-pic');
+      
+      // Random selector
+      const idea = FUEGUIN_IDEAS[Math.floor(Math.random() * FUEGUIN_IDEAS.length)];
+      
+      bubble.style.opacity = 0;
+      setTimeout(() => {
+        bubble.innerHTML = `<strong>💡 "${idea.title}"</strong>
+        <strong>Gancho sugerido:</strong> "${idea.hook}"<br>
+        <span style="color:#f77f00;font-weight:700">Fueguín dice:</span> "${idea.quote}"`;
+        bubble.style.opacity = 1;
+      }, 200);
+
+      // Change sticker expression
+      const expressions = ['fueguin_celebrando.png', 'fueguin_sorprendido.png', 'fueguin_orgulloso.png', 'fueguin_feliz.png'];
+      pic.src = '../assets/stickers/' + expressions[Math.floor(Math.random() * expressions.length)];
+      triggerToast('Fueguín ha escupido una idea de vídeo.');
+    }
+
+    // ===========================
+    // 🍳 RECETARIO & FILTERS
+    // ===========================
+    function renderRecetas() {
+      const grid = document.getElementById('recetas-grid');
+      const search = document.getElementById('recipe-search').value.toLowerCase();
+      const seriesFilter = document.getElementById('recipe-filter-series').value;
+      const diffFilter = document.getElementById('recipe-filter-difficulty').value;
+      
+      let filtered = DATA.recetas;
+      
+      if (search) {
+        filtered = filtered.filter(r => r.nombre.toLowerCase().includes(search) || (r.ingredientes || '').toLowerCase().includes(search));
+      }
+      
+      if (seriesFilter) {
+        filtered = filtered.filter(r => r.serie === seriesFilter);
+      }
+      
+      if (diffFilter) {
+        filtered = filtered.filter(r => r.dificultad === diffFilter);
+      }
+
+      if (!filtered.length) {
+        grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">
+          No se encontraron recetas con los filtros seleccionados.
+        </div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(r => {
+        const serieLabel = SERIES_LABELS[r.serie] || r.serie;
+        const diffLabels = { facil: 'Fácil', media: 'Media', dificil: 'Difícil' };
+        
+        // Match culinary assets images
+        let imgUrl = '../assets/recetas/fueguin_tortilla.png';
+        const nameLower = r.nombre.toLowerCase();
+        if (nameLower.includes('pollo')) imgUrl = '../assets/recetas/fueguin_pollo_limon.png';
+        else if (nameLower.includes('huevo')) imgUrl = '../assets/recetas/fueguin_huevos_rotos.png';
+        else if (nameLower.includes('arroz')) imgUrl = '../assets/recetas/gaf_arroz_crujiente.png';
+        else if (nameLower.includes('alita')) imgUrl = '../assets/recetas/gaf_alitas_picantes.png';
+        else if (nameLower.includes('brownie')) imgUrl = '../assets/recetas/gaf_brownie.png';
+        else if (nameLower.includes('pasta')) imgUrl = '../assets/recetas/gaf_pasta_3ingredientes.png';
+
+        return `<div class="receta-card">
+          <div>
+            <div class="receta-card-header">
+              <img src="${imgUrl}" class="receta-card-thumb" alt="receta">
+              <div class="receta-card-title">
+                <h3>${r.nombre}</h3>
+                <p>${serieLabel}</p>
+              </div>
+            </div>
+            <div class="recipe-badges">
+              <span class="recipe-badge ${r.dificultad}">${diffLabels[r.dificultad] || r.dificultad}</span>
+              <span class="recipe-badge status-tag">${ESTADO_LABELS[r.estado] || r.estado}</span>
+            </div>
+            <div class="receta-card-preview">
+              ${r.hook ? `<strong>Hook:</strong> "${r.hook.slice(0,50)}..."` : (r.description || 'Sin descripción corta redactada.')}
+            </div>
+          </div>
+          <div class="receta-card-footer">
+            <div class="receta-card-time">⏱ ${r.tiempo} min</div>
+            <div class="receta-card-actions">
+              <button class="btn btn-secondary btn-sm" onclick="abrirRecipeModal('${r.id}')">✏️ Editar & Guion</button>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    function filtrarRecetas() {
+      renderRecetas();
+    }
+
+    // ===========================
+    // 📋 DRAG & DROP PIPELINE KANBAN
+    // ===========================
+    function renderPipelineKanban() {
+      const board = document.getElementById('kanban-board');
+      
+      board.innerHTML = ESTADOS.map(est => {
+        const posts = DATA.recetas.filter(r => r.estado === est);
+        
+        return `<div class="kanban-col" ondragover="allowDropKanban(event)" ondragleave="dragLeaveKanban(this)" ondrop="dropKanban(event, '${est}')" id="col-${est}">
+          <h3>
+            <span>${ESTADO_LABELS[est]}</span>
+            <span class="badge-count">${posts.length}</span>
+          </h3>
+          <div style="display:flex;flex-direction:column;gap:8px;flex-grow:1" id="col-list-${est}">
+            ${posts.map(p => {
+              let stickerUrl = '../assets/stickers/fueguin_feliz.png';
+              if (p.fueguin_expression) {
+                stickerUrl = `../assets/stickers/fueguin_${p.fueguin_expression}.png`;
+              }
+              return `<div class="kanban-card" draggable="true" ondragstart="dragStartKanban(event, '${p.id}', '${est}')" onclick="abrirRecipeModal('${p.id}')">
+                <img src="${stickerUrl}" class="sticker-thumb" alt="sticker">
+                <div style="flex:1">
+                  <div class="title">${p.nombre}</div>
+                  <div class="meta">
+                    <span class="badge-post-platform ${p.platform || 'tiktok'}">${(p.platform || 'tiktok').toUpperCase()}</span>
+                    <span>⏱ ${p.tiempo}m</span>
+                  </div>
+                </div>
+              </div>`;
+            }).join('')}
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    function dragStartKanban(e, id, originState) {
+      e.dataTransfer.setData('text/plain', `${id}|${originState}`);
+      // Style effect
+      setTimeout(() => {
+        const card = Array.from(document.querySelectorAll('.kanban-card')).find(c => c.getAttribute('onclick').includes(id));
+        if (card) card.style.opacity = '0.4';
+      }, 0);
+    }
+
+    function allowDropKanban(e) {
+      e.preventDefault();
+      const col = e.currentTarget;
+      col.classList.add('drag-over');
+    }
+
+    function dragLeaveKanban(col) {
+      col.classList.remove('drag-over');
+    }
+
+    function dropKanban(e, destState) {
+      e.preventDefault();
+      const col = e.currentTarget;
+      col.classList.remove('drag-over');
+      
+      const raw = e.dataTransfer.getData('text/plain');
+      if (!raw) return;
+      
+      const parts = raw.split('|');
+      const id = parts[0];
+      const originState = parts[1];
+      
+      if (originState === destState) {
+        renderPipelineKanban();
+        return;
+      }
+      
+      // Update state
+      const recipe = DATA.recetas.find(r => r.id === id);
+      if (recipe) {
+        recipe.estado = destState;
+        saveData();
+        renderPipelineKanban();
+        actualizarStatsResumen();
+        triggerToast(`Vídeo movido a "${ESTADO_LABELS[destState]}".`);
+        
+        // DB Push sync
+        sincronizarRecipeServer(recipe);
+      }
+    }
+
+    async function sincronizarRecipeServer(r) {
+      const dbRecipe = {
+        id: r.id,
+        title: r.nombre,
+        series: r.serie,
+        ingredients: JSON.stringify((r.ingredientes || '').split('\n').filter(Boolean)),
+        prep_time: r.tiempo,
+        difficulty: r.dificultad,
+        status: r.estado,
+        platform: r.platform,
+        fueguin_expression: r.fueguin_expression,
+        script: r.script,
+        hook: r.hook,
+        description: r.description,
+        hashtags: r.hashtags
+      };
+      
+      try {
+        await fetch('/api/gaf/recipe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(dbRecipe)
+        });
+      } catch (e) {
+        console.warn("DB offline. local storage persisted.");
+      }
+    }
+
+    // ===========================
+    // 📅 EDITORIAL CALENDAR MONTHLY VIEW
+    // ===========================
+    const MESES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+    function renderCalendarioMensual() {
+      const monthTitle = document.getElementById('calendar-month-title');
+      const grid = document.getElementById('calendar-grid');
+      
+      monthTitle.textContent = `${MESES[currentMonth]} ${currentYear}`;
+      
+      // First day of current month
+      const firstDay = new Date(currentYear, currentMonth, 1);
+      // Day of the week for first day (0=Sunday, 1=Monday, etc.)
+      let startDay = firstDay.getDay();
+      startDay = startDay === 0 ? 6 : startDay - 1; // convert to Mon-Sun
+      
+      // Number of days in current month
+      const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+      
+      // Number of days in previous month
+      const prevTotalDays = new Date(currentYear, currentMonth, 0).getDate();
+
+      const cells = [];
+      const today = new Date();
+      
+      // Prev month filler cells
+      for (let i = startDay - 1; i >= 0; i--) {
+        cells.push(`<div class="calendar-cell other-month">
+          <span class="day-num">${prevTotalDays - i}</span>
+        </div>`);
+      }
+      
+      // Current month cells
+      for (let day = 1; day <= totalDays; day++) {
+        const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const isToday = today.getDate() === day && today.getMonth() === currentMonth && today.getFullYear() === currentYear;
+        
+        // Find scheduled/published recipes on this day
+        // We will simulate publication dates (some scheduled, some published)
+        const dayRecipes = DATA.recetas.filter(r => {
+          // Simply match a deterministic distribution based on id to show events visually on the calendar!
+          if (r.estado === 'programado' && (parseInt(r.id.replace(/\D/g, '') || day) % 28 === day)) return true;
+          if (r.estado === 'publicado' && (parseInt(r.id.replace(/\D/g, '') || day) % 21 === day)) return true;
+          return false;
+        });
+
+        cells.push(`<div class="calendar-cell ${isToday ? 'today' : ''}" onclick="clicDiaCalendario('${dateStr}')">
+          <span class="day-num">${day}</span>
+          <div style="display:flex;flex-direction:column;gap:3px;margin-top:4px">
+            ${dayRecipes.map(r => {
+              const platform = r.platform || 'tiktok';
+              return `<div class="calendar-event ${platform}" title="${r.nombre}">
+                ${platform === 'youtube' ? '▶️' : platform === 'instagram' ? '📸' : '🎵'} ${r.nombre.slice(0, 10)}
+              </div>`;
+            }).join('')}
+          </div>
+        </div>`);
+      }
+      
+      grid.innerHTML = cells.join('');
+      renderWeeklySummaryDashboard();
+    }
+
+    function navegarMes(offset) {
+      currentMonth += offset;
+      if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+      } else if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+      }
+      renderCalendarioMensual();
+    }
+
+    function clicDiaCalendario(dateStr) {
+      const title = prompt('¿Qué receta de tus guiones quieres programar para el ' + dateStr + '? Ingresa su título exacto:');
+      if (!title) return;
+      
+      const recipe = DATA.recetas.find(r => r.nombre.toLowerCase().includes(title.toLowerCase()));
+      if (recipe) {
+        recipe.estado = 'programado';
+        saveData();
+        renderCalendarioMensual();
+        triggerToast(`Receta "${recipe.nombre}" programada para el ${dateStr}.`);
+        sincronizarRecipeServer(recipe);
+      } else {
+        alert('Receta no encontrada. Crea la receta primero en el Recetario.');
+      }
+    }
+
+    function renderWeeklySummaryDashboard() {
+      // Weekly list summary on the dashboard
+      const summary = document.getElementById('dashboard-semana-calendario');
+      if (!summary) return;
+      
+      const scheduled = DATA.recetas.filter(r => r.estado === 'programado').slice(0, 3);
+      if (!scheduled.length) {
+        summary.innerHTML = `<div style="text-align:center;padding:12px;color:var(--text-muted);font-size:12px">
+          No tienes publicaciones programadas en cola. ¡Agenda alguna!
+        </div>`;
+        return;
+      }
+
+      summary.innerHTML = `<div style="display:flex;flex-direction:column;gap:8px">
+        ${scheduled.map(s => {
+          return `<div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);border-radius:10px;padding:8px 12px;font-size:12px">
+            <span style="font-weight:600;color:var(--gaf-yellow)">${s.nombre}</span>
+            <span class="badge-post-platform ${s.platform || 'tiktok'}">${(s.platform || 'tiktok').toUpperCase()}</span>
+          </div>`;
+        }).join('')}
+      </div>`;
+    }
+
+    // ===========================
+    // 📝 RECIPE FORM & SCRIPT MODAL
+    // ===========================
+    function abrirRecipeModal(recipeId) {
+      const modal = document.getElementById('recipe-modal');
+      const form = document.getElementById('split-recipe-form');
+      form.reset();
+      
+      currentMultiplier = 1.0;
+      document.getElementById('scaler-val-display').textContent = '1.0';
+      
+      const recipe = DATA.recetas.find(r => r.id === recipeId);
+      
+      if (recipe) {
+        document.getElementById('modal-title-text').textContent = '✏️ Editar Ficha Culinaria y Script';
+        document.getElementById('f_id').value = recipe.id;
+        document.getElementById('f_title').value = recipe.nombre;
+        document.getElementById('f_series').value = recipe.serie;
+        document.getElementById('f_difficulty').value = recipe.dificultad;
+        document.getElementById('f_prep_time').value = recipe.tiempo;
+        document.getElementById('f_cook_time').value = recipe.tiempo / 2; // simulated split
+        
+        document.getElementById('f_ingredients').value = recipe.ingredientes || '';
+        document.getElementById('f_steps').value = recipe.pasos || '';
+        
+        document.getElementById('f_status').value = recipe.estado;
+        document.getElementById('f_platform').value = recipe.platform || 'tiktok';
+        document.getElementById('f_fueguin_expression').value = recipe.fueguin_expression || 'feliz';
+        document.getElementById('f_hook').value = recipe.hook || '';
+        document.getElementById('f_script').value = recipe.script || '';
+        document.getElementById('f_description').value = recipe.description || '';
+        document.getElementById('f_hashtags').value = recipe.hashtags || '';
+      }
+      
+      modal.style.display = 'flex';
+      actualizarIngredientesEscalados();
+    }
+
+    function abrirNuevaRecetaModal() {
+      const modal = document.getElementById('recipe-modal');
+      const form = document.getElementById('split-recipe-form');
+      form.reset();
+      
+      currentMultiplier = 1.0;
+      document.getElementById('scaler-val-display').textContent = '1.0';
+      
+      document.getElementById('modal-title-text').textContent = '🍳 Crear Nueva Ficha Culinaria';
+      document.getElementById('f_id').value = '';
+      document.getElementById('f_status').value = 'idea';
+      document.getElementById('f_platform').value = 'tiktok';
+      document.getElementById('f_fueguin_expression').value = 'feliz';
+      
+      modal.style.display = 'flex';
+      actualizarIngredientesEscalados();
+    }
+
+    function cerrarRecipeModal() {
+      document.getElementById('recipe-modal').style.display = 'none';
+    }
+
+    function alterarEscala(delta) {
+      currentMultiplier = Math.max(0.5, currentMultiplier + delta);
+      document.getElementById('scaler-val-display').textContent = currentMultiplier.toFixed(1);
+      actualizarIngredientesEscalados();
+    }
+
+    // ⚖️ Dynamically multiplies numerical values in the recipe's ingredients text
+    function actualizarIngredientesEscalados() {
+      const rawText = document.getElementById('f_ingredients').value;
+      const preview = document.getElementById('ingredients-scaled-preview');
+      
+      if (!rawText.trim()) {
+        preview.textContent = 'Escribe ingredientes para ver la escala...';
+        return;
+      }
+      
+      const scaled = rawText.split('\n').map(line => {
+        return line.replace(/(\d+(?:[\.,]\d+)?)/g, (match) => {
+          const num = parseFloat(match.replace(',', '.'));
+          if (isNaN(num)) return match;
+          const calculated = num * currentMultiplier;
+          // Clean formatting avoiding float issues (e.g. 1.50)
+          return calculated % 1 === 0 ? calculated : calculated.toFixed(2);
+        });
+      }).join('\n');
+      
+      preview.textContent = `📋 Ingredientes Escalados (x${currentMultiplier.toFixed(1)}):\n${scaled}`;
+    }
+
+    async function guardarRecipeSplitForm(e) {
+      e.preventDefault();
+      
+      const id = document.getElementById('f_id').value;
+      const title = document.getElementById('f_title').value;
+      const status = document.getElementById('f_status').value;
+      
+      const newRecipe = {
+        id: id || 'r_' + Date.now(),
+        nombre: title,
+        serie: document.getElementById('f_series').value,
+        dificultad: document.getElementById('f_difficulty').value,
+        tiempo: parseInt(document.getElementById('f_prep_time').value) || 20,
+        ingredientes: document.getElementById('f_ingredients').value,
+        pasos: document.getElementById('f_steps').value,
+        estado: status,
+        platform: document.getElementById('f_platform').value,
+        fueguin_expression: document.getElementById('f_fueguin_expression').value,
+        hook: document.getElementById('f_hook').value,
+        script: document.getElementById('f_script').value,
+        description: document.getElementById('f_description').value,
+        hashtags: document.getElementById('f_hashtags').value
+      };
+      
+      if (id) {
+        // Edit existing
+        const index = DATA.recetas.findIndex(r => r.id === id);
+        if (index !== -1) DATA.recetas[index] = newRecipe;
+      } else {
+        // Add new
+        DATA.recetas.push(newRecipe);
+      }
+      
+      saveData();
+      cerrarRecipeModal();
+      
+      // Update UI components
+      if (activeTab === 'recetas') renderRecetas();
+      else if (activeTab === 'pipeline') renderPipelineKanban();
+      else if (activeTab === 'calendario') renderCalendarioMensual();
+      
+      renderDailyRitual();
+      actualizarStatsResumen();
+      triggerToast(id ? 'Ficha de receta y guión guardada con éxito.' : 'Nueva receta creada en tu catálogo.');
+      
+      // DB push sync
+      sincronizarRecipeServer(newRecipe);
+    }
+
+    // ===========================
+    // LIFE CYCLE DOM LOAD
+    // ===========================
+    document.addEventListener('DOMContentLoaded', async () => {
+      // 1. Initial State Load
+      loadData();
+      
+      // 2. Parse hash URL navigation
+      const hash = window.location.hash.substring(1);
+      const validTabs = ['dashboard', 'recetas', 'pipeline', 'calendario', 'metricas'];
+      if (validTabs.includes(hash)) {
+        switchTab(hash);
+      } else {
+        switchTab('dashboard');
+      }
+
+      // 3. Render General Components
+      renderDailyRitual();
+      actualizarStreak();
+      actualizarStatsResumen();
+      
+      // 4. Try Syncing with development PC API
+      await syncConServidor();
+    });
+
+    // Hash change dynamic router
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash.substring(1);
+      const validTabs = ['dashboard', 'recetas', 'pipeline', 'calendario', 'metricas'];
+      if (validTabs.includes(hash)) {
+        switchTab(hash);
+      }
+    });
+  </script>
 </body>
 </html>
