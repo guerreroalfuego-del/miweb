@@ -181,7 +181,7 @@ select option { background: #1a1a2e; color: white; }
 </head>
 <body>
 
-<a href="/guerrero-al-fuego/" class="back">← Volver a Guerrero al Fuego</a>
+<a href="../" class="back">← Volver a Guerrero al Fuego</a>
 
 <div class="gaf-header">
   <div>
@@ -265,7 +265,7 @@ const DEFAULT_POSTS = [
 
 // Helper to map recipe titles to their brand assets images
 function getRecipeImageUrl(recipe) {
-  const base = '/guerrero-al-fuego/assets/recetas/';
+  const base = '../assets/recetas/';
   const name = (recipe.nombre || recipe.title || '').toLowerCase();
   if (name.includes('pollo')) return base + 'fueguin_pollo_limon.png';
   if (name.includes('huevo')) return base + 'fueguin_huevos_rotos.png';
@@ -279,7 +279,7 @@ function getRecipeImageUrl(recipe) {
 
 // Helper to map Fueguin stickers
 function getFueguinStickerUrl(expression) {
-  const base = '/guerrero-al-fuego/assets/stickers/';
+  const base = '../assets/stickers/';
   const exp = (expression || '').toLowerCase();
   if (exp === 'celebrando' || exp === 'feliz') return base + 'fueguin_celebrando.png';
   if (exp === 'fail' || exp === 'error') return base + 'fueguin_fail.png';
