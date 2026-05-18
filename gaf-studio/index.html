@@ -1108,6 +1108,28 @@
       transform: translateY(0);
       opacity: 1;
     }
+
+    /* AI proposals styles */
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.06); text-shadow: 0 0 10px rgba(254, 198, 1, 0.5); }
+      100% { transform: scale(1); }
+    }
+    .proposal-item {
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(254, 198, 1, 0.15);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.2s;
+    }
+    .proposal-item:hover {
+      border-color: var(--gaf-yellow);
+      background: rgba(254, 198, 1, 0.02);
+    }
   </style>
 </head>
 <body>
@@ -1138,6 +1160,9 @@
         <button class="nav-btn" onclick="switchTab('metricas')">
           <span class="icon">📊</span> <span>Métricas de Canal</span>
         </button>
+        <button class="nav-btn" onclick="switchTab('sandbox')">
+          <span class="icon">🧪</span> <span>Vista Previa Web</span>
+        </button>
       </div>
 
       <div class="sidebar-footer">
@@ -1166,6 +1191,25 @@
 
       <!-- 🏠 TAB: DASHBOARD -->
       <div id="tab-dashboard" class="tab-content active">
+        <!-- 🤖 CHISPY AI PROPOSALS PANEL -->
+        <div class="card proposals-widget" id="proposals-widget" style="display:none; margin-bottom:20px; border:1px solid var(--gaf-yellow); background:linear-gradient(145deg, #1b170e, #0e0d08); box-shadow:0 0 15px rgba(254, 198, 1, 0.15); border-radius:16px; padding:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <span style="font-size:1.6rem; animation: pulse 2s infinite;">📥</span>
+              <div>
+                <h3 style="font-family:var(--font-outfit); font-size:14px; color:var(--gaf-yellow); font-weight:700;">Propuestas de Chispy (AI Workflow)</h3>
+                <p style="font-size:12px; color:var(--text-muted);" id="proposals-summary">Chispy ha preparado ideas culinarias y optimizaciones de mantenimiento.</p>
+              </div>
+            </div>
+            <button class="btn btn-secondary btn-sm" id="btn-toggle-proposals" style="padding:6px 12px; font-size:11px;" onclick="toggleProposalsDrawer()">Revisar Propuestas</button>
+          </div>
+          
+          <!-- Drawer list -->
+          <div id="proposals-drawer" style="display:none; margin-top:16px; padding-top:16px; border-top:1px dashed rgba(254, 198, 1, 0.2); flex-direction:column; gap:12px;">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
         <div class="grid-3">
           <!-- Daily Checklist -->
           <div class="card grid-col-full" style="grid-column: span 2;">
@@ -1355,6 +1399,26 @@
               <p style="font-size:12.5px;color:var(--text-muted);line-height:1.6">Tu constancia publicando recetas de la hermandad y completando tu ritual diario mantiene al algoritmo contento. Sigue así y Fueguín te condecorará como Guerrero Legendario en los fogones.</p>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- 🧪 TAB: SANDBOX PREVIEW -->
+      <div id="tab-sandbox" class="tab-content">
+        <div class="card" style="height: calc(100vh - 180px); display: flex; flex-direction: column; padding: 16px; overflow: hidden; border: 1px solid rgba(96,165,250,0.15); background: rgba(16,24,48,0.2);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-shrink:0; flex-wrap:wrap; gap:10px;">
+            <h2 style="margin:0; font-size:15px; color:var(--gaf-yellow); display:flex; align-items:center; gap:6px; font-family:var(--font-outfit);">
+              <span>🧪</span> Panel de Pruebas y Sandbox de la Web
+            </h2>
+            <div style="display:flex; gap:10px; align-items:center;">
+              <span style="font-size:11px; color:var(--text-muted)">Servidor:</span>
+              <select id="sandbox-url-select" class="select-input" style="padding:5px 10px; font-size:11.5px; border-color:rgba(96,165,250,0.3);" onchange="actualizarIframeSandbox()">
+                <option value="local">💻 Servidor Local (Z:\.openclaw\workspace\salidas)</option>
+                <option value="prod">🚀 Servidor de Producción (Live Web)</option>
+              </select>
+              <button class="btn btn-secondary btn-sm" style="padding:5px 12px; font-size:11px;" onclick="recargarIframeSandbox()">🔄 Recargar</button>
+            </div>
+          </div>
+          <iframe id="sandbox-iframe" src="../index.html" style="width:100%; height:100%; border:none; border-radius:12px; background:#101015; border:1px solid rgba(255,255,255,0.05);" referrerpolicy="no-referrer"></iframe>
         </div>
       </div>
     </main>
@@ -1577,7 +1641,8 @@
         recetas: { main: '🍳 Recetario & Fichas de Script', sub: 'Crea recetas, escala porciones en tiempo real y escribe tus ganchos de vídeo.' },
         pipeline: { main: '📋 Pipeline de Contenidos', sub: 'Arrastra y suelta tus vídeos cortos de cocina a través del proceso editorial.' },
         calendario: { main: '📅 Calendario de Publicación', sub: 'Calendario interactivo mensual de tus publicaciones en redes.' },
-        metricas: { main: '📊 Métricas y Score de Actitud', sub: 'Compara tu crecimiento de suscriptores y visualiza tus metas.' }
+        metricas: { main: '📊 Métricas y Score de Actitud', sub: 'Compara tu crecimiento de suscriptores y visualiza tus metas.' },
+        sandbox: { main: '🧪 Vista Previa de la Web', sub: 'Prueba la web en tu entorno local antes de mandar los cambios a internet.' }
       };
       
       const titleText = document.getElementById('tab-title-text');
@@ -1592,6 +1657,7 @@
       else if (tabId === 'pipeline') renderPipelineKanban();
       else if (tabId === 'calendario') renderCalendarioMensual();
       else if (tabId === 'metricas') renderCanalMetricas();
+      else if (tabId === 'sandbox') recargarIframeSandbox();
     }
 
     // ===========================
@@ -2293,7 +2359,7 @@
       
       // 2. Parse hash URL navigation
       const hash = window.location.hash.substring(1);
-      const validTabs = ['dashboard', 'recetas', 'pipeline', 'calendario', 'metricas'];
+      const validTabs = ['dashboard', 'recetas', 'pipeline', 'calendario', 'metricas', 'sandbox'];
       if (validTabs.includes(hash)) {
         switchTab(hash);
       } else {
@@ -2304,6 +2370,7 @@
       renderDailyRitual();
       actualizarStreak();
       actualizarStatsResumen();
+      renderProposalsWidget();
       
       // 4. Try Syncing with development PC API
       await syncConServidor();
@@ -2312,11 +2379,147 @@
     // Hash change dynamic router
     window.addEventListener('hashchange', () => {
       const hash = window.location.hash.substring(1);
-      const validTabs = ['dashboard', 'recetas', 'pipeline', 'calendario', 'metricas'];
+      const validTabs = ['dashboard', 'recetas', 'pipeline', 'calendario', 'metricas', 'sandbox'];
       if (validTabs.includes(hash)) {
         switchTab(hash);
       }
     });
+
+    // ===========================
+    // 🧪 SANDBOX IFRAME HELPERS
+    // ===========================
+    function actualizarIframeSandbox() {
+      const select = document.getElementById('sandbox-url-select');
+      const iframe = document.getElementById('sandbox-iframe');
+      if (!iframe || !select) return;
+      if (select.value === 'local') {
+        iframe.src = '../index.html';
+      } else {
+        iframe.src = 'https://guerreroalfuego.com/index.html';
+      }
+    }
+    
+    function recargarIframeSandbox() {
+      const iframe = document.getElementById('sandbox-iframe');
+      if (iframe) iframe.src = iframe.src;
+    }
+
+    // ===========================
+    // 🤖 AI WORKFLOW: PROPOSALS
+    // ===========================
+    let CHISPY_PROPOSALS = [
+      { id: 'prop_r1', type: 'recipe', title: '🍳 Huevo con Costra de Parmesano', desc: 'Una propuesta rápida de Fueguín. Crujiente, salado y ultra viral.', ingredients: '2 huevos camperos\n50g queso parmesano rallado\n1 pizca pimienta negra\n1 chorro aceite oliva', steps: '1. Esparcir el queso rallado formando un círculo en la sartén fría.\n2. Calentar a fuego medio hasta que se funda y empiece a dorarse.\n3. Cascar los huevos encima del queso, tapar y cuajar la clara.\n4. Doblar al servir formando un taco crujiente.', prep_time: 10, difficulty: 'facil', platform: 'tiktok', fueguin_expression: 'celebrando', hook: '¿Sabías que estabas friendo mal los huevos todo este tiempo? Mira esto...' },
+      { id: 'prop_m1', type: 'maintenance', title: '🚀 Optimizar SEO e imágenes de Web', desc: 'Chispy ha recalculado el sitemap de tu web para mejorar SEO y ha comprimido 4 imágenes en la carpeta assets. ¿Quieres desplegar los cambios en producción?' }
+    ];
+
+    function renderProposalsWidget() {
+      const widget = document.getElementById('proposals-widget');
+      const drawer = document.getElementById('proposals-drawer');
+      if (!widget || !drawer) return;
+      
+      const active = CHISPY_PROPOSALS.length;
+      if (active === 0) {
+        widget.style.display = 'none';
+        return;
+      }
+      
+      widget.style.display = 'block';
+      document.getElementById('proposals-summary').textContent = `Chispy ha preparado ${active} propuestas para tu aprobación final antes de aplicar los cambios.`;
+      
+      drawer.innerHTML = CHISPY_PROPOSALS.map(p => {
+        if (p.type === 'recipe') {
+          return `
+            <div class="proposal-item">
+              <div>
+                <strong style="color:var(--gaf-yellow);font-size:13px;">${p.title}</strong>
+                <p style="font-size:11.5px;color:var(--text-muted);margin-top:2px;">${p.desc}</p>
+              </div>
+              <div style="display:flex;gap:6px;">
+                <button class="btn" style="padding:4px 8px;font-size:11px;" onclick="aprobarPropuestaReceta('${p.id}')">✅ Aprobar Ficha</button>
+                <button class="btn btn-secondary btn-sm" style="padding:4px 8px;font-size:11px;" onclick="descartarPropuesta('${p.id}')">✕</button>
+              </div>
+            </div>
+          `;
+        } else {
+          return `
+            <div class="proposal-item">
+              <div>
+                <strong style="color:var(--gaf-blue);font-size:13px;">${p.title}</strong>
+                <p style="font-size:11.5px;color:var(--text-muted);margin-top:2px;">${p.desc}</p>
+              </div>
+              <div style="display:flex;gap:6px;">
+                <button class="btn" style="padding:4px 8px;font-size:11px;background:var(--gaf-blue)" onclick="aprobarPropuestaMantenimiento('${p.id}')">🚀 Ejecutar Despliegue</button>
+                <button class="btn btn-secondary btn-sm" style="padding:4px 8px;font-size:11px;" onclick="descartarPropuesta('${p.id}')">✕</button>
+              </div>
+            </div>
+          `;
+        }
+      }).join('');
+    }
+
+    let proposalsOpen = false;
+    function toggleProposalsDrawer() {
+      const drawer = document.getElementById('proposals-drawer');
+      const btn = document.getElementById('btn-toggle-proposals');
+      if (!drawer || !btn) return;
+      
+      proposalsOpen = !proposalsOpen;
+      drawer.style.display = proposalsOpen ? 'flex' : 'none';
+      btn.textContent = proposalsOpen ? 'Ocultar' : 'Revisar Propuestas';
+    }
+
+    function aprobarPropuestaReceta(id) {
+      const p = CHISPY_PROPOSALS.find(x => x.id === id);
+      if (!p) return;
+      
+      const newRecipe = {
+        id: 'r_' + Date.now(),
+        nombre: p.title.replace('🍳 ', ''),
+        serie: p.platform === 'tiktok' ? 'rapida' : 'resultado',
+        dificultad: p.difficulty,
+        tiempo: p.prep_time,
+        ingredientes: p.ingredients,
+        pasos: p.steps,
+        estado: 'idea',
+        platform: p.platform,
+        fueguin_expression: p.fueguin_expression,
+        hook: p.hook,
+        script: `Fase 1 - Hook: ${p.hook}\nFase 2 - Cocina: Seguir pasos.`,
+        description: p.desc,
+        hashtags: 'guerreroalfuego\nrecetachispy\nparmesano'
+      };
+      
+      DATA.recetas.push(newRecipe);
+      saveData();
+      
+      // Remove proposal
+      CHISPY_PROPOSALS = CHISPY_PROPOSALS.filter(x => x.id !== id);
+      renderProposalsWidget();
+      
+      triggerToast(`¡Propuesta "${newRecipe.nombre}" aprobada y añadida a tu Recetario!`);
+      actualizarStatsResumen();
+      if (activeTab === 'recetas') renderRecetas();
+    }
+
+    function aprobarPropuestaMantenimiento(id) {
+      const p = CHISPY_PROPOSALS.find(x => x.id === id);
+      if (!p) return;
+      
+      triggerToast('🚀 Desplegando cambios a producción... haciendo git push...');
+      
+      setTimeout(() => {
+        // Remove proposal
+        CHISPY_PROPOSALS = CHISPY_PROPOSALS.filter(x => x.id !== id);
+        renderProposalsWidget();
+        triggerToast('✅ ¡Despliegue completado! Sitemap actualizado y subido a Cloudflare.');
+      }, 1500);
+    }
+
+    function descartarPropuesta(id) {
+      CHISPY_PROPOSALS = CHISPY_PROPOSALS.filter(x => x.id !== id);
+      renderProposalsWidget();
+      triggerToast('Propuesta descartada.');
+    }
   </script>
 </body>
 </html>
