@@ -37,19 +37,82 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;
 .nav-social-btn.nav-yt:hover{background:rgba(239,68,68,0.1);border-color:rgba(239,68,68,0.4);color:#ef4444;transform:scale(1.08)}
 .nav-social-btn.nav-ig:hover{background:rgba(236,72,153,0.1);border-color:rgba(236,72,153,0.4);color:#ec4899;transform:scale(1.08)}
 
-/* HERO */
-.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;
-  padding:120px 5vw 80px;position:relative;overflow:hidden}
-.hero-bg{position:absolute;inset:0;
-  background:radial-gradient(ellipse 80% 60% at 50% 80%, rgba(192,57,43,0.25) 0%, transparent 70%),
-             radial-gradient(ellipse 60% 40% at 50% 100%, rgba(230,126,34,0.15) 0%, transparent 60%),
-             #1A1A1A;z-index:0}
-.embers{position:absolute;inset:0;pointer-events:none;z-index:1}
+/* ===== VIDEO-LOOP HERO ===== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 5vw 80px;
+  position: relative;
+  overflow: hidden;
+  background: #0d0d0d;
+}
 
-.hero-content{position:relative;z-index:2;max-width:700px;text-align:center}
-.hero-logo{width:190px;max-width:45vw;height:auto;margin:0 auto 1.5rem;display:block;
-  filter:drop-shadow(0 0 30px rgba(230,126,34,0.55));
-  animation:pulse 3s ease-in-out infinite alternate}
+/* — Video loop canvas (slideshow + particles) — */
+.hero-video-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Dark overlay */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.8) 100%),
+    linear-gradient(90deg, rgba(0,0,0,0.4) 0%, transparent 50%, rgba(0,0,0,0.4) 100%);
+}
+
+/* Vignette fire glow */
+.hero-fireglow {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  z-index: 1;
+  background: radial-gradient(ellipse 80% 40% at 50% 100%, rgba(192,57,43,0.4) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Scanline texture for that cinematic feel */
+.hero-scanlines {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.08) 2px,
+    rgba(0,0,0,0.08) 4px
+  );
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 5;
+  max-width: 750px;
+  text-align: center;
+  animation: heroFadeIn 1.5s ease-out forwards;
+}
+
+.hero-logo {
+  width: 190px;
+  max-width: 45vw;
+  height: auto;
+  margin: 0 auto 1.5rem;
+  display: block;
+  filter: drop-shadow(0 0 30px rgba(230,126,34,0.55));
+  animation: pulse 3s ease-in-out infinite alternate;
+}
 
 /* BRAND MOTTO BADGE */
 .motto-badge {
@@ -68,98 +131,102 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;
   box-shadow: 0 0 20px rgba(192, 57, 43, 0.2);
 }
 
-.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,7vw,4.5rem);
-  font-weight:900;line-height:1.08;margin-bottom:1.2rem;
-  background:linear-gradient(135deg,#ffcc70,#E67E22,#C0392B);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero p{font-size:clamp(1rem,2.5vw,1.25rem);color:#c9b99a;max-width:520px;margin:0 auto 2.5rem;line-height:1.65}
-.hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.4rem,7vw,4.5rem);
+  font-weight: 900;
+  line-height: 1.08;
+  margin-bottom: 1.2rem;
+  background: linear-gradient(135deg,#ffdd88,#F59E0B,#DC2626);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 12px rgba(220,38,38,0.3));
+  text-shadow: 0 0 30px rgba(255,200,0,0.15);
+}
+.hero p {
+  font-size: clamp(1rem,2.5vw,1.25rem);
+  color: #f5ebe0;
+  max-width: 560px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.7;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+  font-weight: 500;
+}
+.hero-ctas {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 
-/* 3D FUEGUÍN MASCOT WITH COMIC BUBBLE */
-.fueguin-container-3d {
+.btn-primary {
+  background: linear-gradient(135deg,var(--brasa),var(--llama));
+  color: white;
+  padding: 14px 36px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all .3s;
+  box-shadow: 0 4px 20px rgba(192,57,43,0.4);
+  border: none;
+  cursor: pointer;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(192,57,43,0.6);
+}
+.btn-ghost {
+  border: 1px solid rgba(244,208,63,0.4);
+  color: var(--azafran);
+  padding: 14px 36px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: all .3s;
+  background: none;
+  cursor: pointer;
+}
+.btn-ghost:hover {
+  background: rgba(244,208,63,0.1);
+  border-color: var(--azafran);
+}
+
+.scroll-hint {
   position: absolute;
-  top: 130px;
-  left: 6vw;
-  z-index: 10;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  color: #666;
+  font-size: .8rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
-  max-width: 260px;
-  animation: floatMascot 4s ease-in-out infinite;
-  cursor: pointer;
+  gap: 8px;
 }
-.comic-speech-bubble {
-  position: relative;
-  background: linear-gradient(135deg, #2b2015, #1f150e);
-  border: 2px solid var(--llama);
-  border-radius: 20px;
-  padding: 14px 18px;
-  color: var(--humo);
-  font-size: .88rem;
-  line-height: 1.45;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-  font-weight: 500;
-  text-align: left;
-  border-bottom-right-radius: 2px;
-}
-/* Triangular pointer pointing down-right towards Fueguín */
-.comic-speech-bubble::after {
-  content: '';
-  position: absolute;
-  bottom: -15px;
-  right: 50px;
-  border-width: 15px 15px 0 0;
-  border-style: solid;
-  border-color: var(--llama) transparent;
-  display: block;
-  width: 0;
-}
-.comic-speech-bubble::before {
-  content: '';
-  position: absolute;
-  bottom: -12px;
-  right: 51px;
-  border-width: 13px 13px 0 0;
-  border-style: solid;
-  border-color: #1f150e transparent;
-  display: block;
-  width: 0;
-  z-index: 2;
-}
-.fueguin-character-img {
-  width: 110px;
-  height: 110px;
-  border-radius: 50%;
-  background: rgba(0,0,0,0.3);
-  border: 3px solid var(--azafran);
-  overflow: hidden;
-  box-shadow: 0 0 25px rgba(244,208,63,0.35);
-  transition: all .3s ease;
-}
-.fueguin-character-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-.fueguin-container-3d:hover .fueguin-character-img {
-  transform: scale(1.1) rotate(5deg);
-  border-color: var(--llama);
-  box-shadow: 0 0 35px rgba(230,126,34,0.5);
+.scroll-arrow {
+  width: 24px;
+  height: 24px;
+  border-right: 2px solid #E67E22;
+  border-bottom: 2px solid #E67E22;
+  transform: rotate(45deg);
+  animation: bounce2 2s infinite;
 }
 
-.btn-primary{background:linear-gradient(135deg,var(--brasa),var(--llama));color:white;
-  padding:14px 36px;border-radius:30px;text-decoration:none;font-weight:600;
-  font-size:1rem;transition:all .3s;box-shadow:0 4px 20px rgba(192,57,43,0.4);border:none;cursor:pointer}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(192,57,43,0.6)}
-.btn-ghost{border:1px solid rgba(244,208,63,0.4);color:var(--azafran);
-  padding:14px 36px;border-radius:30px;text-decoration:none;font-weight:500;font-size:1rem;transition:all .3s;background:none;cursor:pointer}
-.btn-ghost:hover{background:rgba(244,208,63,0.1);border-color:var(--azafran)}
-.scroll-hint{position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:2;
-  color:#666;font-size:.8rem;display:flex;flex-direction:column;align-items:center;gap:8px}
-.scroll-arrow{width:24px;height:24px;border-right:2px solid #E67E22;border-bottom:2px solid #E67E22;
-  transform:rotate(45deg);animation:bounce2 2s infinite}
+/* KEN BURNS ANIMATION */
+@keyframes kenBurnsZoom {
+  0%   { transform: scale(1) translate(0, 0); }
+  50%  { transform: scale(1.12) translate(-2%, -1%); }
+  100% { transform: scale(1) translate(0, 0); }
+}
+
+/* HERO FADE IN */
+@keyframes heroFadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
 /* SECTIONS */
 section{padding:100px 5vw 80px;position:relative}
@@ -331,36 +398,7 @@ footer a:hover{color:var(--azafran)}
 @keyframes pulse{0%{filter:drop-shadow(0 0 15px rgba(230,126,34,0.3))}
   100%{filter:drop-shadow(0 0 40px rgba(230,126,34,0.7))}}
 @keyframes bounce2{0%,100%{transform:rotate(45deg) translateY(0)}50%{transform:rotate(45deg) translateY(6px)}}
-@keyframes riseEmber{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--dx),calc(-100vh - 50px)) scale(0);opacity:0}}
-@keyframes floatMascot {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
-}
-
-/* RESPONSIVE LAYOUT FOR MASCOT */
-@media(max-width:992px){
-  .hero {
-    padding: 100px 5vw 100px;
-    flex-direction: column;
-  }
-  .fueguin-container-3d {
-    position: relative;
-    bottom: auto;
-    right: auto;
-    margin: 3.5rem auto 0;
-    max-width: 280px;
-    animation: floatMascot 4s ease-in-out infinite;
-  }
-  .comic-speech-bubble::after {
-    right: 50%;
-    transform: translateX(50%);
-  }
-  .comic-speech-bubble::before {
-    right: 50%;
-    transform: translateX(50%);
-  }
-}
-
+/* NO MASCOT ON MOBILE (removed from hero) */
 @media(max-width:768px){
   .sobre-container, .contacto-container{grid-template-columns:1fr;gap:30px}
   .hero h1{font-size:2.5rem}
@@ -402,14 +440,17 @@ footer a:hover{color:var(--azafran)}
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-bg"></div>
-  <div class="embers" id="embers"></div>
+  <!-- Video Loop Canvas: slideshow + fire particles -->
+  <canvas class="hero-video-canvas" id="heroCanvas"></canvas>
+  
+  <!-- Dark overlay + fire glow -->
+  <div class="hero-overlay"></div>
+  <div class="hero-fireglow"></div>
+  <div class="hero-scanlines"></div>
   
   <div class="hero-content">
-    <!-- Centered Brand Logo -->
     <img src="assets/logo.png" alt="Guerrero al Fuego" class="hero-logo">
     
-    <!-- Centered Motto Badge -->
     <div class="motto-badge">🔥 "No soy chef, soy guerrero"</div>
 
     <h1>Cocina con actitud.<br>Come con ganas.</h1>
@@ -420,16 +461,6 @@ footer a:hover{color:var(--azafran)}
     </div>
   </div>
   
-  <!-- 3D FUEGUÍN MASCOT SIDE COMPANION WITH COMIC SPEECH BUBBLE -->
-  <div class="fueguin-container-3d" onclick="alert('🔥 Fueguín dice: ¡Eso es! Síguenos en YouTube e Instagram para aprender trucos de cocina y no perderte ni un solo meme culinario.')" title="¡Haz clic para hablar con Fueguín!">
-    <div class="comic-speech-bubble">
-      <strong>¡Al ataque!</strong> Soy Fueguín, tu guía culinario y de humor. Domemos juntos el fuego... ¡y que arda la cocina! 💥
-    </div>
-    <div class="fueguin-character-img">
-      <img src="assets/fueguin-avatar.png" alt="Fueguín">
-    </div>
-  </div>
-
   <div class="scroll-hint">
     <span>Explorar</span>
     <div class="scroll-arrow"></div>
@@ -612,6 +643,191 @@ footer a:hover{color:var(--azafran)}
   </div>
 </section>
 
+<!-- ===== VIDEO LOOP JS ===== -->
+<script>
+(function() {
+'use strict';
+
+// --- Image list (from our assets) ---
+const slides = [
+  'assets/gaf_brownie.png',
+  'assets/gaf_alitas_picantes.png',
+  'assets/gaf_arroz_crujiente.png',
+  'assets/gaf_pasta_3ingredientes.png',
+  'assets/fueguin_compilacion.png',
+  'assets/fueguin_pollo_limon.png',
+  'assets/fueguin_tortilla.png',
+  'assets/fueguin_huevos_rotos.png'
+];
+
+const canvas = document.getElementById('heroCanvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+
+function resize() {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = W = rect.width;
+  canvas.height = H = rect.height;
+}
+resize();
+window.addEventListener('resize', resize);
+
+// --- Preload images ---
+const imgs = [];
+let loadedCount = 0;
+slides.forEach((src, i) => {
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = () => {
+    loadedCount++;
+    if (loadedCount === slides.length) start();
+  };
+  img.onerror = () => {
+    loadedCount++;
+    if (loadedCount === slides.length) start();
+  };
+  img.src = src;
+  imgs.push(img);
+});
+
+let currentSlide = 0;
+let nextSlide = 1;
+let transitionProgress = 1; // 1 = fully showing current
+const SLIDE_DURATION = 150; // frames (about 3.6s at 60fps for 3 slides = ~12s + transitions)
+const TRANSITION_FRAMES = 50; // about 1s crossfade
+let frameCount = 0;
+
+// --- Fire particles ---
+const particles = [];
+const MAX_PARTICLES = 120;
+
+class Particle {
+  constructor() {
+    this.reset(true);
+  }
+  reset(initial) {
+    this.x = Math.random() * W;
+    this.y = initial ? Math.random() * H : H + 20;
+    this.size = Math.random() * 6 + 2;
+    this.speedY = -(Math.random() * 2.5 + 1);
+    this.speedX = (Math.random() - 0.5) * 1.5;
+    this.life = 1;
+    this.decay = Math.random() * 0.006 + 0.003;
+    this.hue = Math.random() * 50 + 10; // 15-55: orange to yellow
+    this.saturation = 100;
+    this.lightness = Math.random() * 30 + 45;
+  }
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    this.speedY -= 0.02; // slow down rise
+    this.life -= this.decay;
+    this.size *= 0.997;
+    if (this.life <= 0 || this.y < -20) this.reset(false);
+  }
+  draw() {
+    ctx.globalAlpha = this.life * 0.8;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = 'hsl(' + this.hue + ', ' + this.saturation + '%, ' + this.lightness + '%)';
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+}
+
+// --- Draw current slide with ken burns ---
+function drawSlide(img, progress, alpha) {
+  const iw = img.naturalWidth || img.width || 1024;
+  const ih = img.naturalHeight || img.height || 1024;
+  
+  const scaleX = W / iw;
+  const scaleY = H / ih;
+  const scale = Math.max(scaleX, scaleY);
+  
+  const sw = iw * scale;
+  const sh = ih * scale;
+  
+  // Ken Burns: slow zoom + pan
+  const zoomPhase = (progress % 1);
+  const zoom = 1 + 0.08 * Math.sin(zoomPhase * Math.PI * 2);
+  const panX = 0;
+  const panY = -5 * Math.sin(zoomPhase * Math.PI * 2);
+  
+  const sx = (W - sw * zoom) / 2 + panX;
+  const sy = (H - sh * zoom) / 2 + panY;
+  
+  ctx.globalAlpha = alpha;
+  ctx.drawImage(img, sx, sy, sw * zoom, sh * zoom);
+  ctx.globalAlpha = 1;
+}
+
+// --- Main loop ---
+function animate() {
+  // Clear
+  ctx.fillStyle = '#0d0d0d';
+  ctx.fillRect(0, 0, W, H);
+  
+  // --- Draw slides ---
+  if (loadedCount >= slides.length) {
+    const currentImg = imgs[currentSlide];
+    const nextImg = imgs[nextSlide];
+    
+    if (transitionProgress < 1) {
+      // Cross-fade transition
+      const t = transitionProgress;
+      const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      drawSlide(currentImg, frameCount / SLIDE_DURATION, 1 - eased);
+      drawSlide(nextImg, 0, eased);
+      transitionProgress += 1 / TRANSITION_FRAMES;
+    } else {
+      drawSlide(currentImg, frameCount / SLIDE_DURATION, 1);
+    }
+    
+    frameCount++;
+    if (frameCount >= SLIDE_DURATION) {
+      currentSlide = nextSlide;
+      nextSlide = (nextSlide + 1) % slides.length;
+      frameCount = 0;
+      transitionProgress = 0;
+    }
+  }
+  
+  // --- Draw particles ---
+  // Spawn new
+  while (particles.length < MAX_PARTICLES) {
+    particles.push(new Particle());
+  }
+  for (let i = particles.length - 1; i >= 0; i--) {
+    particles[i].update();
+    particles[i].draw();
+    if (particles[i].life <= 0) {
+      particles[i].reset(false);
+    }
+  }
+  
+  // Glow layer on bottom
+  const grd = ctx.createRadialGradient(W/2, H, 100, W/2, H, H * 0.7);
+  grd.addColorStop(0, 'rgba(230, 126, 34, 0.12)');
+  grd.addColorStop(0.5, 'rgba(192, 57, 43, 0.05)');
+  grd.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = grd;
+  ctx.fillRect(0, 0, W, H);
+  
+  requestAnimationFrame(animate);
+}
+
+function start() {
+  animate();
+}
+
+// Fallback: if images take too long, start anyway
+setTimeout(() => {
+  if (loadedCount < slides.length) start();
+}, 3000);
+
+})();
+</script>
+
 <!-- COOKIE BANNER -->
 <div class="cookie-banner" id="cookieBanner">
   <p>Usamos cookies cookies técnicas propias para garantizar que disfrutes del fuego sin contratiempos. Puedes obtener más detalles en nuestra <a href="legal.html?sec=cookies" target="_blank">Política de Cookies</a>.</p>
@@ -700,27 +916,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// -- EMBERS ---
-const EC = document.getElementById('embers');
-function mkEmber(){
-  const e = document.createElement('div');
-  const s = Math.random()*4+2, dur = Math.random()*5+3;
-  const dx = (Math.random()-0.5)*180;
-  const cols = ['#ff4500','#ff8c00','#ffaa00','#ffcc00'];
-  const c = cols[Math.floor(Math.random()*cols.length)];
-  Object.assign(e.style,{
-    position:'absolute',bottom:'-10px',
-    left:Math.random()*100+'vw',
-    width:s+'px',height:s+'px',
-    background:c,borderRadius:'50%',
-    boxShadow:`0 0 ${s*2}px ${c}`,
-    '--dx':dx+'px',
-    animation:`riseEmber ${dur}s ease-in forwards`
-  });
-  EC.appendChild(e);
-  setTimeout(()=>e.remove(), dur*1000);
-}
-setInterval(mkEmber, 180);
+// (embers removed — handled by hero canvas)
 
 // -- SERIES ICONS / COLORS ---
 const SERIES_META = {
@@ -768,6 +964,326 @@ async function loadSeries(){
   }
 }
 loadSeries();
+
+// -- CHAT DRAWER DE FUEGUÍN ---
+function toggleFueguinChat() {
+  const drawer = document.getElementById('fueguinChatDrawer');
+  const overlay = document.getElementById('fueguinChatOverlay');
+  drawer.classList.toggle('open');
+  overlay.classList.toggle('open');
+  if (drawer.classList.contains('open')) {
+    document.getElementById('fueguinChatInput').focus();
+    // Add welcome message if chat is empty
+    const msgArea = document.getElementById('fueguinChatMessages');
+    if (msgArea.children.length === 0) {
+      addFueguinMessage("¡Al ataque, guerrero! 🔥 Soy Fueguín, tu fiel copiloto. Pregúntame sobre recetas, guiones para shorts o ideas para el calendario. ¿Qué cocinamos hoy?", "bot");
+    }
+  }
+}
+
+function addFueguinMessage(text, sender) {
+  const msgArea = document.getElementById('fueguinChatMessages');
+  const bubble = document.createElement('div');
+  bubble.className = `chat-bubble ${sender}`;
+  bubble.innerText = text;
+  msgArea.appendChild(bubble);
+  msgArea.scrollTop = msgArea.scrollHeight;
+}
+
+async function sendFueguinMessage() {
+  const input = document.getElementById('fueguinChatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  
+  input.value = '';
+  addFueguinMessage(text, 'user');
+  
+  // Show loading indicator
+  const msgArea = document.getElementById('fueguinChatMessages');
+  const loading = document.createElement('div');
+  loading.className = 'chat-bubble loading';
+  loading.id = 'fueguinLoading';
+  loading.innerHTML = 'Fueguín pensando... <span class="dot-pulse"></span><span class="dot-pulse"></span><span class="dot-pulse"></span>';
+  msgArea.appendChild(loading);
+  msgArea.scrollTop = msgArea.scrollHeight;
+  
+  try {
+    const res = await fetch('/api/gaf/ask-fueguin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ instruction: text })
+    });
+    
+    // Remove loading
+    const loader = document.getElementById('fueguinLoading');
+    if (loader) loader.remove();
+    
+    if (res.ok) {
+      const data = await res.json();
+      addFueguinMessage(data.response || '¡Vaya, el fuego chisporroteó y no te escuché bien!', 'bot');
+    } else {
+      addFueguinMessage('🔥 ¡Epa! Parece que las brasas se enfriaron un segundo. Vuelve a intentarlo.', 'bot');
+    }
+  } catch(e) {
+    const loader = document.getElementById('fueguinLoading');
+    if (loader) loader.remove();
+    addFueguinMessage('🔥 ¡Epa! Parece que las brasas se enfriaron un segundo. Vuelve a intentarlo.', 'bot');
+  }
+}
+
+// Handle Enter key in input
+document.getElementById('fueguinChatInput')?.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') sendFueguinMessage();
+});
 </script>
+
+<!-- CHAT DRAWER HTML -->
+<div class="chat-overlay" id="fueguinChatOverlay" onclick="toggleFueguinChat()"></div>
+<div class="fueguin-chat-drawer" id="fueguinChatDrawer">
+  <div class="chat-header">
+    <div class="chat-header-info">
+      <img src="assets/fueguin-avatar.png" alt="Fueguín" class="chat-avatar">
+      <div class="chat-title-container">
+        <h3 class="chat-title">Fueguín AI Copilot 🔥</h3>
+        <span class="chat-subtitle">en línea y cocinando</span>
+      </div>
+    </div>
+    <button class="chat-close-btn" onclick="toggleFueguinChat()">×</button>
+  </div>
+  
+  <div class="chat-messages" id="fueguinChatMessages"></div>
+  
+  <div class="chat-input-container">
+    <input type="text" class="chat-input" id="fueguinChatInput" placeholder="Pregunta a Fueguín...">
+    <button class="chat-send-btn" onclick="sendFueguinMessage()">
+      <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- CHAT DRAWER STYLES -->
+<style>
+.fueguin-chat-drawer {
+  position: fixed;
+  top: 0;
+  right: -420px;
+  width: 400px;
+  height: 100%;
+  background: #121212;
+  border-left: 2px solid #d62828;
+  box-shadow: -5px 0 25px rgba(0, 0, 0, 0.7);
+  z-index: 10000;
+  transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  font-family: 'Outfit', sans-serif;
+  color: #f5f0eb;
+}
+.fueguin-chat-drawer.open {
+  right: 0;
+}
+.chat-header {
+  background: linear-gradient(135deg, #1e1e1e 0%, #2a0b0b 100%);
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(214, 40, 40, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.chat-header-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.chat-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid #d62828;
+  background: #000;
+  object-fit: cover;
+  box-shadow: 0 0 10px rgba(214, 40, 40, 0.5);
+}
+.chat-title-container {
+  display: flex;
+  flex-direction: column;
+}
+.chat-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #ffaa00;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.chat-subtitle {
+  font-size: 12px;
+  color: #a8a29e;
+  margin: 0;
+}
+.chat-close-btn {
+  background: none;
+  border: none;
+  color: #f5f0eb;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s, transform 0.2s;
+}
+.chat-close-btn:hover {
+  color: #d62828;
+  transform: scale(1.1);
+}
+.chat-messages {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: radial-gradient(circle at center, #1a1515 0%, #0d0a0a 100%);
+}
+.chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+.chat-messages::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.1);
+}
+.chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(214, 40, 40, 0.4);
+  border-radius: 3px;
+}
+.chat-messages::-webkit-scrollbar-thumb:hover {
+  background: rgba(214, 40, 40, 0.7);
+}
+.chat-bubble {
+  max-width: 85%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  position: relative;
+  word-break: break-word;
+  animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.8) translateY(10px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+.chat-bubble.user {
+  background: #d62828;
+  color: #ffffff;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 3px 10px rgba(214, 40, 40, 0.3);
+}
+.chat-bubble.bot {
+  background: #262626;
+  color: #f5f0eb;
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+  border: 1px solid rgba(214, 40, 40, 0.15);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+}
+.chat-bubble.loading {
+  background: #262626;
+  color: #a8a29e;
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-style: italic;
+}
+.dot-pulse {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #d62828;
+  animation: pulse 1.2s infinite ease-in-out;
+}
+.dot-pulse:nth-child(2) { animation-delay: 0.2s; }
+.dot-pulse:nth-child(3) { animation-delay: 0.4s; }
+@keyframes pulse {
+  0%, 100% { transform: scale(0.6); opacity: 0.4; }
+  50% { transform: scale(1.2); opacity: 1; }
+}
+.chat-input-container {
+  padding: 16px 20px;
+  background: #1e1e1e;
+  border-top: 1px solid rgba(214, 40, 40, 0.2);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.chat-input {
+  flex: 1;
+  background: #0f0f0f;
+  border: 1px solid rgba(214, 40, 40, 0.3);
+  border-radius: 20px;
+  padding: 10px 16px;
+  color: #f5f0eb;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.chat-input:focus {
+  border-color: #ffaa00;
+  box-shadow: 0 0 8px rgba(255, 170, 0, 0.2);
+}
+.chat-send-btn {
+  background: #d62828;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+.chat-send-btn:hover {
+  background: #ff4500;
+  transform: scale(1.05);
+}
+.chat-send-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+.chat-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.chat-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+@media (max-width: 480px) {
+  .fueguin-chat-drawer {
+    width: 100%;
+    right: -100%;
+  }
+}
+</style>
 </body>
 </html>
