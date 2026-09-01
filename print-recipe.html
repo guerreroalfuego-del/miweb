@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Imprimir Receta — Guerrero al Fuego</title>
+<style>
+  body{font-family:Georgia,serif;color:#222;max-width:680px;margin:40px auto;padding:0 20px;line-height:1.6}
+  .brand{font-size:.9em;color:#C0392B;font-weight:700;margin-bottom:24px;font-family:Arial,sans-serif}
+  h1{font-family:Georgia,serif;font-size:1.8em;margin:0 0 8px;color:#1A1A1A}
+  .meta{color:#666;font-size:.9em;margin-bottom:18px;display:flex;gap:16px;flex-wrap:wrap}
+  h2{font-size:1.05em;color:#C0392B;margin:22px 0 8px;text-transform:uppercase;letter-spacing:.5px;font-family:Arial,sans-serif}
+  ul,ol{padding-left:22px}
+  li{padding:4px 0;font-size:.98em}
+  .foot{margin-top:40px;text-align:center;color:#999;font-size:.8em;border-top:1px solid #ddd;padding-top:16px}
+  .nostamp{position:absolute;bottom:0;right:0;opacity:.06;font-size:6em;pointer-events:none}
+  img{max-width:100%;border-radius:8px;margin-bottom:16px}
+  @media print{ .no-print{display:none} body{margin:0} }
+</style>
+</head>
+<body>
+  <div class="brand">🔥 Guerrero al Fuego · Receta de la Hermandad</div>
+  <div id="contenido"></div>
+  <div class="foot">Receta original en guerreroalfuego.com · © 2026 Guerrero al Fuego</div>
+<script>
+  const recipes = {
+    'pulled-pork-bbq': { title: 'Pulled Pork BBQ', serie: 'BBQ', time: '6-8h (fuego lento)', difficulty: 'Media' },
+    'alitas-picantes': { title: 'Alitas Picantes al Horno', serie: 'Picante', time: '50 min', difficulty: 'Fácil' },
+    'pasta-3-ingredientes': { title: 'Pasta 3 Ingredientes', serie: '3 Ingredientes', time: '15 min', difficulty: 'Fácil' },
+    'arroz-crujiente': { title: 'Arroz Crujiente al Horno', serie: 'Rápida', time: '40 min', difficulty: 'Media' },
+    'huevos-rotos': { title: 'Huevos Rotos con Patatas', serie: 'Rápida', time: '30 min', difficulty: 'Fácil' },
+    'pollo-limon': { title: 'Pollo al Limón Fácil', serie: 'Rápida', time: '30 min', difficulty: 'Fácil' }
+  };
+  const id = new URLSearchParams(location.search).get('id');
+  const r = recipes[id];
+  if (!r) {
+    document.getElementById('contenido').innerHTML = '<h1>Receta no encontrada</h1>';
+  } else {
+    document.getElementById('contenido').innerHTML = `
+      <h1>${r.title}</h1>
+      <div class="meta">
+        <span>⏱ ${r.time}</span><span>🔥 ${r.difficulty}</span><span>📋 Serie: ${r.serie}</span>
+      </div>
+      <h2>🧂 Ingredientes</h2><ul id="ing"></ul>
+      <h2>👨‍🍳 Pasos</h2><ol id="st"></ol>`;
+    const full = JSON.parse(decodeURIComponent(sessionStorage.getItem('rec_' + id) || 'null'));
+    if (full) {
+      (full.ingredients||[]).forEach(i => { const li=document.createElement('li'); li.textContent=i; document.getElementById('ing').appendChild(li); });
+      (full.steps||[]).forEach(s => { const li=document.createElement('li'); li.textContent=s; document.getElementById('st').appendChild(li); });
+    }
+  }
+</script>
+</body>
+</html>

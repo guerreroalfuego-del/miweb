@@ -196,6 +196,117 @@ const recipes = [
       'Tuesta ligeramente los panes, monta el pulled pork generosamente y añade col lombarda si quieres un toque fresco.',
       'Sirve con más salsa BBQ por encima y patatas fritas al lado. Prepárate para no hablar mientras comes.'
     ]
+  },
+  {
+    id: 'alitas-picantes',
+    title: 'Alitas Picantes al Horno',
+    description: 'Crujientes por fuera, jugosas por dentro y con ese golpe de picante que engancha. Idea de ración para picar en cualquier finde.',
+    image: 'assets/recetas/gaf_alitas_picantes.png',
+    serie: 'picante',
+    time: '50 min',
+    difficulty: 'Fácil',
+    ingredients: [
+      '12 alitas de pollo',
+      '3 cucharadas de salsa picante (tipo sriracha o tabasco)',
+      '2 cucharadas de miel',
+      '1 cucharada de aceite de oliva',
+      '1 cucharadita de pimentón',
+      'Ajo en polvo, sal y pimienta'
+    ],
+    steps: [
+      'Seca bien las alitas y mézclalas con aceite, pimentón, ajo en polvo, sal y pimienta.',
+      'Hornea a 200°C durante 40-45 min dándoles la vuelta a mitad de cocción hasta que estén doradas.',
+      'Mezcla la salsa picante con la miel. Al sacar las alitas, báñalas con la mezcla.',
+      'Vuelve a meterlas 5 min más para que caramelicen.',
+      'Sirve calientes con una ramita de apio y algo cremoso para rebajar el picante.'
+    ]
+  },
+  {
+    id: 'pasta-3-ingredientes',
+    title: 'Pasta 3 Ingredientes',
+    description: 'Solo tres cosas y queda de restaurante: pasta, tomate cherry y albahaca. La receta de emergencia que salva cualquier día.',
+    image: 'assets/recetas/gaf_pasta_3ingredientes.png',
+    serie: '3ingredientes',
+    time: '15 min',
+    difficulty: 'Fácil',
+    ingredients: [
+      '400 g de pasta (espaguetis o tallarines)',
+      '300 g de tomates cherry',
+      'Un buen manojo de albahaca fresca',
+      'Aceite de oliva, sal y ajo'
+    ],
+    steps: [
+      'Cocina la pasta en agua con sal hasta que esté al dente. Reserva un vaso del agua de cocción.',
+      'Mientras, saltea los tomates cherry partidos por la mitad con ajo y aceite hasta que se ablanden.',
+      'Saltea todo junto, añadiendo un chorrito del agua de cocción para crear salsa.',
+      'Termina con albahaca fresca por encima y un buen chorro de aceite. Listo en 15 minutos.'
+    ]
+  },
+  {
+    id: 'arroz-crujiente',
+    title: 'Arroz Crujiente al Horno',
+    description: 'La costra dorada del arroz que todos quieren robar. Técnica para dejar el fondo del recipiente como los grandes socarrats.',
+    image: 'assets/recetas/gaf_arroz_crujiente.png',
+    serie: 'rapida',
+    time: '40 min',
+    difficulty: 'Media',
+    ingredients: [
+      '300 g de arroz bomba',
+      '750 ml de caldo de verduras o pollo',
+      '1 tomate rallado',
+      '1 pimiento rojo y 1 verde',
+      'Aceite de oliva, azafrán y sal'
+    ],
+    steps: [
+      'Sofríe los pimientos cortados en la paellera con aceite hasta que estén tiernos.',
+      'Añade el tomate rallado y deja reducir un par de minutos.',
+      'Incorpora el arroz, rehógalo un minuto y vierte el caldo caliente con el azafrán.',
+      'Sube el fuego 2-3 min en los últimos instantes para dorar el fondo, retira del fuego y reposa 5 min tapado.'
+    ]
+  },
+  {
+    id: 'huevos-rotos',
+    title: 'Huevos Rotos con Patatas',
+    description: 'El plato de la hermandad: patatas crujientes, huevos con la yema que se derrama y jamón. Pura felicidad en un plato.',
+    image: 'assets/recetas/fueguin_huevos_rotos.png',
+    serie: 'rapida',
+    time: '30 min',
+    difficulty: 'Fácil',
+    ingredients: [
+      '4 patatas medianas',
+      '4 huevos',
+      '100 g de jamón serrano o ibérico',
+      'Aceite de oliva y sal'
+    ],
+    steps: [
+      'Pela las patatas, córtalas en bastones y fríelas en abundante aceite a fuego medio hasta que estén doradas y crujientes.',
+      'Sácalas, escurre en papel absorbente y sazona.',
+      'Fríe los huevos hasta que la clara esté hecha y la yema jugosa.',
+      'Coloca las patatas en el plato, los huevos encima y el jamón alrededor.',
+      'Rompe las yemas con el tenedor justo antes de comer y mezcla bien. Una ruina de buena imagen, pero de sabor absoluto.'
+    ]
+  },
+  {
+    id: 'pollo-limon',
+    title: 'Pollo al Limón Fácil',
+    description: 'Jugoso, dorado y con ese toque cítrico que engancha. El pollo que nunca decepciona y se hace en media hora.',
+    image: 'assets/recetas/fueguin_pollo_limon.png',
+    serie: 'rapida',
+    time: '30 min',
+    difficulty: 'Fácil',
+    ingredients: [
+      '4 contramuslos de pollo',
+      '1 limón (zumo y ralladura)',
+      '2 dientes de ajo',
+      '1 ramita de romero',
+      'Aceite de oliva, sal y pimienta'
+    ],
+    steps: [
+      'Sazona el pollo y dóralo en la sartén con aceite hasta que esté dorado por ambos lados.',
+      'Añade el ajo laminado y el romero, y baja el fuego.',
+      'Vierte el zumo de limón y la ralladura, tapa y cocina 10-12 min.',
+      'Rectifica de sal, deja reposar un par de minutos y sírvelo con un poco más de ralladura de limón por encima.'
+    ]
   }
 ];
 
@@ -235,6 +346,7 @@ function openModal(id) {
     <ul>${r.ingredients.map(i => `<li>${i}</li>`).join('')}</ul>
     <h3>👨‍🍳 Pasos</h3>
     <div class="steps"><ol>${r.steps.map(s => `<li>${s}</li>`).join('')}</ol></div>
+    <button class="btn-primary" style="margin-top:24px;width:100%" onclick="imprimirReceta('${r.id}')">🖨 Guardar / Imprimir</button>
   `;
   document.getElementById('recipeModal').classList.add('active');
   document.body.style.overflow = 'hidden';
@@ -243,6 +355,28 @@ function openModal(id) {
 function closeModal() {
   document.getElementById('recipeModal').classList.remove('active');
   document.body.style.overflow = '';
+}
+
+function imprimirReceta(id) {
+  const r = recipes.find(x => x.id === id);
+  if (!r) return;
+  const w = window.open('', '_blank', 'width=800,height=900');
+  w.document.write(`<!DOCTYPE html><html lang="es"><head><title>${r.title} — Guerrero al Fuego</title>
+  <style>body{font-family:Georgia,serif;color:#222;max-width:640px;margin:40px auto;padding:0 20px;line-height:1.6}
+  .brand{font-size:.9em;color:#C0392B;font-weight:700;margin-bottom:24px;font-family:Arial,sans-serif}
+  h1{font-size:1.8em;margin:0 0 8px}.meta{color:#666;font-size:.9em;margin-bottom:18px;display:flex;gap:16px}
+  h2{font-size:1.05em;color:#C0392B;margin:22px 0 8px;text-transform:uppercase;font-family:Arial,sans-serif;letter-spacing:.5px}
+  ul,ol{padding-left:22px}li{padding:4px 0;font-size:.98em}
+  .foot{margin-top:40px;text-align:center;color:#999;font-size:.8em;border-top:1px solid #ddd;padding-top:16px}</style></head><body>
+  <div class="brand">🔥 Guerrero al Fuego · Receta de la Hermandad</div>
+  <h1>${r.title}</h1>
+  <div class="meta"><span>⏱ ${r.time}</span><span>🔥 ${r.difficulty}</span></div>
+  <h2>🧂 Ingredientes</h2><ul>${r.ingredients.map(i => `<li>${i}</li>`).join('')}</ul>
+  <h2>👨‍🍳 Pasos</h2><ol>${r.steps.map(s => `<li>${s}</li>`).join('')}</ol>
+  <div class="foot">Receta original en guerreroalfuego.com · © 2026 Guerrero al Fuego</div>
+  </body></html>`);
+  w.document.close(); w.focus();
+  setTimeout(() => w.print(), 400);
 }
 
 document.addEventListener('keydown', e => { if(e.key === 'Escape') closeModal(); });
