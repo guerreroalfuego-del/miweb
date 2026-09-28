@@ -1,0 +1,2426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🔥 Guerrero al Fuego — Panel de Contenido Chispa ⚡</title>
+  <style>
+    /* ============================================================
+       RESET & VARIABLES DE MARCA GUERRERO AL FUEGO
+       ============================================================ */
+    :root {
+      --bg-main: #14110f;
+      --bg-surface: #1f1a17;
+      --bg-elevated: #28211d;
+      --bg-hover: #322a25;
+      --border-color: #3d322b;
+      --border-focus: #ff8c42;
+      
+      --brand-orange: #ff8c42;
+      --brand-orange-hover: #ffa166;
+      --brand-orange-glow: rgba(255, 140, 66, 0.25);
+      
+      --text-main: #f2e9e1;
+      --text-secondary: #b8a99c;
+      --text-muted: #7d7066;
+      
+      --color-success: #38b000;
+      --color-success-bg: rgba(56, 176, 0, 0.15);
+      --color-danger: #e63946;
+      --color-danger-bg: rgba(230, 57, 70, 0.15);
+      --color-warning: #ffb703;
+      --color-info: #3a86ff;
+      
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+      
+      --header-height: 58px;
+      --sidebar-width: 310px;
+      --activity-width: 320px;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 1.5;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    button, input, textarea, select {
+      font-family: inherit;
+      color: inherit;
+    }
+
+    /* ============================================================
+       TOP HEADER
+       ============================================================ */
+    header.gaf-header {
+      height: var(--header-height);
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      flex-shrink: 0;
+      z-index: 10;
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .brand-badge {
+      background: var(--brand-orange-glow);
+      color: var(--brand-orange);
+      border: 1px solid var(--brand-orange);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--color-success);
+      box-shadow: 0 0 8px var(--color-success);
+      display: inline-block;
+    }
+
+    .status-dot.disconnected {
+      background-color: var(--color-danger);
+      box-shadow: 0 0 8px var(--color-danger);
+    }
+
+    .status-dot.checking {
+      background-color: var(--color-warning);
+      box-shadow: 0 0 8px var(--color-warning);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Mobile tabs bar */
+    .mobile-tab-bar {
+      display: none;
+      gap: 4px;
+      background: var(--bg-elevated);
+      padding: 3px;
+      border-radius: var(--radius-md);
+    }
+
+    .mobile-tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+    }
+
+    .mobile-tab-btn.active {
+      background: var(--brand-orange);
+      color: #14110f;
+    }
+
+    /* Standard Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: var(--transition);
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background-color: var(--brand-orange);
+      color: #14110f;
+    }
+    .btn-primary:hover {
+      background-color: var(--brand-orange-hover);
+      box-shadow: 0 0 12px var(--brand-orange-glow);
+    }
+
+    .btn-secondary {
+      background-color: var(--bg-elevated);
+      color: var(--text-main);
+      border-color: var(--border-color);
+    }
+    .btn-secondary:hover {
+      background-color: var(--bg-hover);
+      border-color: var(--text-secondary);
+    }
+
+    .btn-danger {
+      background-color: var(--color-danger-bg);
+      color: var(--color-danger);
+      border-color: var(--color-danger);
+    }
+    .btn-danger:hover {
+      background-color: var(--color-danger);
+      color: #fff;
+    }
+
+    .btn-icon {
+      padding: 7px 10px;
+    }
+
+    /* ============================================================
+       MAIN 3-COLUMN CONTAINER
+       ============================================================ */
+    .gaf-container {
+      display: flex;
+      flex: 1;
+      height: calc(100vh - var(--header-height));
+      overflow: hidden;
+    }
+
+    /* ============================================================
+       COLUMN 1: FILE EXPLORER (IZQUIERDA)
+       ============================================================ */
+    .panel-files {
+      width: var(--sidebar-width);
+      background-color: var(--bg-surface);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .files-header {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .files-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .files-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .search-box {
+      width: 100%;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 7px 10px 7px 30px;
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      outline: none;
+      transition: var(--transition);
+    }
+    .search-input:focus {
+      border-color: var(--brand-orange);
+      box-shadow: 0 0 6px var(--brand-orange-glow);
+    }
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 12px;
+      pointer-events: none;
+    }
+
+    .files-tree {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 6px;
+    }
+
+    /* Folders & Files styling */
+    .folder-group {
+      margin-bottom: 4px;
+    }
+
+    .folder-header {
+      display: flex;
+      align-items: center;
+      padding: 6px 8px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text-main);
+      user-select: none;
+      gap: 6px;
+      transition: var(--transition);
+    }
+    .folder-header:hover {
+      background-color: var(--bg-elevated);
+    }
+
+    .folder-toggle-icon {
+      font-size: 11px;
+      color: var(--text-muted);
+      width: 14px;
+      display: inline-block;
+      transition: transform 0.15s ease;
+    }
+    .folder-group.collapsed .folder-toggle-icon {
+      transform: rotate(-90deg);
+    }
+    .folder-group.collapsed .folder-items {
+      display: none;
+    }
+
+    .folder-items {
+      padding-left: 16px;
+      margin-top: 2px;
+    }
+
+    .file-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px 8px;
+      margin-bottom: 1px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-size: 12.5px;
+      user-select: none;
+      transition: var(--transition);
+    }
+    .file-item:hover {
+      background-color: var(--bg-elevated);
+      color: var(--text-main);
+    }
+    .file-item.active {
+      background-color: var(--bg-hover);
+      color: var(--brand-orange);
+      font-weight: 600;
+      border-left: 3px solid var(--brand-orange);
+    }
+
+    .file-info-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      flex: 1;
+    }
+
+    .file-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .file-size {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-left: 6px;
+      flex-shrink: 0;
+    }
+
+    /* ============================================================
+       COLUMN 2: EDITOR / VIEWER (CENTRO)
+       ============================================================ */
+    .panel-editor {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--bg-main);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .editor-topbar {
+      height: 48px;
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      flex-shrink: 0;
+    }
+
+    .file-path-breadcrumbs {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex: 1;
+      padding-right: 12px;
+    }
+
+    .file-path-breadcrumbs .file-badge-dirty {
+      background-color: var(--brand-orange);
+      color: #14110f;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 10px;
+      display: none;
+    }
+    .file-path-breadcrumbs.dirty .file-badge-dirty {
+      display: inline-block;
+    }
+
+    .editor-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .view-mode-toggle {
+      display: inline-flex;
+      background: var(--bg-elevated);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      padding: 2px;
+    }
+
+    .view-btn {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      padding: 4px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: var(--transition);
+    }
+    .view-btn.active {
+      background: var(--bg-hover);
+      color: var(--brand-orange);
+      font-weight: 600;
+    }
+
+    /* Banner de Versión Histórica */
+    .historical-banner {
+      background-color: #3b2a1a;
+      border-bottom: 1px solid var(--brand-orange);
+      color: #ffd6a5;
+      padding: 8px 16px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    .historical-banner.visible {
+      display: flex;
+    }
+    .historical-banner-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Editor workspace */
+    .editor-body {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .editor-pane-text {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .editor-textarea {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      border: none;
+      outline: none;
+      padding: 16px 20px;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1.6;
+      resize: none;
+      tab-size: 2;
+    }
+
+    .editor-pane-preview {
+      flex: 1;
+      height: 100%;
+      overflow-y: auto;
+      padding: 20px 28px;
+      background-color: #171412;
+      border-left: 1px solid var(--border-color);
+      display: none;
+    }
+
+    /* Modos de vista */
+    .editor-body.mode-edit .editor-pane-text { display: flex; }
+    .editor-body.mode-edit .editor-pane-preview { display: none; }
+
+    .editor-body.mode-preview .editor-pane-text { display: none; }
+    .editor-body.mode-preview .editor-pane-preview { display: block; border-left: none; }
+
+    .editor-body.mode-split .editor-pane-text { display: flex; }
+    .editor-body.mode-split .editor-pane-preview { display: block; }
+
+    /* Markdown Styling in Preview */
+    .markdown-content h1, .markdown-content h2, .markdown-content h3, .markdown-content h4 {
+      color: var(--text-main);
+      margin-top: 1.2em;
+      margin-bottom: 0.6em;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .markdown-content h1 { font-size: 24px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; color: var(--brand-orange); }
+    .markdown-content h2 { font-size: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; }
+    .markdown-content h3 { font-size: 16px; }
+    .markdown-content p { margin-bottom: 1em; line-height: 1.7; color: #ded4cc; }
+    .markdown-content ul, .markdown-content ol { margin-bottom: 1em; padding-left: 24px; color: #ded4cc; }
+    .markdown-content li { margin-bottom: 4px; }
+    .markdown-content blockquote {
+      border-left: 4px solid var(--brand-orange);
+      padding: 8px 14px;
+      margin-bottom: 1em;
+      background: var(--bg-elevated);
+      color: var(--text-secondary);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+    .markdown-content code {
+      font-family: var(--font-mono);
+      background: #2b221d;
+      color: var(--brand-orange);
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 12.5px;
+    }
+    .markdown-content pre {
+      background: #0d0b0a;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      overflow-x: auto;
+      margin-bottom: 1.2em;
+    }
+    .markdown-content pre code {
+      background: none;
+      padding: 0;
+      color: #eedcd0;
+      font-size: 13px;
+    }
+    .markdown-content hr {
+      border: 0;
+      height: 1px;
+      background: var(--border-color);
+      margin: 24px 0;
+    }
+    .markdown-content a {
+      color: var(--brand-orange);
+      text-decoration: underline;
+    }
+    .markdown-content table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 1.2em;
+    }
+    .markdown-content th, .markdown-content td {
+      border: 1px solid var(--border-color);
+      padding: 8px 12px;
+      text-align: left;
+    }
+    .markdown-content th {
+      background-color: var(--bg-elevated);
+      color: var(--text-main);
+    }
+
+    /* Binary File Preview */
+    .binary-preview-box {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      text-align: center;
+      overflow-y: auto;
+    }
+
+    .binary-preview-box img {
+      max-width: 90%;
+      max-height: 65vh;
+      object-fit: contain;
+      border-radius: var(--radius-md);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      border: 1px solid var(--border-color);
+      margin-bottom: 20px;
+    }
+
+    .binary-preview-box video, .binary-preview-box audio {
+      max-width: 90%;
+      border-radius: var(--radius-md);
+      margin-bottom: 20px;
+    }
+
+    /* Empty state */
+    .empty-state-editor {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 20px;
+    }
+    .empty-state-editor .icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.7;
+    }
+
+    /* ============================================================
+       COLUMN 3: ACTIVIDAD & ESTADO (DERECHA)
+       ============================================================ */
+    .panel-activity {
+      width: var(--activity-width);
+      background-color: var(--bg-surface);
+      border-left: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .activity-header {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .activity-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--bg-elevated);
+    }
+
+    .stat-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+    }
+    .stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+    .stat-value {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--brand-orange);
+    }
+
+    .activity-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px 12px;
+    }
+
+    .activity-item {
+      padding: 10px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      margin-bottom: 8px;
+      transition: var(--transition);
+    }
+    .activity-item:hover {
+      border-color: var(--brand-orange);
+      background: var(--bg-hover);
+    }
+
+    .activity-item-title {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 4px;
+      cursor: pointer;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .activity-item-title:hover {
+      color: var(--brand-orange);
+    }
+
+    .activity-item-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .activity-diff-btn {
+      background: none;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+    }
+    .activity-diff-btn:hover {
+      border-color: var(--brand-orange);
+      color: var(--brand-orange);
+    }
+
+    /* ============================================================
+       MODALES
+       ============================================================ */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 16px;
+    }
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-dialog {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 600px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+      overflow: hidden;
+      animation: modalFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-dialog.modal-wide {
+      max-width: 820px;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-header {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .modal-close-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 18px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 4px;
+    }
+    .modal-close-btn:hover {
+      color: var(--text-main);
+    }
+
+    .modal-body {
+      padding: 18px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .modal-footer {
+      padding: 12px 18px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      background-color: var(--bg-elevated);
+    }
+
+    /* Forms */
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+    .form-control {
+      width: 100%;
+      background-color: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 9px 12px;
+      color: var(--text-main);
+      font-size: 13px;
+      outline: none;
+      transition: var(--transition);
+    }
+    .form-control:focus {
+      border-color: var(--brand-orange);
+      box-shadow: 0 0 8px var(--brand-orange-glow);
+    }
+
+    /* Unified Diff Viewer */
+    .diff-container {
+      background: #0d0b0a;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      overflow-x: auto;
+      max-height: 55vh;
+    }
+    .diff-line {
+      padding: 2px 10px;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .diff-line.header {
+      background-color: #242220;
+      color: var(--color-info);
+      font-weight: 600;
+    }
+    .diff-line.added {
+      background-color: rgba(56, 176, 0, 0.2);
+      color: #70e000;
+    }
+    .diff-line.removed {
+      background-color: rgba(230, 57, 70, 0.2);
+      color: #ff6b6b;
+    }
+    .diff-line.normal {
+      color: #a89f91;
+    }
+
+    /* History version items */
+    .version-item {
+      padding: 12px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .version-item-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .version-hash {
+      font-family: var(--font-mono);
+      background: #14110f;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      color: var(--brand-orange);
+    }
+    .version-date {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .version-msg {
+      font-size: 13px;
+      color: var(--text-main);
+    }
+    .version-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    /* Upload drag and drop */
+    .upload-dropzone {
+      border: 2px dashed var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      text-align: center;
+      cursor: pointer;
+      background-color: var(--bg-elevated);
+      transition: var(--transition);
+      margin-bottom: 16px;
+    }
+    .upload-dropzone.dragover {
+      border-color: var(--brand-orange);
+      background-color: var(--bg-hover);
+    }
+    .upload-dropzone-icon {
+      font-size: 36px;
+      color: var(--brand-orange);
+      margin-bottom: 10px;
+    }
+
+    /* Progress bar */
+    .upload-progress-box {
+      margin-top: 12px;
+      display: none;
+    }
+    .upload-progress-box.visible {
+      display: block;
+    }
+    .progress-bar-track {
+      width: 100%;
+      height: 8px;
+      background-color: var(--bg-main);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+    .progress-bar-fill {
+      width: 0%;
+      height: 100%;
+      background-color: var(--brand-orange);
+      transition: width 0.15s ease;
+    }
+
+    /* Toasts Notification */
+    .toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 2000;
+      pointer-events: none;
+    }
+    .toast {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 10px 16px;
+      border-radius: var(--radius-md);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.6);
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: auto;
+      animation: toastSlideIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .toast.success { border-left: 4px solid var(--color-success); }
+    .toast.error { border-left: 4px solid var(--color-danger); }
+    .toast.warning { border-left: 4px solid var(--color-warning); }
+
+    @keyframes toastSlideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ============================================================
+       RESPONSIVE DESIGN (MÓVIL Y TABLET)
+       ============================================================ */
+    @media (max-width: 900px) {
+      .mobile-tab-bar {
+        display: flex;
+      }
+      .gaf-container {
+        position: relative;
+      }
+      .panel-files, .panel-editor, .panel-activity {
+        width: 100%;
+        position: absolute;
+        inset: 0;
+        display: none;
+      }
+      .panel-files.active, .panel-editor.active, .panel-activity.active {
+        display: flex;
+      }
+      .editor-pane-preview {
+        border-left: none;
+      }
+      .editor-body.mode-split .editor-pane-text {
+        flex: 1;
+      }
+      .editor-body.mode-split .editor-pane-preview {
+        flex: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       CABECERA SUPERIOR
+       ============================================================ -->
+  <header class="gaf-header">
+    <div class="brand-section">
+      <a href="#" class="brand-title" onclick="location.reload(); return false;">
+        <span>🔥</span>
+        <span>Guerrero al Fuego</span>
+      </a>
+      <span class="brand-badge">
+        <span class="status-dot" id="serverStatusDot"></span>
+        <span>Chispa ⚡</span>
+      </span>
+    </div>
+
+    <!-- Selector de vista móvil -->
+    <div class="mobile-tab-bar">
+      <button class="mobile-tab-btn active" id="tabBtnFiles" onclick="switchMobileTab('files')">📁 Archivos</button>
+      <button class="mobile-tab-btn" id="tabBtnEditor" onclick="switchMobileTab('editor')">📝 Editor</button>
+      <button class="mobile-tab-btn" id="tabBtnActivity" onclick="switchMobileTab('activity')">⚡ Actividad</button>
+    </div>
+
+    <div class="header-actions">
+      <button class="btn btn-secondary btn-icon" title="Subir material o documentos" onclick="openUploadModal()">
+        <span>⬆</span> <span class="hide-mobile">Subir</span>
+      </button>
+      <button class="btn btn-secondary btn-icon" title="Refrescar lista y estado" onclick="refreshAll(true)">
+        <span>🔄</span>
+      </button>
+      <button class="btn btn-secondary btn-icon" title="Configurar conexión" onclick="openConfigModal()">
+        <span>⚙️</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       CONTENEDOR PRINCIPAL DE 3 PANELES
+       ============================================================ -->
+  <main class="gaf-container">
+    
+    <!-- 1. EXPLORADOR DE ARCHIVOS (IZQUIERDA) -->
+    <section class="panel-files active" id="panelFiles">
+      <div class="files-header">
+        <div class="files-title-row">
+          <span class="files-title">📁 Archivos (<span id="totalFilesCount">0</span>)</span>
+          <button class="btn btn-secondary btn-icon" style="padding: 2px 6px; font-size: 11px;" title="Nuevo Guion" onclick="createNewScriptPrompt()">
+            + Nuevo Guion
+          </button>
+        </div>
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="fileSearchInput" class="search-input" placeholder="Buscar guion o archivo..." oninput="filterFilesTree()">
+        </div>
+      </div>
+      <div class="files-tree" id="filesTreeContainer">
+        <div style="padding: 20px; text-align: center; color: var(--text-muted);">
+          Cargando archivos de Chispa...
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. EDITOR Y VISOR DE CONTENIDO (CENTRO) -->
+    <section class="panel-editor" id="panelEditor">
+      
+      <!-- Barra superior del editor -->
+      <div class="editor-topbar">
+        <div class="file-path-breadcrumbs" id="editorBreadcrumbs">
+          <span id="currentPathText">Ningún archivo abierto</span>
+          <span class="file-badge-dirty" id="dirtyBadge">● Sin guardar</span>
+        </div>
+
+        <div class="editor-toolbar" id="editorToolbar">
+          <div class="view-mode-toggle" id="viewModeToggle" style="display: none;">
+            <button class="view-btn active" id="modeEditBtn" onclick="setViewMode('edit')">✏️ Editar</button>
+            <button class="view-btn" id="modeSplitBtn" onclick="setViewMode('split')">🌓 Dividido</button>
+            <button class="view-btn" id="modePreviewBtn" onclick="setViewMode('preview')">👁️ Previa</button>
+          </div>
+          
+          <button class="btn btn-primary" id="saveBtn" onclick="saveCurrentFile()" style="display: none;" title="Guardar (Ctrl+S)">
+            💾 Guardar
+          </button>
+          <button class="btn btn-secondary" id="versionsBtn" onclick="openVersionsModal()" style="display: none;" title="Historial git de versiones">
+            🕓 Versiones
+          </button>
+          <button class="btn btn-secondary" id="downloadBtn" onclick="downloadCurrentFile()" style="display: none;" title="Descargar archivo en crudo">
+            ⬇ Descargar
+          </button>
+        </div>
+      </div>
+
+      <!-- Banner de versión histórica -->
+      <div class="historical-banner" id="historicalBanner">
+        <div>
+          <span>⚠️ <strong>Estás viendo una versión antigua</strong> (<code id="historicalRevTag">rev</code>). Los cambios no se guardarán sobre la versión actual salvo que la restaures.</span>
+        </div>
+        <div class="historical-banner-actions">
+          <button class="btn btn-primary" style="padding: 3px 10px; font-size: 12px;" onclick="restoreHistoricalVersion()">⏪ Restaurar esta versión</button>
+          <button class="btn btn-secondary" style="padding: 3px 10px; font-size: 12px;" onclick="loadCurrentFile(currentOpenPath, true)">Volver a la actual</button>
+        </div>
+      </div>
+
+      <!-- Área de trabajo del editor -->
+      <div class="editor-body mode-edit" id="editorBody">
+        
+        <!-- Estado inicial vacío -->
+        <div class="empty-state-editor" id="emptyEditorState">
+          <div class="icon">📝</div>
+          <h3 style="color: var(--text-main); margin-bottom: 8px;">Guerrero al Fuego — Panel de Trabajo Conjunto</h3>
+          <p style="max-width: 420px; font-size: 13px; color: var(--text-secondary);">
+            Selecciona un guion en la lista lateral para empezar a redactar o revisar.
+            Los cambios se guardan con historial git automático en Chispa (PC2).
+          </p>
+        </div>
+
+        <!-- Panel de texto (textarea) -->
+        <div class="editor-pane-text" id="editorTextPane" style="display: none;">
+          <textarea id="mainTextarea" class="editor-textarea" placeholder="Escribe aquí el guion o contenido..." spellcheck="false"></textarea>
+        </div>
+
+        <!-- Panel de vista previa Markdown -->
+        <div class="editor-pane-preview" id="editorPreviewPane">
+          <div class="markdown-content" id="markdownRenderBox"></div>
+        </div>
+
+        <!-- Visor de binarios (imágenes / vídeos / descargas) -->
+        <div class="binary-preview-box" id="binaryPreviewBox" style="display: none;"></div>
+
+      </div>
+    </section>
+
+    <!-- 3. ACTIVIDAD Y ESTADO RECIENTE (DERECHA) -->
+    <section class="panel-activity" id="panelActivity">
+      <div class="activity-header">
+        <span class="activity-title">⚡ Actividad Reciente</span>
+        <span class="brand-badge" style="font-size: 10px;" id="gitStatusBadge">GIT OK</span>
+      </div>
+
+      <!-- Tarjetas de métricas rápidas -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Archivos</div>
+          <div class="stat-value" id="statTotalFiles">-</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Guiones / Docs</div>
+          <div class="stat-value" id="statGuiones">-</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Archivos Texto</div>
+          <div class="stat-value" id="statTextFiles">-</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Espacio Total</div>
+          <div class="stat-value" id="statSizeMb">-</div>
+        </div>
+      </div>
+
+      <!-- Lista de cambios recientes -->
+      <div class="activity-list" id="activityListContainer">
+        <div style="padding: 16px; text-align: center; color: var(--text-muted);">
+          Consultando últimos cambios...
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       MODALES
+       ============================================================ -->
+
+  <!-- 1. MODAL DE CONFIGURACIÓN -->
+  <div class="modal-backdrop" id="configModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">⚙️ Configuración del Servidor Chispa</h3>
+        <button class="modal-close-btn" onclick="closeConfigModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 14px;">
+          Conéctate al motor de contenido en PC2 para editar guiones, ver versiones y sincronizar material.
+        </p>
+
+        <div class="form-group">
+          <label class="form-label" for="cfgServerUrl">URL del Servidor Chispa (Tailscale / Red Local)</label>
+          <input type="text" id="cfgServerUrl" class="form-control" placeholder="https://chispa.taildb8c30.ts.net:8444">
+          <span style="font-size: 11px; color: var(--text-muted); margin-top: 4px; display: block;">
+            Por defecto: <code>https://chispa.taildb8c30.ts.net:8444</code>
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="cfgToken">Token de Acceso (Chispa Secret Token)</label>
+          <input type="password" id="cfgToken" class="form-control" placeholder="Introduce el token de Chispa...">
+        </div>
+
+        <div id="cfgErrorBox" style="display: none; padding: 10px; background: var(--color-danger-bg); border: 1px solid var(--color-danger); border-radius: var(--radius-sm); color: #ff8585; font-size: 12.5px; margin-bottom: 14px;"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" onclick="disconnectAndReset()">Desconectar / Olvidar</button>
+        <button class="btn btn-secondary" onclick="closeConfigModal()">Cancelar</button>
+        <button class="btn btn-primary" id="btnTestAndSaveConfig" onclick="testAndSaveConfig()">Conectar ⚡</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. MODAL HISTORIAL DE VERSIONES -->
+  <div class="modal-backdrop" id="versionsModal">
+    <div class="modal-dialog modal-wide">
+      <div class="modal-header">
+        <h3 class="modal-title">🕓 Historial Git de Versiones</h3>
+        <button class="modal-close-btn" onclick="closeVersionsModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 12px;" id="versionsFileTarget">
+          Archivo: -
+        </div>
+        <div id="versionsListContainer">
+          <div style="text-align: center; color: var(--text-muted); padding: 20px;">Cargando historial...</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeVersionsModal()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. MODAL DE COMPARACIÓN (DIFF UNIFICADO) -->
+  <div class="modal-backdrop" id="diffModal">
+    <div class="modal-dialog modal-wide">
+      <div class="modal-header">
+        <h3 class="modal-title">🔍 Comparación de Diferencias (Diff)</h3>
+        <button class="modal-close-btn" onclick="closeDiffModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 10px;" id="diffFileTarget">
+          Diferencias contra versión actual:
+        </div>
+        <div class="diff-container" id="diffLinesContainer">
+          <div style="padding: 20px; text-align: center; color: var(--text-muted);">Cargando diferencias...</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeDiffModal()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. MODAL SUBIR ARCHIVOS (UPLOAD MULTI-FILE) -->
+  <div class="modal-backdrop" id="uploadModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">⬆ Subir Material a Chispa</h3>
+        <button class="modal-close-btn" onclick="closeUploadModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="uploadDestFolder">Carpeta de Destino en ~/guerrero</label>
+          <select id="uploadDestFolder" class="form-control"></select>
+        </div>
+
+        <div class="upload-dropzone" id="uploadDropzone" onclick="document.getElementById('fileUploadInput').click()">
+          <div class="upload-dropzone-icon">📁</div>
+          <div style="font-weight: 600; color: var(--text-main); margin-bottom: 4px;">
+            Arrastra tus archivos aquí o haz clic para seleccionarlos
+          </div>
+          <div style="font-size: 12px; color: var(--text-muted);">
+            Soporta imágenes, vídeos, documentos o guiones (hasta 500 MB por archivo)
+          </div>
+          <input type="file" id="fileUploadInput" multiple style="display: none;" onchange="handleFilesSelected(this.files)">
+        </div>
+
+        <div id="selectedFilesSummary" style="font-size: 12.5px; color: var(--brand-orange); margin-bottom: 10px; display: none;"></div>
+
+        <div class="upload-progress-box" id="uploadProgressBox">
+          <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary);">
+            <span id="uploadProgressLabel">Subiendo archivo...</span>
+            <span id="uploadProgressPercent">0%</span>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="uploadProgressBarFill"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeUploadModal()">Cancelar</button>
+        <button class="btn btn-primary" id="btnStartUpload" onclick="startUpload()" disabled>Comenzar Subida</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenedor flotante de notificaciones Toasts -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ============================================================
+       VANILLA JAVASCRIPT: LÓGICA COMPLETA DEL PANEL
+       ============================================================ -->
+  <script>
+    // --- ESTADO GLOBAL ---
+    const DEFAULT_SERVER = "https://chispa.taildb8c30.ts.net:8444";
+    let serverUrl = localStorage.getItem("gaf_server_url") || DEFAULT_SERVER;
+    let apiToken = localStorage.getItem("gaf_token") || "";
+
+    let treeData = [];
+    let currentOpenPath = null;
+    let currentOpenFileMetadata = null;
+    let currentOriginalContent = "";
+    let isDirty = false;
+    let isHistoricalPreview = false;
+    let currentHistoricalRev = null;
+    let currentViewMode = "edit"; // 'edit', 'split', 'preview'
+    let selectedUploadFiles = [];
+
+    // --- INICIALIZACIÓN ---
+    window.addEventListener("DOMContentLoaded", () => {
+      setupShortcuts();
+      setupUnloadWarning();
+      setupDropzone();
+      
+      if (!apiToken) {
+        openConfigModal(true);
+      } else {
+        refreshAll(false);
+      }
+    });
+
+    // --- NOTIFICACIONES TOAST ---
+    function showToast(message, type = "info") {
+      const container = document.getElementById("toastContainer");
+      const toast = document.createElement("div");
+      toast.className = `toast ${type}`;
+      
+      let icon = "ℹ️";
+      if (type === "success") icon = "✅";
+      if (type === "error") icon = "❌";
+      if (type === "warning") icon = "⚠️";
+
+      toast.innerHTML = `<span>${icon}</span><span>${escapeHtml(message)}</span>`;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.transform = "translateY(10px)";
+        toast.style.transition = "all 0.3s ease";
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // --- WRAPPER DE LLAMADAS API ---
+    async function apiFetch(endpoint, options = {}) {
+      if (!serverUrl || !apiToken) {
+        openConfigModal(true);
+        throw new Error("No hay token o servidor configurado.");
+      }
+
+      // Normalizar URL base (remover barra final si existe)
+      const cleanBase = serverUrl.replace(/\/+$/, "");
+      const separator = endpoint.includes("?") ? "&" : "?";
+      const fullUrl = `${cleanBase}${endpoint}${separator}t=${encodeURIComponent(apiToken)}`;
+
+      try {
+        const response = await fetch(fullUrl, options);
+        if (response.status === 401) {
+          updateServerStatusDot(false);
+          showToast("Sesión no autorizada (401). Verifica tu token en configuración.", "error");
+          openConfigModal();
+          throw new Error("No autorizado (401)");
+        }
+        return response;
+      } catch (err) {
+        updateServerStatusDot(false);
+        throw err;
+      }
+    }
+
+    function updateServerStatusDot(isOk, checking = false) {
+      const dot = document.getElementById("serverStatusDot");
+      dot.className = "status-dot";
+      if (checking) {
+        dot.classList.add("checking");
+      } else if (!isOk) {
+        dot.classList.add("disconnected");
+      }
+    }
+
+    // --- REFRESCAR TODO EL PANEL ---
+    async function refreshAll(notify = false) {
+      updateServerStatusDot(false, true);
+      try {
+        await Promise.all([loadState(), loadTree()]);
+        updateServerStatusDot(true);
+        if (notify) showToast("Panel y archivos actualizados", "success");
+      } catch (err) {
+        console.error("Error al refrescar:", err);
+        updateServerStatusDot(false);
+        if (notify) showToast("Error al conectar con Chispa: " + err.message, "error");
+      }
+    }
+
+    // --- 3.11 ESTADO GENERAL (/api/estado) ---
+    async function loadState() {
+      const res = await apiFetch("/api/estado");
+      if (!res.ok) throw new Error("Fallo al obtener estado: " + res.statusText);
+      const data = await res.json();
+
+      document.getElementById("statTotalFiles").textContent = data.total_archivos || 0;
+      document.getElementById("statGuiones").textContent = data.guiones || 0;
+      document.getElementById("statTextFiles").textContent = data.de_texto || 0;
+      document.getElementById("statSizeMb").textContent = (data.tamaño_mb || 0) + " MB";
+      
+      const gitBadge = document.getElementById("gitStatusBadge");
+      if (data.git) {
+        gitBadge.textContent = "GIT OK";
+        gitBadge.style.color = "var(--color-success)";
+        gitBadge.style.borderColor = "var(--color-success)";
+      } else {
+        gitBadge.textContent = "SIN GIT";
+        gitBadge.style.color = "var(--color-danger)";
+        gitBadge.style.borderColor = "var(--color-danger)";
+      }
+
+      renderActivityList(data.ultimos_cambios || []);
+    }
+
+    // Renderizar lista de actividad
+    function renderActivityList(items) {
+      const container = document.getElementById("activityListContainer");
+      if (!items || items.length === 0) {
+        container.innerHTML = '<div style="padding: 16px; text-align: center; color: var(--text-muted);">No hay actividad reciente registrada.</div>';
+        return;
+      }
+
+      let html = "";
+      items.forEach(item => {
+        const timeAgo = formatRelativeTime(item.mtime);
+        const fileName = item.path.split("/").pop();
+        const safePath = encodeURIComponent(item.path);
+
+        html += `
+          <div class="activity-item">
+            <div class="activity-item-title" title="${escapeHtml(item.path)}" onclick="openFileFromActivity('${safePath}')">
+              📄 ${escapeHtml(fileName)}
+            </div>
+            <div class="activity-item-meta">
+              <span>🕒 ${timeAgo}</span>
+              <button class="activity-diff-btn" onclick="openDiffModalForPath('${safePath}')">Ver qué cambió</button>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    // --- 3.1 LISTAR ARCHIVOS (/api/tree) ---
+    async function loadTree() {
+      const res = await apiFetch("/api/tree");
+      if (!res.ok) throw new Error("Fallo al listar archivos");
+      treeData = await res.json();
+
+      document.getElementById("totalFilesCount").textContent = treeData.length;
+      populateUploadFolders();
+      renderFilesTree();
+    }
+
+    // Agrupar archivos por carpetas de nivel superior y renderizar
+    function renderFilesTree(filterText = "") {
+      const container = document.getElementById("filesTreeContainer");
+      const filter = filterText.trim().toLowerCase();
+
+      // Agrupar por carpeta padre principal
+      const groups = {};
+      treeData.forEach(item => {
+        if (filter && !item.path.toLowerCase().includes(filter)) return;
+
+        const parts = item.path.split("/");
+        let groupName = parts.length > 1 ? parts[0] : "Raíz";
+        if (!groups[groupName]) groups[groupName] = [];
+        groups[groupName].push(item);
+      });
+
+      const groupNames = Object.keys(groups).sort();
+      if (groupNames.length === 0) {
+        container.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted);">No se encontraron archivos que coincidan.</div>';
+        return;
+      }
+
+      let html = "";
+      groupNames.forEach((gName, index) => {
+        const files = groups[gName];
+        // Ordenar archivos alfabéticamente
+        files.sort((a, b) => a.path.localeCompare(b.path));
+
+        html += `
+          <div class="folder-group" id="folderGroup_${index}">
+            <div class="folder-header" onclick="toggleFolderGroup(${index})">
+              <span class="folder-toggle-icon">▼</span>
+              <span>📁 ${escapeHtml(gName)}</span>
+              <span style="font-size: 11px; color: var(--text-muted); font-weight: normal; margin-left: auto;">(${files.length})</span>
+            </div>
+            <div class="folder-items">
+        `;
+
+        files.forEach(file => {
+          const fileName = file.path.split("/").slice(1).join("/") || file.path;
+          const icon = getFileIcon(file.path, file.tipo);
+          const sizeStr = formatFileSize(file.size);
+          const isActive = currentOpenPath === file.path ? "active" : "";
+          const safePath = encodeURIComponent(file.path);
+
+          html += `
+            <div class="file-item ${isActive}" onclick="handleFileClick('${safePath}')" title="${escapeHtml(file.path)}">
+              <div class="file-info-left">
+                <span>${icon}</span>
+                <span class="file-name">${escapeHtml(fileName)}</span>
+              </div>
+              <span class="file-size">${sizeStr}</span>
+            </div>
+          `;
+        });
+
+        html += `
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function toggleFolderGroup(index) {
+      const g = document.getElementById(`folderGroup_${index}`);
+      if (g) g.classList.toggle("collapsed");
+    }
+
+    function filterFilesTree() {
+      const query = document.getElementById("fileSearchInput").value;
+      renderFilesTree(query);
+    }
+
+    function getFileIcon(path, tipo) {
+      const ext = path.split(".").pop().toLowerCase();
+      if (ext === "md") return "📝";
+      if (["txt", "csv", "json", "html", "yml", "yaml", "xml"].includes(ext)) return "📄";
+      if (["png", "jpg", "jpeg", "gif", "webp", "svg"].includes(ext)) return "🖼️";
+      if (["mp4", "mov", "mkv", "avi", "webm"].includes(ext)) return "🎬";
+      if (["mp3", "wav", "m4a", "ogg"].includes(ext)) return "🎵";
+      if (ext === "pdf") return "📕";
+      if (["zip", "tar", "gz", "7z"].includes(ext)) return "📦";
+      return tipo === "texto" ? "📄" : "💾";
+    }
+
+    function formatFileSize(bytes) {
+      if (bytes === undefined || bytes === null) return "-";
+      if (bytes < 1024) return bytes + " B";
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+      return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+    }
+
+    function formatRelativeTime(mtimeSeconds) {
+      if (!mtimeSeconds) return "desconocido";
+      const now = Math.floor(Date.now() / 1000);
+      const diff = now - mtimeSeconds;
+
+      if (diff < 60) return "hace unos segundos";
+      if (diff < 3600) return `hace ${Math.floor(diff / 60)} min`;
+      if (diff < 86400) return `hace ${Math.floor(diff / 3600)} h`;
+      if (diff < 172800) return "ayer";
+      return `hace ${Math.floor(diff / 86400)} días`;
+    }
+
+    // --- CARGAR Y ABRIR ARCHIVO ---
+    async function handleFileClick(encodedPath) {
+      const path = decodeURIComponent(encodedPath);
+      if (isDirty) {
+        const confirmSwitch = confirm("Tienes cambios sin guardar en el archivo actual. ¿Deseas descartarlos y abrir este archivo?");
+        if (!confirmSwitch) return;
+      }
+      await loadCurrentFile(path);
+      // En móvil, cambiar automáticamente al tab del editor
+      switchMobileTab("editor");
+    }
+
+    async function openFileFromActivity(encodedPath) {
+      const path = decodeURIComponent(encodedPath);
+      await handleFileClick(encodedPath);
+    }
+
+    async function loadCurrentFile(path, forceFresh = false) {
+      isHistoricalPreview = false;
+      currentHistoricalRev = null;
+      document.getElementById("historicalBanner").classList.remove("visible");
+
+      // Buscar metadatos en treeData o pedir a /api/info
+      let fileMeta = treeData.find(f => f.path === path);
+      if (!fileMeta || forceFresh) {
+        try {
+          const resInfo = await apiFetch(`/api/info?path=${encodeURIComponent(path)}`);
+          if (resInfo.ok) fileMeta = await resInfo.json();
+        } catch (e) {
+          console.warn("No se pudo obtener info adicional:", e);
+        }
+      }
+
+      currentOpenPath = path;
+      currentOpenFileMetadata = fileMeta;
+
+      // Actualizar breadcrumbs
+      const pathParts = path.split("/");
+      const fileName = pathParts.pop();
+      const folderName = pathParts.join("/");
+      document.getElementById("currentPathText").innerHTML = `
+        <span style="color: var(--text-muted);">${escapeHtml(folderName ? folderName + ' / ' : '')}</span>
+        <strong style="color: var(--text-main);">${escapeHtml(fileName)}</strong>
+      `;
+
+      // Mostrar botones de la barra superior
+      document.getElementById("downloadBtn").style.display = "inline-flex";
+
+      const ext = path.split(".").pop().toLowerCase();
+      const isText = fileMeta ? fileMeta.tipo === "texto" : ["md","txt","json","csv","html","yml","yaml"].includes(ext);
+
+      const emptyState = document.getElementById("emptyEditorState");
+      const textPane = document.getElementById("editorTextPane");
+      const previewPane = document.getElementById("editorPreviewPane");
+      const binaryBox = document.getElementById("binaryPreviewBox");
+      const viewModeToggle = document.getElementById("viewModeToggle");
+      const saveBtn = document.getElementById("saveBtn");
+      const versionsBtn = document.getElementById("versionsBtn");
+
+      emptyState.style.display = "none";
+
+      if (isText) {
+        // Cargar contenido de texto con /api/file
+        try {
+          const resFile = await apiFetch(`/api/file?path=${encodeURIComponent(path)}`);
+          if (!resFile.ok) throw new Error("No se pudo leer el archivo: " + resFile.statusText);
+          const data = await resFile.json();
+
+          currentOriginalContent = data.content || "";
+          const textarea = document.getElementById("mainTextarea");
+          textarea.value = currentOriginalContent;
+          setDirty(false);
+
+          // Habilitar controles de edición
+          textPane.style.display = "flex";
+          binaryBox.style.display = "none";
+          viewModeToggle.style.display = "inline-flex";
+          saveBtn.style.display = "inline-flex";
+          versionsBtn.style.display = "inline-flex";
+
+          updateMarkdownPreview();
+          setViewMode(currentViewMode);
+        } catch (err) {
+          showToast("Error al cargar texto: " + err.message, "error");
+        }
+      } else {
+        // Archivo binario (imagen, video, audio o descargable)
+        textPane.style.display = "none";
+        previewPane.style.display = "none";
+        viewModeToggle.style.display = "none";
+        saveBtn.style.display = "none";
+        versionsBtn.style.display = "none";
+        binaryBox.style.display = "flex";
+        setDirty(false);
+
+        const cleanBase = serverUrl.replace(/\/+$/, "");
+        const rawUrl = `${cleanBase}/api/raw?path=${encodeURIComponent(path)}&t=${encodeURIComponent(apiToken)}`;
+
+        renderBinaryViewer(path, ext, rawUrl, fileMeta ? fileMeta.size : 0);
+      }
+
+      // Re-render árbol para resaltar el archivo activo
+      renderFilesTree(document.getElementById("fileSearchInput").value);
+    }
+
+    function renderBinaryViewer(path, ext, rawUrl, size) {
+      const box = document.getElementById("binaryPreviewBox");
+      const sizeStr = formatFileSize(size);
+
+      if (["png", "jpg", "jpeg", "gif", "webp", "svg"].includes(ext)) {
+        box.innerHTML = `
+          <img src="${rawUrl}" alt="${escapeHtml(path)}" onerror="this.onerror=null; this.src=''; showToast('Error al visualizar imagen', 'error');">
+          <div style="color: var(--text-secondary); margin-bottom: 12px; font-size: 13px;">
+            🖼️ Imagen — <strong>${sizeStr}</strong>
+          </div>
+          <a href="${rawUrl}" download class="btn btn-secondary">⬇ Descargar Imagen</a>
+        `;
+      } else if (["mp4", "webm", "mov"].includes(ext)) {
+        box.innerHTML = `
+          <video controls src="${rawUrl}"></video>
+          <div style="color: var(--text-secondary); margin-bottom: 12px; font-size: 13px;">
+            🎬 Vídeo — <strong>${sizeStr}</strong>
+          </div>
+          <a href="${rawUrl}" download class="btn btn-secondary">⬇ Descargar Vídeo</a>
+        `;
+      } else if (["mp3", "wav", "ogg", "m4a"].includes(ext)) {
+        box.innerHTML = `
+          <audio controls src="${rawUrl}"></audio>
+          <div style="color: var(--text-secondary); margin-bottom: 12px; font-size: 13px;">
+            🎵 Audio — <strong>${sizeStr}</strong>
+          </div>
+          <a href="${rawUrl}" download class="btn btn-secondary">⬇ Descargar Audio</a>
+        `;
+      } else {
+        box.innerHTML = `
+          <div style="font-size: 64px; margin-bottom: 16px;">📦</div>
+          <h3 style="color: var(--text-main); margin-bottom: 6px;">Archivo binario (${ext.toUpperCase()})</h3>
+          <p style="color: var(--text-secondary); margin-bottom: 16px;">Tamaño: ${sizeStr}</p>
+          <a href="${rawUrl}" download class="btn btn-primary">⬇ Descargar Archivo</a>
+        `;
+      }
+    }
+
+    // --- GUARDAR ARCHIVO (POST /api/file) ---
+    async function saveCurrentFile() {
+      if (!currentOpenPath) return;
+
+      const textarea = document.getElementById("mainTextarea");
+      const content = textarea.value;
+
+      const saveBtn = document.getElementById("saveBtn");
+      saveBtn.disabled = true;
+      saveBtn.textContent = "⏳ Guardando...";
+
+      try {
+        const res = await apiFetch("/api/file", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            path: currentOpenPath,
+            content: content
+          })
+        });
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.error || res.statusText);
+        }
+
+        const data = await res.json();
+        currentOriginalContent = content;
+        setDirty(false);
+        showToast("¡Guardado correctamente en Chispa!", "success");
+
+        // Si estábamos en vista histórica y guardamos, volver al estado normal
+        if (isHistoricalPreview) {
+          isHistoricalPreview = false;
+          currentHistoricalRev = null;
+          document.getElementById("historicalBanner").classList.remove("visible");
+        }
+
+        // Actualizar estadísticas de actividad y árbol
+        loadState();
+      } catch (err) {
+        showToast("Error al guardar: " + err.message, "error");
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = "💾 Guardar";
+      }
+    }
+
+    // --- GESTIÓN DE MODOS DE VISTA ---
+    function setViewMode(mode) {
+      currentViewMode = mode;
+      const editorBody = document.getElementById("editorBody");
+      editorBody.className = `editor-body mode-${mode}`;
+
+      document.getElementById("modeEditBtn").classList.toggle("active", mode === "edit");
+      document.getElementById("modeSplitBtn").classList.toggle("active", mode === "split");
+      document.getElementById("modePreviewBtn").classList.toggle("active", mode === "preview");
+
+      if (mode === "split" || mode === "preview") {
+        updateMarkdownPreview();
+      }
+    }
+
+    // --- DIRTY CHECK & ATALJOS ---
+    function setDirty(dirty) {
+      isDirty = dirty;
+      const breadcrumbs = document.getElementById("editorBreadcrumbs");
+      breadcrumbs.classList.toggle("dirty", dirty);
+    }
+
+    const mainTextarea = document.getElementById("mainTextarea");
+    mainTextarea.addEventListener("input", () => {
+      setDirty(mainTextarea.value !== currentOriginalContent);
+      if (currentViewMode === "split" || currentViewMode === "preview") {
+        updateMarkdownPreview();
+      }
+    });
+
+    // Soporte para tabulador en el editor
+    mainTextarea.addEventListener("keydown", (e) => {
+      if (e.key === "Tab") {
+        e.preventDefault();
+        const start = mainTextarea.selectionStart;
+        const end = mainTextarea.selectionEnd;
+        mainTextarea.value = mainTextarea.value.substring(0, start) + "  " + mainTextarea.value.substring(end);
+        mainTextarea.selectionStart = mainTextarea.selectionEnd = start + 2;
+        setDirty(true);
+      }
+    });
+
+    function setupShortcuts() {
+      window.addEventListener("keydown", (e) => {
+        if ((e.ctrlKey || e.metaKey) && (e.key === "s" || e.key === "S")) {
+          e.preventDefault();
+          if (currentOpenPath && !document.getElementById("saveBtn").disabled) {
+            saveCurrentFile();
+          }
+        }
+      });
+    }
+
+    function setupUnloadWarning() {
+      window.addEventListener("beforeunload", (e) => {
+        if (isDirty) {
+          e.preventDefault();
+          e.returnValue = "Hay cambios sin guardar en el guion. ¿Seguro que quieres salir?";
+          return e.returnValue;
+        }
+      });
+    }
+
+    function downloadCurrentFile() {
+      if (!currentOpenPath) return;
+      const cleanBase = serverUrl.replace(/\/+$/, "");
+      const rawUrl = `${cleanBase}/api/raw?path=${encodeURIComponent(currentOpenPath)}&t=${encodeURIComponent(apiToken)}`;
+      
+      const link = document.createElement("a");
+      link.href = rawUrl;
+      link.download = currentOpenPath.split("/").pop();
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // --- PARSER DE MARKDOWN PROPIO LIGERO (SIN LIBRERÍAS EXTERNAS) ---
+    function updateMarkdownPreview() {
+      const text = document.getElementById("mainTextarea").value;
+      const box = document.getElementById("markdownRenderBox");
+      box.innerHTML = renderMarkdown(text);
+    }
+
+    function renderMarkdown(md) {
+      if (!md) return "<p><em>(Sin contenido)</em></p>";
+
+      // Escapar HTML básico para prevenir inyecciones
+      let html = md
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+
+      // Bloques de código (```lang ... ```)
+      html = html.replace(/```([\w-]*)\n([\s\S]*?)```/g, (match, lang, code) => {
+        return `<pre><code>${code}</code></pre>`;
+      });
+
+      // Títulos (# hasta ######)
+      html = html.replace(/^###### (.*$)/gim, '<h6>$1</h6>');
+      html = html.replace(/^##### (.*$)/gim, '<h5>$1</h5>');
+      html = html.replace(/^#### (.*$)/gim, '<h4>$1</h4>');
+      html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+      html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+      html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+
+      // Línea horizontal (---)
+      html = html.replace(/^---$/gim, '<hr>');
+
+      // Blockquotes (> texto)
+      html = html.replace(/^&gt; (.*$)/gim, '<blockquote>$1</blockquote>');
+
+      // Negrita y cursiva
+      html = html.replace(/\*\*\*(.*?)\*\*\*/gim, '<strong><em>$1</em></strong>');
+      html = html.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>');
+      html = html.replace(/\*(.*?)\*/gim, '<em>$1</em>');
+      html = html.replace(/~~(.*?)~~/gim, '<del>$1</del>');
+
+      // Código inline (`código`)
+      html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+      // Enlaces e imágenes
+      html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width:100%; border-radius:4px;">');
+      html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+
+      // Listas desordenadas (- o *)
+      html = html.replace(/^\s*[-*]\s+\[ \]\s+(.*$)/gim, '<li style="list-style:none;">◻️ $1</li>');
+      html = html.replace(/^\s*[-*]\s+\[x\]\s+(.*$)/gim, '<li style="list-style:none;">☑️ $1</li>');
+      html = html.replace(/^\s*[-*]\s+(.*$)/gim, '<li>$1</li>');
+
+      // Agrupar <li> adyacentes en <ul>
+      html = html.replace(/(<li>[\s\S]*?<\/li>)/gm, '<ul>$1</ul>');
+      html = html.replace(/<\/ul>\s*<ul>/g, '');
+
+      // Párrafos (líneas con doble salto)
+      html = html.split(/\n{2,}/).map(para => {
+        para = para.trim();
+        if (!para) return "";
+        if (/^<(h[1-6]|ul|ol|pre|blockquote|hr)/.test(para)) return para;
+        return `<p>${para.replace(/\n/g, "<br>")}</p>`;
+      }).join("\n");
+
+      return html;
+    }
+
+    // --- NUEVO GUION / ARCHIVO ---
+    async function createNewScriptPrompt() {
+      const defaultFolder = "01 🧠 Ideas & Guiones";
+      const name = prompt("Nombre del nuevo guion o archivo (ej. guion_pollo_crujiente.md):");
+      if (!name) return;
+
+      const cleanName = name.trim();
+      const fullPath = `${defaultFolder}/${cleanName}`;
+
+      const plantillaDefault = `# 🎬 GUION: ${cleanName.replace(/\.[^/.]+$/, "")}\n\n## 💡 Concepto / Gancho\n- \n\n## 📝 Escaleta de Escenas\n1. \n\n## 🎙️ Guion Locución\n\n`;
+
+      try {
+        const res = await apiFetch("/api/file", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            path: fullPath,
+            content: plantillaDefault
+          })
+        });
+
+        if (!res.ok) throw new Error("Fallo al crear archivo");
+        showToast("Guion creado con éxito", "success");
+        await loadTree();
+        await loadCurrentFile(fullPath);
+      } catch (err) {
+        showToast("Error al crear guion: " + err.message, "error");
+      }
+    }
+
+    // --- 3.7 HISTORIAL DE VERSIONES & DIFF ---
+    async function openVersionsModal() {
+      if (!currentOpenPath) return;
+
+      document.getElementById("versionsFileTarget").textContent = `Archivo: ${currentOpenPath}`;
+      const container = document.getElementById("versionsListContainer");
+      container.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 20px;">Cargando versiones desde git en Chispa...</div>';
+      
+      document.getElementById("versionsModal").classList.add("open");
+
+      try {
+        const res = await apiFetch(`/api/historial?path=${encodeURIComponent(currentOpenPath)}`);
+        if (!res.ok) throw new Error("No se pudo obtener el historial");
+        const list = await res.json();
+
+        if (!list || list.length === 0) {
+          container.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted);">No hay versiones históricas para este archivo.</div>';
+          return;
+        }
+
+        let html = "";
+        list.forEach((item, index) => {
+          const shortHash = item.hash.substring(0, 7);
+          const isLatest = index === 0;
+
+          html += `
+            <div class="version-item">
+              <div class="version-item-header">
+                <div>
+                  <span class="version-hash">${shortHash}</span>
+                  <strong style="margin-left: 6px; color: var(--text-main);">${escapeHtml(item.autor || 'Chispa')}</strong>
+                  ${isLatest ? '<span class="brand-badge" style="font-size:10px; margin-left: 6px;">Actual</span>' : ''}
+                </div>
+                <span class="version-date">${escapeHtml(item.fecha)}</span>
+              </div>
+              <div class="version-msg">${escapeHtml(item.mensaje)}</div>
+              <div class="version-actions">
+                <button class="btn btn-secondary" style="padding: 3px 8px; font-size: 11px;" onclick="previewHistoricalVersion('${shortHash}')">
+                  👁️ Ver contenido
+                </button>
+                <button class="btn btn-secondary" style="padding: 3px 8px; font-size: 11px;" onclick="compareHistoricalVersion('${shortHash}')">
+                  🔍 Comparar (Diff)
+                </button>
+                ${!isLatest ? `
+                  <button class="btn btn-primary" style="padding: 3px 8px; font-size: 11px;" onclick="restoreHistoricalVersionDirect('${shortHash}')">
+                    ⏪ Restaurar esta
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+          `;
+        });
+
+        container.innerHTML = html;
+      } catch (err) {
+        container.innerHTML = `<div style="padding: 16px; color: var(--color-danger);">Error: ${escapeHtml(err.message)}</div>`;
+      }
+    }
+
+    function closeVersionsModal() {
+      document.getElementById("versionsModal").classList.remove("open");
+    }
+
+    // 3.8 Previsualizar versión antigua (/api/version)
+    async function previewHistoricalVersion(rev) {
+      closeVersionsModal();
+      try {
+        const res = await apiFetch(`/api/version?path=${encodeURIComponent(currentOpenPath)}&rev=${encodeURIComponent(rev)}`);
+        if (!res.ok) throw new Error("Fallo al obtener versión histórica");
+        const data = await res.json();
+
+        isHistoricalPreview = true;
+        currentHistoricalRev = rev;
+
+        const textarea = document.getElementById("mainTextarea");
+        textarea.value = data.content || "";
+        updateMarkdownPreview();
+
+        document.getElementById("historicalRevTag").textContent = rev;
+        document.getElementById("historicalBanner").classList.add("visible");
+        showToast(`Visualizando versión histórica ${rev}`, "warning");
+      } catch (err) {
+        showToast("Error al cargar versión histórica: " + err.message, "error");
+      }
+    }
+
+    // 3.9 Comparar versión antigua contra actual (/api/diff)
+    async function compareHistoricalVersion(rev) {
+      closeVersionsModal();
+      await showDiffForPathAndRev(currentOpenPath, rev);
+    }
+
+    async function openDiffModalForPath(encodedPath) {
+      const path = decodeURIComponent(encodedPath);
+      // Obtener el último commit del historial para contrastar
+      try {
+        const resH = await apiFetch(`/api/historial?path=${encodeURIComponent(path)}`);
+        if (resH.ok) {
+          const list = await resH.json();
+          if (list && list.length > 1) {
+            // Comparar contra el commit previo
+            await showDiffForPathAndRev(path, list[1].hash.substring(0, 7));
+            return;
+          } else if (list && list.length === 1) {
+            await showDiffForPathAndRev(path, list[0].hash.substring(0, 7));
+            return;
+          }
+        }
+      } catch (e) {
+        console.warn(e);
+      }
+      await showDiffForPathAndRev(path, "HEAD~1");
+    }
+
+    async function showDiffForPathAndRev(path, rev) {
+      document.getElementById("diffFileTarget").innerHTML = `Archivo: <strong>${escapeHtml(path)}</strong> (comparando con <code>${escapeHtml(rev)}</code>)`;
+      const container = document.getElementById("diffLinesContainer");
+      container.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted);">Calculando diferencias...</div>';
+      document.getElementById("diffModal").classList.add("open");
+
+      try {
+        const res = await apiFetch(`/api/diff?path=${encodeURIComponent(path)}&rev=${encodeURIComponent(rev)}`);
+        if (!res.ok) throw new Error("No se pudo obtener el diff");
+        const data = await res.json();
+
+        if (!data.lineas || data.lineas.length === 0) {
+          container.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted);">No hay diferencias con la versión actual (o archivo idéntico).</div>';
+          return;
+        }
+
+        let html = "";
+        data.lineas.forEach(line => {
+          let lineType = "normal";
+          if (line.startsWith("+")) lineType = "added";
+          else if (line.startsWith("-")) lineType = "removed";
+          else if (line.startsWith("@@")) lineType = "header";
+
+          html += `<div class="diff-line ${lineType}">${escapeHtml(line)}</div>`;
+        });
+
+        container.innerHTML = html;
+      } catch (err) {
+        container.innerHTML = `<div style="padding: 16px; color: var(--color-danger);">Error al calcular diff: ${escapeHtml(err.message)}</div>`;
+      }
+    }
+
+    function closeDiffModal() {
+      document.getElementById("diffModal").classList.remove("open");
+    }
+
+    // 3.10 Restaurar una versión (/api/restaurar)
+    async function restoreHistoricalVersion() {
+      if (!currentOpenPath || !currentHistoricalRev) return;
+      await restoreHistoricalVersionDirect(currentHistoricalRev);
+    }
+
+    async function restoreHistoricalVersionDirect(rev) {
+      const confirmRestore = confirm(`¿Estás seguro de que deseas restaurar el archivo a la versión ${rev}? Se creará un nuevo commit con dicho contenido.`);
+      if (!confirmRestore) return;
+
+      try {
+        const res = await apiFetch("/api/restaurar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            path: currentOpenPath,
+            rev: rev
+          })
+        });
+
+        if (!res.ok) throw new Error("Fallo al restaurar versión");
+        showToast(`Versión ${rev} restaurada con éxito`, "success");
+        closeVersionsModal();
+        await loadCurrentFile(currentOpenPath, true);
+        await loadState();
+      } catch (err) {
+        showToast("Error al restaurar: " + err.message, "error");
+      }
+    }
+
+    // --- 3.6 SUBIR ARCHIVOS (UPLOAD CON PROGRESO) ---
+    function openUploadModal() {
+      populateUploadFolders();
+      selectedUploadFiles = [];
+      document.getElementById("fileUploadInput").value = "";
+      document.getElementById("selectedFilesSummary").style.display = "none";
+      document.getElementById("uploadProgressBox").classList.remove("visible");
+      document.getElementById("btnStartUpload").disabled = true;
+      document.getElementById("uploadModal").classList.add("open");
+    }
+
+    function closeUploadModal() {
+      document.getElementById("uploadModal").classList.remove("open");
+    }
+
+    function populateUploadFolders() {
+      const select = document.getElementById("uploadDestFolder");
+      const currentFolder = currentOpenPath ? currentOpenPath.split("/").slice(0, -1).join("/") : "01 🧠 Ideas & Guiones";
+
+      // Obtener lista única de carpetas
+      const folderSet = new Set();
+      treeData.forEach(item => {
+        const parts = item.path.split("/");
+        if (parts.length > 1) {
+          folderSet.add(parts[0]);
+        }
+      });
+
+      // Asegurar las 9 carpetas de Guerrero al Fuego
+      const defaultFolders = [
+        "00 🔥ADMIN y MARCA🔥",
+        "01 🧠 Ideas & Guiones",
+        "02 🎬 Material bruto & Edición",
+        "03 📋 Plantillas & Procesos",
+        "04 📲 Redes & Publicación",
+        "05 📁 Proyectos Especiales",
+        "06 💰 Negocio & Patrocinios",
+        "07 🎙️ Podcast & Entrevistas",
+        "ATLETAS GO!"
+      ];
+      defaultFolders.forEach(f => folderSet.add(f));
+
+      const sortedFolders = Array.from(folderSet).sort();
+      select.innerHTML = "";
+      sortedFolders.forEach(folder => {
+        const opt = document.createElement("option");
+        opt.value = folder;
+        opt.textContent = folder;
+        if (folder === currentFolder) opt.selected = true;
+        select.appendChild(opt);
+      });
+    }
+
+    function setupDropzone() {
+      const dropzone = document.getElementById("uploadDropzone");
+      ["dragenter", "dragover"].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.add("dragover");
+        }, false);
+      });
+
+      ["dragleave", "drop"].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.remove("dragover");
+        }, false);
+      });
+
+      dropzone.addEventListener("drop", (e) => {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        handleFilesSelected(files);
+      });
+    }
+
+    function handleFilesSelected(files) {
+      if (!files || files.length === 0) return;
+      selectedUploadFiles = Array.from(files);
+
+      const summary = document.getElementById("selectedFilesSummary");
+      let totalSize = selectedUploadFiles.reduce((acc, f) => acc + f.size, 0);
+      summary.textContent = `Seleccionados: ${selectedUploadFiles.length} archivo(s) (${formatFileSize(totalSize)})`;
+      summary.style.display = "block";
+
+      document.getElementById("btnStartUpload").disabled = false;
+    }
+
+    async function startUpload() {
+      if (selectedUploadFiles.length === 0) return;
+
+      const destFolder = document.getElementById("uploadDestFolder").value;
+      const progressBox = document.getElementById("uploadProgressBox");
+      const progressLabel = document.getElementById("uploadProgressLabel");
+      const progressPercent = document.getElementById("uploadProgressPercent");
+      const progressFill = document.getElementById("uploadProgressBarFill");
+      const btnStart = document.getElementById("btnStartUpload");
+
+      progressBox.classList.add("visible");
+      btnStart.disabled = true;
+
+      const cleanBase = serverUrl.replace(/\/+$/, "");
+
+      for (let i = 0; i < selectedUploadFiles.length; i++) {
+        const file = selectedUploadFiles[i];
+        const destPath = `${destFolder}/${file.name}`;
+        progressLabel.textContent = `Subiendo (${i + 1}/${selectedUploadFiles.length}): ${file.name}`;
+
+        try {
+          await uploadSingleFileXHR(`${cleanBase}/api/upload?path=${encodeURIComponent(destPath)}&t=${encodeURIComponent(apiToken)}`, file, (percent) => {
+            progressPercent.textContent = `${percent}%`;
+            progressFill.style.width = `${percent}%`;
+          });
+        } catch (err) {
+          showToast(`Error al subir ${file.name}: ${err.message}`, "error");
+        }
+      }
+
+      showToast("¡Subida completada con éxito!", "success");
+      closeUploadModal();
+      await refreshAll(false);
+    }
+
+    function uploadSingleFileXHR(url, file, onProgress) {
+      return new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader("Content-Type", "application/octet-stream");
+
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) {
+            const percent = Math.round((e.loaded / e.total) * 100);
+            onProgress(percent);
+          }
+        };
+
+        xhr.onload = () => {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            resolve(xhr.responseText);
+          } else {
+            reject(new Error(`HTTP ${xhr.status}: ${xhr.statusText}`));
+          }
+        };
+
+        xhr.onerror = () => reject(new Error("Error de red durante la subida"));
+        xhr.send(file);
+      });
+    }
+
+    // --- MODAL DE CONFIGURACIÓN ---
+    function openConfigModal(forceStay = false) {
+      document.getElementById("cfgServerUrl").value = serverUrl;
+      document.getElementById("cfgToken").value = apiToken;
+      document.getElementById("cfgErrorBox").style.display = "none";
+      document.getElementById("configModal").classList.add("open");
+    }
+
+    function closeConfigModal() {
+      if (!apiToken) {
+        showToast("Debes ingresar un token para conectar con Chispa", "warning");
+        return;
+      }
+      document.getElementById("configModal").classList.remove("open");
+    }
+
+    async function testAndSaveConfig() {
+      const urlInput = document.getElementById("cfgServerUrl").value.trim() || DEFAULT_SERVER;
+      const tokenInput = document.getElementById("cfgToken").value.trim();
+      const errBox = document.getElementById("cfgErrorBox");
+      const btn = document.getElementById("btnTestAndSaveConfig");
+
+      errBox.style.display = "none";
+
+      if (!tokenInput) {
+        errBox.textContent = "El token de acceso no puede estar vacío.";
+        errBox.style.display = "block";
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = "Probando conexión...";
+
+      const cleanBase = urlInput.replace(/\/+$/, "");
+
+      try {
+        // 1. Probar health
+        const resHealth = await fetch(`${cleanBase}/health`, { method: "GET" });
+        if (!resHealth.ok) {
+          throw new Error(`El servidor respondió con HTTP ${resHealth.status} en /health`);
+        }
+
+        // 2. Probar estado con token
+        const resEstado = await fetch(`${cleanBase}/api/estado?t=${encodeURIComponent(tokenInput)}`, { method: "GET" });
+        if (resEstado.status === 401) {
+          throw new Error("El token de acceso es inválido (HTTP 401 No Autorizado).");
+        }
+        if (!resEstado.ok) {
+          throw new Error(`Error al verificar token: HTTP ${resEstado.status}`);
+        }
+
+        // Guardar configuración
+        serverUrl = cleanBase;
+        apiToken = tokenInput;
+        localStorage.setItem("gaf_server_url", serverUrl);
+        localStorage.setItem("gaf_token", apiToken);
+
+        showToast("Conexión con Chispa establecida correctamente ⚡", "success");
+        document.getElementById("configModal").classList.remove("open");
+        refreshAll(false);
+      } catch (err) {
+        errBox.textContent = "Error al conectar: " + err.message;
+        errBox.style.display = "block";
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Conectar ⚡";
+      }
+    }
+
+    function disconnectAndReset() {
+      const confirmReset = confirm("¿Deseas olvidar el token y desconectar del servidor?");
+      if (!confirmReset) return;
+
+      localStorage.removeItem("gaf_token");
+      apiToken = "";
+      document.getElementById("cfgToken").value = "";
+      updateServerStatusDot(false);
+      showToast("Token eliminado. Vuelve a iniciar sesión cuando desees.", "info");
+      openConfigModal(true);
+    }
+
+    // --- PESTAÑAS PARA MÓVIL ---
+    function switchMobileTab(tabName) {
+      document.getElementById("panelFiles").classList.toggle("active", tabName === "files");
+      document.getElementById("panelEditor").classList.toggle("active", tabName === "editor");
+      document.getElementById("panelActivity").classList.toggle("active", tabName === "activity");
+
+      document.getElementById("tabBtnFiles").classList.toggle("active", tabName === "files");
+      document.getElementById("tabBtnEditor").classList.toggle("active", tabName === "editor");
+      document.getElementById("tabBtnActivity").classList.toggle("active", tabName === "activity");
+    }
+
+    // --- UTILIDADES ---
+    function escapeHtml(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+  </script>
+</body>
+</html>
