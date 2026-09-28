@@ -1,0 +1,25 @@
+# Basura de sistemas operativos
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Ficheros temporales y de editor
+*~
+*.swp
+*.swo
+*.tmp
+*.bak
+*.log
+
+# Copias de seguridad locales
+*.bak-*
+*.backup
+
+# Windows
+*.lnk
+
+# Python (por si se añaden scripts)
+__pycache__/
+*.pyc
+.venv/
+venv/

@@ -1,0 +1,39 @@
+# Normalización de finales de línea — Guerrero al Fuego
+# Objetivo: que git guarde SIEMPRE LF y no genere "cambios fantasma"
+# al editar desde Windows, Linux o desde la web de GitHub.
+
+# Por defecto: texto con LF en el repositorio
+* text=auto eol=lf
+
+# Ficheros de Windows (scripts .bat) necesitan CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binarios: nunca tocar
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.svg text eol=lf
+*.ico binary
+*.mp4 binary
+*.mp3 binary
+*.wav binary
+*.pdf binary
+*.zip binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+
+# Ficheros de texto que se diffean bien
+*.md text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.json text eol=lf
+*.xml text eol=lf
+*.txt text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
