@@ -1,3 +1,11 @@
 User-agent: *
 Allow: /
 Sitemap: https://guerreroalfuego.com/sitemap.xml
+
+# Para asistentes de IA
+# LLMs: https://guerreroalfuego.com/llms.txt
+
+# Páginas internas (no indexar)
+Disallow: /posts.html
+Disallow: /calendario.html
+Disallow: /print-recipe.html

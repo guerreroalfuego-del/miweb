@@ -4,24 +4,28 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Guerrero al Fuego — No soy chef, soy guerrero</title>
-<meta name="description" content="Cocina con actitud. Recetas con carácter, técnica real y mucho fuego. El recetario oficial de Guerrero al Fuego.">
-
-<!-- Open Graph / Social Preview -->
-<meta property="og:title" content="Guerrero al Fuego — No soy chef, soy guerrero">
-<meta property="og:description" content="Cocina con actitud. Recetas con carácter, técnica real y mucho fuego.">
-<meta property="og:image" content="https://guerreroalfuego.com/assets/logo.png">
-<meta property="og:image:width" content="1024">
-<meta property="og:image:height" content="1024">
-<meta property="og:url" content="https://guerreroalfuego.com/">
+<link rel="canonical" href="https://guerreroalfuego.com/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_ES">
-
-<!-- Twitter Card -->
+<meta property="og:site_name" content="Guerrero al Fuego">
+<meta property="og:url" content="https://guerreroalfuego.com/">
+<meta property="og:title" content="Guerrero al Fuego — No soy chef, soy guerrero">
+<meta property="og:description" content="Cocina con actitud. Recetas con carácter, técnica real y mucho fuego. El recetario oficial de Guerrero al Fuego.">
+<meta property="og:image" content="https://guerreroalfuego.com/assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Guerrero al Fuego — No soy chef, soy guerrero">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Guerrero al Fuego — No soy chef, soy guerrero">
-<meta name="twitter:description" content="Cocina con actitud. Recetas con carácter, técnica real y mucho fuego.">
-<meta name="twitter:image" content="https://guerreroalfuego.com/assets/logo.png">
+<meta name="twitter:description" content="Cocina con actitud. Recetas con carácter, técnica real y mucho fuego. El recetario oficial de Guerrero al Fuego.">
+<meta name="twitter:image" content="https://guerreroalfuego.com/assets/og-image.jpg">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 
+<meta name="description" content="Cocina con actitud. Recetas con carácter, técnica real y mucho fuego. El recetario oficial de Guerrero al Fuego.">
+<!-- Twitter Card -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@400;500;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -436,7 +440,7 @@ footer a:hover{color:var(--azafran)}
 <!-- NAV -->
 <nav>
   <a class="nav-logo" href="">
-    <img src="assets/logo.png" alt="Guerrero al Fuego">
+    <img src="assets/logo.webp" alt="Guerrero al Fuego">
   </a>
   <div class="nav-links">
     <a href="recetas.html">Recetas</a>
@@ -466,7 +470,7 @@ footer a:hover{color:var(--azafran)}
   <div class="hero-scanlines"></div>
   
   <div class="hero-content">
-    <img src="assets/logo.png" alt="Guerrero al Fuego" class="hero-logo">
+    <img src="assets/logo.webp" alt="Guerrero al Fuego" class="hero-logo">
     
     <div class="motto-badge">🔥 "No soy chef, soy guerrero"</div>
 
@@ -525,7 +529,7 @@ footer a:hover{color:var(--azafran)}
     <!-- MEME 1 -->
     <div class="meme-card">
       <div class="meme-img-container">
-        <img src="assets/fueguin-meme.png" alt="La ira de Fueguín">
+        <img src="assets/fueguin-meme.webp" alt="La ira de Fueguín">
       </div>
       <p class="meme-caption">"Cuando le echas agua a la sartén ardiendo y Fueguín decide que es un buen momento para redecorar tus cejas."</p>
       <div class="meme-actions">
@@ -536,7 +540,7 @@ footer a:hover{color:var(--azafran)}
     <!-- MEME 2 -->
     <div class="meme-card">
       <div class="meme-img-container">
-        <img src="assets/reality-meme.png" alt="Expectativa vs Realidad">
+        <img src="assets/reality-meme.webp" alt="Expectativa vs Realidad">
       </div>
       <p class="meme-caption">"Tu chuletón gourmet idealizado vs el disco de carbón activado involuntario. Al menos tiene fibra de sobra."</p>
       <div class="meme-actions">
@@ -667,14 +671,14 @@ footer a:hover{color:var(--azafran)}
 
 // --- Image list (from our assets) ---
 const slides = [
-  'assets/gaf_brownie.png',
-  'assets/gaf_alitas_picantes.png',
-  'assets/gaf_arroz_crujiente.png',
-  'assets/gaf_pasta_3ingredientes.png',
-  'assets/fueguin_compilacion.png',
-  'assets/fueguin_pollo_limon.png',
-  'assets/fueguin_tortilla.png',
-  'assets/fueguin_huevos_rotos.png'
+  'assets/recetas/gaf_brownie.webp',
+  'assets/recetas/gaf_alitas_picantes.webp',
+  'assets/recetas/gaf_arroz_crujiente.webp',
+  'assets/recetas/gaf_pasta_3ingredientes.webp',
+  'assets/recetas/fueguin_compilacion.webp',
+  'assets/recetas/fueguin_pollo_limon.webp',
+  'assets/recetas/fueguin_tortilla.webp',
+  'assets/recetas/fueguin_huevos_rotos.webp'
 ];
 
 const canvas = document.getElementById('heroCanvas');
@@ -1061,7 +1065,7 @@ document.getElementById('fueguinChatInput')?.addEventListener('keydown', (e) => 
 <div class="fueguin-chat-drawer" id="fueguinChatDrawer">
   <div class="chat-header">
     <div class="chat-header-info">
-      <img src="assets/fueguin-avatar.png" alt="Fueguín" class="chat-avatar">
+      <img src="assets/fueguin-avatar.webp" alt="Fueguín" class="chat-avatar">
       <div class="chat-title-container">
         <h3 class="chat-title">Fueguín AI Copilot 🔥</h3>
         <span class="chat-subtitle">en línea y cocinando</span>

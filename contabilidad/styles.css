@@ -1,0 +1,17 @@
+/* Guerrero al Fuego - estilos base para herramientas internas (posts, calendario) */
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.6 system-ui,-apple-system,'Inter',sans-serif;
+     background:#1A1A1A;color:#F5F0EB;padding:24px}
+h1,h2,h3{font-family:'Playfair Display',serif;margin:0 0 .5em}
+a{color:#E67E22;text-decoration:none}
+a:hover{text-decoration:underline}
+button{background:#E67E22;border:0;color:#1A1A1A;padding:8px 14px;
+       border-radius:8px;font-weight:600;cursor:pointer;font-family:inherit}
+button:hover{background:#F4D03F}
+input,select,textarea{background:#222018;border:1px solid rgba(230,126,34,.25);
+       color:#F5F0EB;padding:8px 12px;border-radius:8px;font-family:inherit;font-size:14px}
+table{width:100%;border-collapse:collapse;margin:1em 0}
+th,td{padding:10px;text-align:left;border-bottom:1px solid rgba(230,126,34,.15)}
+th{color:#E67E22;font-size:.8rem;text-transform:uppercase;letter-spacing:.5px}
+.card{background:#222018;border:1px solid rgba(230,126,34,.15);border-radius:12px;padding:16px;margin-bottom:12px}
+.aviso{background:rgba(244,208,63,.1);border-left:3px solid #F4D03F;padding:12px 16px;border-radius:6px;margin:1em 0;font-size:14px}

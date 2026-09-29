@@ -4,6 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Recetario Oficial — Guerrero al Fuego</title>
+<link rel="canonical" href="https://guerreroalfuego.com/recetas.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Guerrero al Fuego">
+<meta property="og:url" content="https://guerreroalfuego.com/recetas.html">
+<meta property="og:title" content="Recetario Oficial — Guerrero al Fuego">
+<meta property="og:description" content="Recetario oficial de Guerrero al Fuego: técnicas reales de cocina, sin rodeos ni tecnicismos innecesarios.">
+<meta property="og:image" content="https://guerreroalfuego.com/assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Guerrero al Fuego — No soy chef, soy guerrero">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Recetario Oficial — Guerrero al Fuego">
+<meta name="twitter:description" content="Recetario oficial de Guerrero al Fuego: técnicas reales de cocina, sin rodeos ni tecnicismos innecesarios.">
+<meta name="twitter:image" content="https://guerreroalfuego.com/assets/og-image.jpg">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+
 <meta name="description" content="Aprende técnicas reales de cocina y a domar las llamas. Sin rodeos ni tecnicismos innecesarios.">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -122,7 +142,7 @@ footer a:hover{color:var(--azafran)}
 <!-- NAV -->
 <nav>
   <a class="nav-logo" href="">
-    <img src="assets/logo.png" alt="Guerrero al Fuego">
+    <img src="assets/logo.webp" alt="Guerrero al Fuego">
   </a>
   <div class="nav-links">
     <a href="recetas.html" class="active">Recetas</a>
@@ -158,7 +178,7 @@ footer a:hover{color:var(--azafran)}
 <div class="modal-overlay" id="recipeModal" onclick="if(event.target===this)closeModal()">
   <div class="modal-card">
     <button class="modal-close" onclick="closeModal()">✕</button>
-    <img class="modal-img" id="modalImg" src="" alt="">
+    <img class="modal-img" id="modalImg" alt="">
     <div class="modal-body" id="modalBody">
     </div>
   </div>
@@ -170,7 +190,7 @@ const recipes = [
     id: 'pulled-pork-bbq',
     title: 'Pulled Pork BBQ',
     description: 'Cerdo desmenuzado ahumado lentamente hasta que se deshace. Salsa BBQ casera, pan de brioche y una siesta de por medio.',
-    image: 'assets/recetas/pulled_pork_bbq.jpg',
+    image: 'assets/recetas/pulled_pork_bbq.webp',
     serie: 'bbq',
     time: '6-8h (fuego lento)',
     difficulty: 'Media',
@@ -201,7 +221,7 @@ const recipes = [
     id: 'alitas-picantes',
     title: 'Alitas Picantes al Horno',
     description: 'Crujientes por fuera, jugosas por dentro y con ese golpe de picante que engancha. Idea de ración para picar en cualquier finde.',
-    image: 'assets/recetas/gaf_alitas_picantes.png',
+    image: 'assets/recetas/gaf_alitas_picantes.webp',
     serie: 'picante',
     time: '50 min',
     difficulty: 'Fácil',
@@ -225,7 +245,7 @@ const recipes = [
     id: 'pasta-3-ingredientes',
     title: 'Pasta 3 Ingredientes',
     description: 'Solo tres cosas y queda de restaurante: pasta, tomate cherry y albahaca. La receta de emergencia que salva cualquier día.',
-    image: 'assets/recetas/gaf_pasta_3ingredientes.png',
+    image: 'assets/recetas/gaf_pasta_3ingredientes.webp',
     serie: '3ingredientes',
     time: '15 min',
     difficulty: 'Fácil',
@@ -246,7 +266,7 @@ const recipes = [
     id: 'arroz-crujiente',
     title: 'Arroz Crujiente al Horno',
     description: 'La costra dorada del arroz que todos quieren robar. Técnica para dejar el fondo del recipiente como los grandes socarrats.',
-    image: 'assets/recetas/gaf_arroz_crujiente.png',
+    image: 'assets/recetas/gaf_arroz_crujiente.webp',
     serie: 'rapida',
     time: '40 min',
     difficulty: 'Media',
@@ -268,7 +288,7 @@ const recipes = [
     id: 'huevos-rotos',
     title: 'Huevos Rotos con Patatas',
     description: 'El plato de la hermandad: patatas crujientes, huevos con la yema que se derrama y jamón. Pura felicidad en un plato.',
-    image: 'assets/recetas/fueguin_huevos_rotos.png',
+    image: 'assets/recetas/fueguin_huevos_rotos.webp',
     serie: 'rapida',
     time: '30 min',
     difficulty: 'Fácil',
@@ -290,7 +310,7 @@ const recipes = [
     id: 'pollo-limon',
     title: 'Pollo al Limón Fácil',
     description: 'Jugoso, dorado y con ese toque cítrico que engancha. El pollo que nunca decepciona y se hace en media hora.',
-    image: 'assets/recetas/fueguin_pollo_limon.png',
+    image: 'assets/recetas/fueguin_pollo_limon.webp',
     serie: 'rapida',
     time: '30 min',
     difficulty: 'Fácil',

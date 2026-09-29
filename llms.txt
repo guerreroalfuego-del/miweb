@@ -1,0 +1,24 @@
+# Guerrero al Fuego
+
+> Cocina con actitud. Recetario de cocina española con carácter: técnicas reales,
+> sin rodeos y con mucho fuego. Lema: "No soy chef, soy guerrero".
+
+Guerrero al Fuego es un proyecto gastronómico centrado en recetas accesibles
+y sabrosas, con explicaciones directas y sin tecnicismos innecesarios.
+
+## Contenido principal
+
+- [Recetario oficial](https://guerreroalfuego.com/recetas.html): recetas paso a paso con ingredientes y tiempos
+- [Página principal](https://guerreroalfuego.com/): presentación del proyecto y accesos al contenido
+- [Aviso legal](https://guerreroalfuego.com/legal.html): información legal, privacidad y cookies
+
+## Sobre este sitio
+
+- Idioma: español (es-ES)
+- Tipo: recetario y contenido gastronómico
+- Contenido apto para todos los públicos
+- No requiere registro para consultar las recetas
+
+## Contacto
+
+- Web: https://guerreroalfuego.com

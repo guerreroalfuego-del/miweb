@@ -1276,7 +1276,7 @@
               <strong>¡Hola Guerrero!</strong> ¿Te has quedado sin ideas culinarias? Haz clic en el botón de abajo y te daré una idea de contenido viral directo de mis fogones. ¡Que arda la cocina!
             </div>
             <div class="copilot-action-line">
-              <img src="../assets/stickers/fueguin_celebrando.png" class="copilot-mascot-pic" alt="Fueguín" id="copilot-pic">
+              <img src="../assets/stickers/fueguin_celebrando.webp" class="copilot-mascot-pic" alt="Fueguín" id="copilot-pic">
               <button class="btn" style="padding:8px 14px;font-size:12px" onclick="generarIdeaFueguin()">🔥 Generar Idea de Vídeo</button>
             </div>
           </div>
@@ -1917,7 +1917,7 @@
       }, 200);
 
       // Change sticker expression
-      const expressions = ['fueguin_celebrando.png', 'fueguin_sorprendido.png', 'fueguin_orgulloso.png', 'fueguin_feliz.png'];
+      const expressions = ['fueguin_celebrando.webp', 'fueguin_sorprendido.webp', 'fueguin_orgulloso.webp', 'fueguin_feliz.webp'];
       pic.src = '../assets/stickers/' + expressions[Math.floor(Math.random() * expressions.length)];
       triggerToast('Fueguín ha escupido una idea de vídeo.');
     }
@@ -1957,14 +1957,14 @@
         const diffLabels = { facil: 'Fácil', media: 'Media', dificil: 'Difícil' };
         
         // Match culinary assets images
-        let imgUrl = '../assets/recetas/fueguin_tortilla.png';
+        let imgUrl = '../assets/recetas/fueguin_tortilla.webp';
         const nameLower = r.nombre.toLowerCase();
-        if (nameLower.includes('pollo')) imgUrl = '../assets/recetas/fueguin_pollo_limon.png';
-        else if (nameLower.includes('huevo')) imgUrl = '../assets/recetas/fueguin_huevos_rotos.png';
-        else if (nameLower.includes('arroz')) imgUrl = '../assets/recetas/gaf_arroz_crujiente.png';
-        else if (nameLower.includes('alita')) imgUrl = '../assets/recetas/gaf_alitas_picantes.png';
-        else if (nameLower.includes('brownie')) imgUrl = '../assets/recetas/gaf_brownie.png';
-        else if (nameLower.includes('pasta')) imgUrl = '../assets/recetas/gaf_pasta_3ingredientes.png';
+        if (nameLower.includes('pollo')) imgUrl = '../assets/recetas/fueguin_pollo_limon.webp';
+        else if (nameLower.includes('huevo')) imgUrl = '../assets/recetas/fueguin_huevos_rotos.webp';
+        else if (nameLower.includes('arroz')) imgUrl = '../assets/recetas/gaf_arroz_crujiente.webp';
+        else if (nameLower.includes('alita')) imgUrl = '../assets/recetas/gaf_alitas_picantes.webp';
+        else if (nameLower.includes('brownie')) imgUrl = '../assets/recetas/gaf_brownie.webp';
+        else if (nameLower.includes('pasta')) imgUrl = '../assets/recetas/gaf_pasta_3ingredientes.webp';
 
         return `<div class="receta-card">
           <div>
@@ -2013,7 +2013,7 @@
           </h3>
           <div style="display:flex;flex-direction:column;gap:8px;flex-grow:1" id="col-list-${est}">
             ${posts.map(p => {
-              let stickerUrl = '../assets/stickers/fueguin_feliz.png';
+              let stickerUrl = '../assets/stickers/fueguin_feliz.webp';
               if (p.fueguin_expression) {
                 stickerUrl = `../assets/stickers/fueguin_${p.fueguin_expression}.png`;
               }
