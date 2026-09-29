@@ -67,7 +67,7 @@ main{max-width:1100px;margin:0 auto;padding:20px 5vw 80px}
 
 .recipes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
 
-.recipe-card{background:var(--card-bg);border:1px solid var(--border);border-radius:20px;
+.recipe-card{text-decoration:none;color:inherit;display:flex;flex-direction:column}background:var(--card-bg);border:1px solid var(--border);border-radius:20px;
   overflow:hidden;transition:all .3s;cursor:pointer;display:flex;flex-direction:column}
 .recipe-card:hover{transform:translateY(-6px);border-color:var(--llama);box-shadow:0 12px 30px rgba(230,126,34,0.15)}
 .recipe-card-img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
@@ -136,6 +136,58 @@ footer a:hover{color:var(--azafran)}
   .teaser-card h2{font-size:1.7rem}
 }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Recetario oficial de Guerrero al Fuego",
+  "numberOfItems": 6,
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Pulled Pork BBQ",
+      "url": "https://guerreroalfuego.com/recetas/pulled-pork-bbq.html",
+      "image": "https://guerreroalfuego.com/assets/recetas/pulled_pork_bbq.webp"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Alitas Picantes al Horno",
+      "url": "https://guerreroalfuego.com/recetas/alitas-picantes.html",
+      "image": "https://guerreroalfuego.com/assets/recetas/gaf_alitas_picantes.webp"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Pasta 3 Ingredientes",
+      "url": "https://guerreroalfuego.com/recetas/pasta-3-ingredientes.html",
+      "image": "https://guerreroalfuego.com/assets/recetas/gaf_pasta_3ingredientes.webp"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": "Arroz Crujiente al Horno",
+      "url": "https://guerreroalfuego.com/recetas/arroz-crujiente.html",
+      "image": "https://guerreroalfuego.com/assets/recetas/gaf_arroz_crujiente.webp"
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "name": "Huevos Rotos con Patatas",
+      "url": "https://guerreroalfuego.com/recetas/huevos-rotos.html",
+      "image": "https://guerreroalfuego.com/assets/recetas/fueguin_huevos_rotos.webp"
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "name": "Pollo al Limón Fácil",
+      "url": "https://guerreroalfuego.com/recetas/pollo-limon.html",
+      "image": "https://guerreroalfuego.com/assets/recetas/fueguin_pollo_limon.webp"
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -333,7 +385,7 @@ const recipes = [
 function renderRecipes() {
   const grid = document.getElementById('recipesGrid');
   grid.innerHTML = recipes.map(r => `
-    <div class="recipe-card" onclick="openModal('${r.id}')">
+    <a class="recipe-card" href="/recetas/${r.id}.html">
       <img class="recipe-card-img" src="${r.image}" alt="${r.title}" loading="lazy">
       <div class="recipe-card-body">
         <div class="recipe-card-tags">
@@ -346,7 +398,7 @@ function renderRecipes() {
           <span>🔥 ${r.difficulty}</span>
         </div>
       </div>
-    </div>
+    </a>
   `).join('');
 }
 
